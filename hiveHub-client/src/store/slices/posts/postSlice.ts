@@ -54,12 +54,11 @@ const postSlice=createSlice({
         .addCase(fetchAllposts.fulfilled,(state,action)=>{
             state.posts.loading=false;
             state.posts.data=action?.payload?.posts
-
         })
         .addCase(fetchAllposts.rejected,(state)=>{
-            state.posts.loading=false;
-            state.posts.data=null;           
+            state.posts.loading=false
         })
+        
         .addCase(createPostAction.fulfilled,(state)=>{
             state.createPostModal.isOpen=false
         })

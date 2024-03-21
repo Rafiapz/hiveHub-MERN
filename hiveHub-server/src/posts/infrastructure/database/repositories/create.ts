@@ -6,7 +6,7 @@ export const create =async (data: PostEntity): Promise<PostEntity | null > =>{
     try {
 
         const newPost=await Posts.create(data)
-      
+        
         return newPost
         
     } catch (error:any) {

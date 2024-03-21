@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { deletePostAction, fetchAllposts } from "../../store/actions/post/postActions";
+import { deletePostAction, fetchAllposts, likePostAction } from "../../store/actions/post/postActions";
 import Loading from "../loading/Loading";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
@@ -23,6 +23,7 @@ function Posts() {
   const userId = useSelector((state: RootState) => state.user.user.userId);
   const [curPostId,setCurPostId]=useState<number|null>()
   
+  
   const [showOptions, setShowOptions] = useState<{
     status: boolean;
     index: number;
@@ -30,6 +31,7 @@ function Posts() {
 
   useEffect(() => {
     dispatch(fetchAllposts()).then((data) => {
+           
       setPosts(data?.payload?.data);
       if (data?.payload?.status !== "ok")
         toast(data?.payload?.message, {
@@ -79,6 +81,9 @@ function Posts() {
 
   const handleLikePost=(id:number)=>{
 
+    dispatch(likePostAction(id)).then((response)=>{
+
+    })
 
   }
 
@@ -107,7 +112,7 @@ function Posts() {
                   <p className="font-bold">{item?.userId?.fullName}</p>
                 </div>
                 <p className="p-4">{item?.content}</p>
-
+                
                 {item?.media?.type === "image" && (
                   <img
                     src={`${item?.media?.path}`}
@@ -120,20 +125,29 @@ function Posts() {
                 )}
 
                 <div className="flex justify-between items-center">
-                  <div>
+                  <div className="flex">
+                    <div>
                     <FontAwesomeIcon
                       onClick={()=>handleLikePost(item?._id)}
                       icon={faHeart}
                       className={`${item?.liked?'text-red-600':'text-gray-400'} mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
                     />
+                    <p>{item?.likes?.length}</p>
+                    </div>
+                    <div>
                     <FontAwesomeIcon
                       icon={faComment}
                       className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
                     />
+                    <p>{item?.comments?.length}</p>
+                    </div>
+                    <div>
                     <FontAwesomeIcon
                       icon={faShare}
                       className="mr-4 text-yellow-300 size-7 cursor-pointer text-xl hover:text-green-600 transition duration-300"
                     />
+                    <p>{item?.shares?.length}</p>
+                    </div>
                   </div>
 
                   <div>

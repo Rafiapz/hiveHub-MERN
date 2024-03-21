@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { CREATE_POST_URL, DELETE_POST_URL, EDIT_POST_URL, FETCH_ALL_POSTS_URL } from "../../../utils/endPoint"
+import { CREATE_POST_URL, DELETE_POST_URL, EDIT_POST_URL, FETCH_ALL_POSTS_URL, LIKE_POST_URL } from "../../../utils/endPoint"
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils"
 import apiClient from "../../../utils/axios"
 
 
-export const createPostAction = createAsyncThunk('/post/create', async (form: any, { rejectWithValue }) => {
+export const createPostAction = createAsyncThunk('/post/create', async (form: any) => {
 
     try {
 
@@ -20,13 +20,13 @@ export const createPostAction = createAsyncThunk('/post/create', async (form: an
         return response.data
     } catch (error: any) {
         console.log(error);
-        rejectWithValue(error.message)
+       
 
     }
 })
 
 
-export const editPostAction = createAsyncThunk('/post/edit', async ({formData,originalUrl,postId,type}: any, { rejectWithValue }) => {
+export const editPostAction = createAsyncThunk('/post/edit', async ({formData,originalUrl,postId,type}: any) => {
 
     try {
 
@@ -51,7 +51,7 @@ export const editPostAction = createAsyncThunk('/post/edit', async ({formData,or
 
     } catch (error: any) {
         console.log(error);
-        rejectWithValue(error.message)
+       
 
     }
 })
@@ -59,12 +59,13 @@ export const editPostAction = createAsyncThunk('/post/edit', async ({formData,or
 export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async () => {
 
     try {
-
+               
         const response = await apiClient.get(FETCH_ALL_POSTS_URL)
 
         return response.data
 
-    } catch (error) {
+    } catch (error:any) {
+        
         console.log(error);
 
     }
@@ -80,18 +81,23 @@ export const deletePostAction = createAsyncThunk('/posts/delete-post', async (id
 
     } catch (error: any) {
         console.log(error);
+        
 
     }
 })
 
-export const likePostAction=createAsyncThunk('/post/like-post',async (id)=>{
+export const likePostAction=createAsyncThunk('/post/like-post',async (id:number)=>{
 
     try {
-
+        console.log('like called');
         
+        const response=await apiClient.post(`${LIKE_POST_URL}/${id}`)
+        console.log(response);        
+
         
     } catch (error:any) {
         console.log(error.message);
+        
         
     }
 })

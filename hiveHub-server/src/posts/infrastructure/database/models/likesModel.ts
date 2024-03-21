@@ -1,14 +1,14 @@
 import mongoose, { Schema, Document, ObjectId } from 'mongoose';
-import { ILikes } from '../../../domain/entities/likeEntity';
+import { LikesEntity } from '../../../domain/entities/likesEntity';
 
 
 
 const LikesSchema: Schema = new Schema({
-  PostId: { type: Schema.Types.ObjectId ,required: true,},
-  UserId: { type: Schema.Types.ObjectId,required: true, },
+  postId: { type: Schema.Types.ObjectId ,required: true,},
+  userId: { type: Schema.Types.ObjectId,required: true, },
 });
 
-const Likes = mongoose.model<ILikes>('Likes', LikesSchema);
+const Likes = mongoose.model<LikesEntity>('Likes', LikesSchema);
 
 export default Likes;
 

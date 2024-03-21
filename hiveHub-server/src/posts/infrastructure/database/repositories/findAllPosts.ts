@@ -1,4 +1,3 @@
-import { PostEntity } from "../../../domain/entities";
 import { Posts } from "../models";
 
 export const findAllPosts=async() =>{

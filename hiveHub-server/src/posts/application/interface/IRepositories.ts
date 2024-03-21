@@ -1,5 +1,5 @@
 import { DeleteResult } from "mongodb";
-import { PostEntity } from "../../domain/entities"
+import { LikesEntity, PostEntity } from "../../domain/entities"
 
 export interface IRepositories{
 
@@ -7,4 +7,5 @@ export interface IRepositories{
     findAllPosts:()=>any;
     deletePost:(data:{_id:string})=>Promise<DeleteResult>
     updatePost:(data:PostEntity)=>Promise<PostEntity|null>
+    createLike:(data:LikesEntity)=>Promise<LikesEntity|null>
 }

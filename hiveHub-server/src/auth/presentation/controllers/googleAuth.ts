@@ -32,7 +32,7 @@ export const googleAuthController=(dependencies:IDependencies)=>{
 
                 const token=genereateToken({id:existingUser._id,email:existingUser?.email})
 
-                res.cookie('user_token',token,{maxAge:1000*60*30,httpOnly:true})
+                res.cookie('userToken',token,{maxAge:1000*60*30,httpOnly:true})
 
                 res.json({status:'ok',userData:existingUser}).status(200)
 

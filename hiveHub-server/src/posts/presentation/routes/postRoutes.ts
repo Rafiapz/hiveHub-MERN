@@ -4,12 +4,13 @@ import { controllers } from '../controllers'
 import { IPostDependencies } from '../../application/interface/IDependencies'
 import { upload, uploadSingleFile } from '../../../_lib/multer'
 import { auth } from '../../../auth/presentation/controllers/isAuthorized'
+import { currentUser } from '../middlewares/currentUser'
 
 
 
 export const postRoutes=(dependencies:IPostDependencies)=>{    
         
-    const {createPost,fetchAllPosts,deletePost,editPost}=controllers(dependencies)
+    const {createPost,fetchAllPosts,deletePost,editPost,likePost}=controllers(dependencies)
 
     const router=Router()
 
@@ -21,7 +22,7 @@ export const postRoutes=(dependencies:IPostDependencies)=>{
 
     router.route('/edit-post/:type').put(uploadSingleFile,editPost)
 
-    router.route('/like-post').post()
+    router.route('/like-post/:postId').post(currentUser,likePost)
 
     
 

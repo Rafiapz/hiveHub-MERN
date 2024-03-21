@@ -11,6 +11,11 @@ const PostsSchema: Schema = new Schema({
     type:{type:String}
   },
   createdAt: { type: Date },
+  likes: [{ type: Schema.Types.ObjectId,  }],
+  comments:[{ type: Schema.Types.ObjectId,  }],
+  saves:[{ type: Schema.Types.ObjectId,  }],
+  shares:[{ type: Schema.Types.ObjectId,  }],
+  
 });
 
 export const Posts = mongoose.model<PostEntity>('Posts', PostsSchema);

@@ -11,11 +11,12 @@ export const fetchAllposts=(dependencies:IPostDependencies)=>{
         try {
 
            const posts=await findAllPostsUseCase(dependencies).execute()
-
+           
            if(posts.length<=0){
             throw new Error('No posts found')
            }else{
-
+            
+            
             res.json({status:'ok',message:'success',data:posts}).status(200)
            }
 

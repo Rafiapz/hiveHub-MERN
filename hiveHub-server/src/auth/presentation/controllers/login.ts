@@ -23,7 +23,7 @@ export const loginController=(dependencies:IDependencies)=>{
              if(status){
               const token= genereateToken({id:user?._id,email:user?.email})
               const userData=await findOneUserUseCase(dependencies).execute({email:user.email})
-              res.cookie('user_token',token)
+              res.cookie('userToken',token)
               res.json({status:'ok',message:'success',userData}).status(200)
              }else{
 

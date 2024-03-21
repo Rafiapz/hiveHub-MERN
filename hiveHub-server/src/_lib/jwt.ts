@@ -21,32 +21,32 @@ export const genereateToken = (payload: any) => {
   }
 };
 
-export const verifyToken = (token: string) => {
-  try {
-    const secret: any = process.env.jwtSecret;
-    const verified = jwt.verify(token, secret);
+// export const verifyToken = (token: string) => {
+//   try {
+//     const secret: any = process.env.jwtSecret;
+//     const verified = jwt.verify(token, secret);
 
-    if (verified) {
+//     if (verified) {
 
-      if (verified === "jwt expired") {
-        return false;
-      }
+//       if (verified === "jwt expired") {
+//         return false;
+//       }
 
-      const decodedToken = jwt.decode(token);
+//       const decodedToken = jwt.decode(token);
 
-      if (decodedToken && typeof decodedToken === 'object' && decodedToken.hasOwnProperty('email')) {
-        const email = decodedToken.email;
-        const id=decodedToken.id
-        return {email,id}
+//       if (decodedToken && typeof decodedToken === 'object' && decodedToken.hasOwnProperty('email')) {
+//         const email = decodedToken.email;
+//         const id=decodedToken.id
+//         return {email,id}
         
-      }
-    } else {
-      return false;
-    }
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
+//       }
+//     } else {
+//       return false;
+//     }
+//   } catch (error: any) {
+//     throw new Error(error.message);
+//   }
+// };
 
 export const getTokenPayloads = (token: string) => {
   try {
@@ -62,3 +62,19 @@ export const getTokenPayloads = (token: string) => {
     throw new Error(error.message);
   }
 };
+
+export const verifyToken=(token:string)=>{
+  try {
+    const secret: any = process.env.jwtSecret;
+    const decoded = jwt.verify(token, secret) as { [key: string]: any };
+
+    
+    if (decoded) {
+      return decoded;
+    } else {
+      throw new Error('Failed to verify token')
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

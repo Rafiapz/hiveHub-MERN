@@ -1,4 +1,3 @@
-import React from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { signupSchema } from "../../schemas/SignupSchema";
 import { faGoogle,faFacebook } from '@fortawesome/free-brands-svg-icons';

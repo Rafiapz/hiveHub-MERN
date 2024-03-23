@@ -1,5 +1,5 @@
 import { createSlice} from '@reduxjs/toolkit'
-import { createPostAction, editPostAction, fetchAllposts, likePostAction } from '../../actions/post/postActions'
+import { createPostAction, editPostAction, fetchAllCommentsOfPost, fetchAllposts } from '../../actions/post/postActions'
 
 
 
@@ -24,6 +24,13 @@ const initialState={
             },
             _id:''
         }
+    },
+    comments:{
+        modalIsOpen:false,
+        error:null,
+        loading:false,
+        data:null,
+        postId:null
     }
 }
 
@@ -44,20 +51,36 @@ const postSlice=createSlice({
                 state.editPostModal.data._id=action?.payload?._id
             }
         },
+        handleCommentModal:(state,action)=>{
+            state.comments.modalIsOpen=action?.payload?.status
+            state.comments.postId=action?.payload?.postId
+           
+            
+        },
+        handleCommentsData:(state,action)=>{
+            state.comments.data=action?.payload?.data
+        },
+        handleCommentsIsEditing:(state,action)=>{
+            if(state.comments.data!==null)
+           state.comments.data=action?.payload
+
+        }
+        
                 
     },
 
     extraReducers:(builder)=>{
 
         builder
-        .addCase(fetchAllposts.pending,(state)=>{
+        .addCase(fetchAllposts.pending,()=>{
             // state.posts.loading=true
         })
         .addCase(fetchAllposts.fulfilled,(state,action)=>{
+            if(action.payload.status==='ok'){
             state.posts.loading=false;
             state.posts.data=action?.payload?.data?.posts
             state.posts.likes=action?.payload?.data?.likes
-           
+            }
             
         })
         .addCase(fetchAllposts.rejected,(state)=>{
@@ -70,13 +93,14 @@ const postSlice=createSlice({
         .addCase(editPostAction.fulfilled,(state)=>{
             state.editPostModal.isOpen=false            
         })
-        .addCase(likePostAction.fulfilled,(state)=>{
-
+        .addCase(fetchAllCommentsOfPost.fulfilled,(state,action)=>{           
+            state.comments.data=action?.payload?.data
+            
         })
     }
 })
 
 
-export const {handleCreatePostModal,handleEditPostModal} =postSlice.actions
+export const {handleCreatePostModal,handleEditPostModal,handleCommentModal,handleCommentsData,handleCommentsIsEditing} =postSlice.actions
 
 export default postSlice.reducer    

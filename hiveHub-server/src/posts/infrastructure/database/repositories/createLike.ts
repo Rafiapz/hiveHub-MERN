@@ -1,7 +1,7 @@
 import Likes from "../models/likesModel";
 import { LikesEntity } from "../../../domain/entities/likesEntity";
 import { Posts } from "../models";
-import { PostEntity } from "../../../domain/entities";
+
 
 export const createLike = async (data: LikesEntity): Promise<any> => {
 

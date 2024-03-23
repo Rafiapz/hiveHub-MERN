@@ -29,8 +29,7 @@ export const googleAuthController=(dependencies:IDependencies)=>{
             const existingUser=await findOneUserUseCase(dependencies).execute({email:email})
 
             if(existingUser){
-                console.log(existingUser);
-                
+                            
                 const token=genereateToken({id:existingUser._id,email:existingUser?.email})
 
                 res.cookie('userToken',token,{maxAge:1000*60*30,httpOnly:true})

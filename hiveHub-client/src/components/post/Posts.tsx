@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
   deletePostAction,
+  fetchAllCommentsOfPost,
   fetchAllposts,
   likePostAction,
 } from "../../store/actions/post/postActions";
@@ -18,6 +19,7 @@ import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
 import {
+  handleCommentModal,
   handleEditPostModal,
 } from "../../store/slices/posts/postSlice";
 
@@ -97,6 +99,15 @@ function Posts() {
     );
   };
 
+  const handleShowComments=(id:number)=>{
+
+    dispatch(fetchAllCommentsOfPost(id)).then((response)=>{
+      if(response.payload.status==='ok'){
+      dispatch(handleCommentModal({status:true,postId:id}))
+      }
+    })
+  }
+
   return (
     <>
       {loading ? (
@@ -150,6 +161,7 @@ function Posts() {
                       <FontAwesomeIcon
                         icon={faComment}
                         className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
+                        onClick={()=>{handleShowComments(item?._id)}}
                       />
                       <p>{item?.comments?.length}</p>
                     </div>
@@ -168,8 +180,7 @@ function Posts() {
                       className="text-gray-500 size-7 cursor-pointer"
                     />
                   </div>
-
-                  {/* Three-dot option */}
+                
                   <div className="absolute top-0 right-0 mt-2 mr-4">
                     <div
                       onClick={(e) => {
@@ -184,8 +195,7 @@ function Posts() {
                   </div>
                   {showOptions?.status == true && showOptions?.index === i && (
                     <div className="absolute top-1  right-4 w-28 h-22 bg-blue-300 mt-2 mr-4 border border-gray-300 shadow-lg rounded-md">
-                      {/* <p>{userId}</p>
-                      <p>{item?.userId?._id }</p> */}
+                    
                       <ul>
                         {userId === item?.userId?._id && (
                           <>

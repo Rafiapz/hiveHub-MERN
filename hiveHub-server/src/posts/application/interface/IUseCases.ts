@@ -3,6 +3,8 @@ import { ICreatePostUseCase } from "../../domain/useCase/ICreatePostUseCase";
 import { IDeletePostUseCase } from "../../domain/useCase/IDeletePostUseCase";
 import { IFindAllPostsUseCase } from "../../domain/useCase/IFindAllPostUseCase";
 import { IUPdatePostUseCase } from "../../domain/useCase/IUpdatePostUseCase";
+import {IFindAllCommentsUseCase} from '../../domain/useCase/IFindAllCommentsUseCase'
+import { ICreateCommentUseCase } from "../../domain/useCase/ICreateCommentUseCase";
 
 
 export interface IUseCases{
@@ -12,4 +14,6 @@ export interface IUseCases{
     deletePostUseCase:(dependencies:any)=>IDeletePostUseCase;
     updatePostUseCase:(dependencies:any)=>IUPdatePostUseCase;
     likePostUseCase:(dependencies:any)=>ICreateLikeUseCase;
+    findAllCommentsUseCase:(dependencies:any)=>IFindAllCommentsUseCase
+    createCommentUseCase:(dependencies:any)=>ICreateCommentUseCase
 }

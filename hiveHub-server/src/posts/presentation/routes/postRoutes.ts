@@ -10,7 +10,7 @@ import { currentUser } from '../middlewares/currentUser'
 
 export const postRoutes=(dependencies:IPostDependencies)=>{    
         
-    const {createPost,fetchAllPosts,deletePost,editPost,likePost}=controllers(dependencies)
+    const {createPost,fetchAllPosts,deletePost,editPost,likePost,fetchAllComments,createComment}=controllers(dependencies)
 
     const router=Router()
 
@@ -24,6 +24,9 @@ export const postRoutes=(dependencies:IPostDependencies)=>{
 
     router.route('/like-post/:postId').post(currentUser,likePost)
 
+    router.route('/fetch-all-comments/:postId').get(fetchAllComments)
+
+    router.route('/post-comment/:postId').post(currentUser,createComment)
     
 
     

@@ -1,4 +1,3 @@
-import React from "react";
 import CreatePost from "../post/CreatePost";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";

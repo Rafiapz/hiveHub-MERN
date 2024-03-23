@@ -23,3 +23,7 @@ export const DELETE_POST_URL='/post/delete-post'
 export const EDIT_POST_URL='/post/edit-post'
 
 export const LIKE_POST_URL='/post/like-post'
+
+export const FETCH_ALL_COMMENTS_URL='/post/fetch-all-comments'
+
+export const POST_COMMENT_URL='/post/post-comment'

@@ -1,5 +1,5 @@
 import { createSlice} from '@reduxjs/toolkit'
-import { createPostAction, editPostAction, fetchAllposts } from '../../actions/post/postActions'
+import { createPostAction, editPostAction, fetchAllposts, likePostAction } from '../../actions/post/postActions'
 
 
 
@@ -8,6 +8,7 @@ const initialState={
     posts:{
         loading:false,
         data:null,
+        likes:null,
         error:null
     },
     createPostModal:{
@@ -42,18 +43,22 @@ const postSlice=createSlice({
                 state.editPostModal.data.media.url=action?.payload?.media?.url
                 state.editPostModal.data._id=action?.payload?._id
             }
-        }
+        },
+                
     },
 
     extraReducers:(builder)=>{
 
         builder
         .addCase(fetchAllposts.pending,(state)=>{
-            state.posts.loading=true
+            // state.posts.loading=true
         })
         .addCase(fetchAllposts.fulfilled,(state,action)=>{
             state.posts.loading=false;
-            state.posts.data=action?.payload?.posts
+            state.posts.data=action?.payload?.data?.posts
+            state.posts.likes=action?.payload?.data?.likes
+           
+            
         })
         .addCase(fetchAllposts.rejected,(state)=>{
             state.posts.loading=false
@@ -64,6 +69,9 @@ const postSlice=createSlice({
         })
         .addCase(editPostAction.fulfilled,(state)=>{
             state.editPostModal.isOpen=false            
+        })
+        .addCase(likePostAction.fulfilled,(state)=>{
+
         })
     }
 })

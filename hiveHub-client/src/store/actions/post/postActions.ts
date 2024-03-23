@@ -61,7 +61,9 @@ export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async () 
     try {
                
         const response = await apiClient.get(FETCH_ALL_POSTS_URL)
-
+       console.log(response.data);
+       
+        
         return response.data
 
     } catch (error:any) {
@@ -94,6 +96,7 @@ export const likePostAction=createAsyncThunk('/post/like-post',async (id:number)
         const response=await apiClient.post(`${LIKE_POST_URL}/${id}`)
         console.log(response);        
 
+        return response.data
         
     } catch (error:any) {
         console.log(error.message);

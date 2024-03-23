@@ -10,8 +10,9 @@ export const fetchUserController=(dependencies:IDependencies)=>{
     return async (req:Request,res:Response)=>{
 
         try {
+           
             
-            const token=req.cookies.user_token
+            const token=req.cookies.userToken
 
             if(token){
                 const authorized=verifyToken(token) 

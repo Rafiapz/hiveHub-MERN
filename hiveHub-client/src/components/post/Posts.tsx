@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
@@ -8,22 +8,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { deletePostAction, fetchAllposts, likePostAction } from "../../store/actions/post/postActions";
+import {
+  deletePostAction,
+  fetchAllposts,
+  likePostAction,
+} from "../../store/actions/post/postActions";
 import Loading from "../loading/Loading";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCreatePostModal, handleEditPostModal } from "../../store/slices/posts/postSlice";
-
+import {
+  handleEditPostModal,
+} from "../../store/slices/posts/postSlice";
 
 function Posts() {
-  const [posts, setPosts] = useState<string[]>([]);
+
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector((state: RootState) => state.posts.posts.loading);
   const userId = useSelector((state: RootState) => state.user.user.userId);
-  const [curPostId,setCurPostId]=useState<number|null>()
-  
-  
+  const [curPostId, setCurPostId] = useState<number | null>();
+  const likes: any = useSelector(
+    (state: RootState) => state?.posts?.posts?.likes
+  );
+  const posts: any = useSelector((state: RootState) => state.posts.posts.data);
+
   const [showOptions, setShowOptions] = useState<{
     status: boolean;
     index: number;
@@ -31,8 +39,6 @@ function Posts() {
 
   useEffect(() => {
     dispatch(fetchAllposts()).then((data) => {
-           
-      setPosts(data?.payload?.data);
       if (data?.payload?.status !== "ok")
         toast(data?.payload?.message, {
           style: { backgroundColor: "#ff6347", color: "#eeeeee" },
@@ -57,38 +63,39 @@ function Posts() {
   };
 
   const handleDeletePostModal = (id: number) => {
-    setCurPostId(id)
-    dispatch(confirmationModalReducer({ status: true }))
+    setCurPostId(id);
+    dispatch(confirmationModalReducer({ status: true }));
+  };
 
-  }
+  const handleDelete = (id: number) => {
+    dispatch(confirmationModalReducer({ status: false }));
 
-  const handleDelete = (id:number) => {
-    dispatch(confirmationModalReducer({status:false}))
-    
     dispatch(deletePostAction(id)).then((response) => {
       console.log(response.payload);
 
-      if (response?.payload?.status === 'ok') {
-        toast(response?.payload?.message, { style: { backgroundColor: '#4caf50', color: 'white' } })
-
-        setPosts((prev) => prev.filter((ob: any) => ob._id !== id))
-
+      if (response?.payload?.status === "ok") {
+        toast(response?.payload?.message, {
+          style: { backgroundColor: "#4caf50", color: "white" },
+        });
       } else {
-        toast(response?.payload?.message, { style: { backgroundColor: '#ff6347', color: '#eeeeee' } })
+        toast(response?.payload?.message, {
+          style: { backgroundColor: "#ff6347", color: "#eeeeee" },
+        });
       }
-    })
-  }
+    });
+  };
 
-  const handleLikePost=(id:number)=>{
+  const handleLikePost = (id: number) => {
+    dispatch(likePostAction(id)).then(() => {
+      dispatch(fetchAllposts());
+    });
+  };
 
-    dispatch(likePostAction(id)).then((response)=>{
-
-    })
-
-  }
-
-
-
+  const setClass = (itemId: any) => {
+    return likes.some(
+      (ob: any) => ob.postId === itemId && ob.userId === userId
+    );
+  };
 
   return (
     <>
@@ -112,7 +119,7 @@ function Posts() {
                   <p className="font-bold">{item?.userId?.fullName}</p>
                 </div>
                 <p className="p-4">{item?.content}</p>
-                
+
                 {item?.media?.type === "image" && (
                   <img
                     src={`${item?.media?.path}`}
@@ -127,26 +134,31 @@ function Posts() {
                 <div className="flex justify-between items-center">
                   <div className="flex">
                     <div>
-                    <FontAwesomeIcon
-                      onClick={()=>handleLikePost(item?._id)}
-                      icon={faHeart}
-                      className={`${item?.liked?'text-red-600':'text-gray-400'} mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
-                    />
-                    <p>{item?.likes?.length}</p>
+                      <FontAwesomeIcon
+                        key={item?.id}
+                        onClick={() => {
+                          handleLikePost(item?._id);
+                        }}
+                        icon={faHeart}
+                        className={`${
+                          setClass(item?._id) ? "text-red-600" : "text-gray-400"
+                        }  mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
+                      />
+                      <p>{item?.likes}</p>
                     </div>
                     <div>
-                    <FontAwesomeIcon
-                      icon={faComment}
-                      className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
-                    />
-                    <p>{item?.comments?.length}</p>
+                      <FontAwesomeIcon
+                        icon={faComment}
+                        className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
+                      />
+                      <p>{item?.comments?.length}</p>
                     </div>
                     <div>
-                    <FontAwesomeIcon
-                      icon={faShare}
-                      className="mr-4 text-yellow-300 size-7 cursor-pointer text-xl hover:text-green-600 transition duration-300"
-                    />
-                    <p>{item?.shares?.length}</p>
+                      <FontAwesomeIcon
+                        icon={faShare}
+                        className="mr-4 text-yellow-300 size-7 cursor-pointer text-xl hover:text-green-600 transition duration-300"
+                      />
+                      <p>{item?.shares?.length}</p>
                     </div>
                   </div>
 
@@ -177,10 +189,28 @@ function Posts() {
                       <ul>
                         {userId === item?.userId?._id && (
                           <>
-                            <li onClick={()=>dispatch(handleEditPostModal({status:true,content:item?.content,media:{type:item?.media?.type,url:item?.media?.path},_id:item?._id}))} className="p-1 hover:bg-blue-500">
+                            <li
+                              onClick={() =>
+                                dispatch(
+                                  handleEditPostModal({
+                                    status: true,
+                                    content: item?.content,
+                                    media: {
+                                      type: item?.media?.type,
+                                      url: item?.media?.path,
+                                    },
+                                    _id: item?._id,
+                                  })
+                                )
+                              }
+                              className="p-1 hover:bg-blue-500"
+                            >
                               <button>Edit</button>
                             </li>
-                            <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-blue-500">
+                            <li
+                              onClick={() => handleDeletePostModal(item?._id)}
+                              className="p-1 hover:bg-blue-500"
+                            >
                               <button>Delete</button>
                             </li>
                           </>

@@ -16,7 +16,7 @@ export const postRoutes=(dependencies:IPostDependencies)=>{
 
     router.route('/create-post/:type').post(uploadSingleFile,createPost)
 
-    router.route('/fetch-all-posts').get(fetchAllPosts)
+    router.route('/fetch-all-posts').get(currentUser,fetchAllPosts)
 
     router.route('/delete-post').delete(deletePost)
 

@@ -10,14 +10,17 @@ export const fetchAllposts=(dependencies:IPostDependencies)=>{
 
         try {
 
-           const posts=await findAllPostsUseCase(dependencies).execute()
+            const user = req?.user
+            const userId = (user as any)?.id;
+
+           const {posts,likes}=await findAllPostsUseCase(dependencies).execute(userId)
            
            if(posts.length<=0){
             throw new Error('No posts found')
            }else{
+   
             
-            
-            res.json({status:'ok',message:'success',data:posts}).status(200)
+            res.json({status:'ok',message:'success',data:{posts,likes}}).status(200)
            }
 
         } catch (error:any) {

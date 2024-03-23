@@ -1,12 +1,14 @@
 import { Posts } from "../models";
+import Likes from "../models/likesModel";
 
-export const findAllPosts=async() =>{
+export const findAllPosts=async(data:any) =>{
 
     try {
 
           const posts=await Posts.find({}).populate('userId')
+          const likes=await Likes.find({userId:data})
         
-          return posts
+          return {posts,likes}
         
     } catch (error:any) {
         throw new Error(error.message)

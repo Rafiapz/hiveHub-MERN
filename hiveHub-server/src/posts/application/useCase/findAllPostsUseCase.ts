@@ -6,9 +6,9 @@ export const findAllPostsUseCase=(dependencies:IPostDependencies)=>{
         const {postRepositories:{findAllPosts}}=dependencies
     return{
 
-        execute:()=>{
+        execute:(data:any)=>{
 
-          return findAllPosts()
+          return findAllPosts(data)
 
         }
 

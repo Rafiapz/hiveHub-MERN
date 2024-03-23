@@ -1,8 +1,8 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 
 export interface LikesEntity  {
-    _id?: ObjectId;
-    postId: ObjectId | null;
-    userId: ObjectId | null;
+    _id?: Types.ObjectId;
+    postId: Types.ObjectId | null;
+    userId: Types.ObjectId| null;
   }

@@ -81,7 +81,7 @@ export const fetchuser=createAsyncThunk('/auth/fetch',async ()=>{
     try {
                
         const response=await apiClient.get(FETCH_USER_URL,)
-      
+             
         if(response.data.status!=='ok'){
             throw new Error('Not authorized')
         }
@@ -100,6 +100,7 @@ export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:
 
         const response=await apiClient.post('/auth/google',{googleAccesToken:accessToken})
         console.log(response.data);
+        
         return response.data
         
         

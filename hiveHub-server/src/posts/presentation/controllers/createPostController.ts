@@ -1,7 +1,7 @@
 import { IPostDependencies } from "../../application/interface/IDependencies";
 import { Request, Response, NextFunction } from 'express'
 import { PostEntity } from "../../domain/entities";
-import { getTokenPayloads } from "../../../_lib/jwt";
+import { getTokenPayloads, verifyToken } from "../../../_lib/jwt";
 
 export const createPostController = (dependencies: IPostDependencies) => {
 
@@ -12,9 +12,9 @@ export const createPostController = (dependencies: IPostDependencies) => {
         try {
 
 
-            const token: string | undefined = req.cookies.user_token
+            const token: string | undefined = req.cookies.userToken
             if (token) {
-                const decoded = getTokenPayloads(token)
+                const decoded = verifyToken(token)
                 const path = `http://localhost:7700/posts/${req?.file?.filename}`
                 
                 
@@ -27,7 +27,8 @@ export const createPostController = (dependencies: IPostDependencies) => {
                         createdAt: new Date(),
                         userId: decoded.id,
                         media:mediaType?{type:mediaType,path:path}:undefined,
-                        content: req?.body?.content
+                        content: req?.body?.content,
+                        likes:0
 
                     }
 
@@ -37,9 +38,7 @@ export const createPostController = (dependencies: IPostDependencies) => {
                         res.json({ status: 'ok', postData: post,message:'Your post has been successfully submitted!' })
                     } else {
                         throw new Error('Failed to create post')
-                    }
-
-                                     
+                    }                                     
 
                 }
 

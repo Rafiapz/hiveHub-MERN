@@ -1,5 +1,5 @@
 
 export interface IFindAllPostsUseCase{
 
-    execute:()=>any
+    execute:(data:any)=>any
 }

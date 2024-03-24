@@ -104,6 +104,7 @@ function Posts() {
     dispatch(fetchAllCommentsOfPost(id)).then((response)=>{
       if(response.payload.status==='ok'){
       dispatch(handleCommentModal({status:true,postId:id}))
+      
       }
     })
   }
@@ -129,6 +130,7 @@ function Posts() {
                   />
                   <p className="font-bold">{item?.userId?.fullName}</p>
                 </div>
+                <div>connect</div>
                 <p className="p-4">{item?.content}</p>
 
                 {item?.media?.type === "image" && (
@@ -163,7 +165,7 @@ function Posts() {
                         className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
                         onClick={()=>{handleShowComments(item?._id)}}
                       />
-                      <p>{item?.comments?.length}</p>
+                      <p>{item?.comments}</p>
                     </div>
                     <div>
                       <FontAwesomeIcon

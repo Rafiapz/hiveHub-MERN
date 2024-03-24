@@ -3,16 +3,19 @@ import { AppDispatch, RootState } from "../../store/store";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+    handleCommentDeleteReducer,
   handleCommentModal,
   handleCommentsIsEditing,
 } from "../../store/slices/posts/postSlice";
 import {
+    deleteComment,
   fetchAllCommentsOfPost,
   postComment,
 } from "../../store/actions/post/postActions";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { commentSchema } from "../../schemas/CommentSchema";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 function Comments() {
   const isOpen = useSelector(
@@ -93,6 +96,23 @@ function Comments() {
 
   };
 
+
+  const handleCommentDelete=(id:number,index:number)=>{
+
+    handleOptionsClick(index)
+
+    dispatch(deleteComment(id)).then((response)=>{
+        if(response.payload.status==='ok'){
+            const updated=allComments.filter((item:any,i:number)=>i!==index)
+            dispatch(handleCommentDeleteReducer(updated))
+            toast(response.payload.message,{style:{ backgroundColor: "#4caf50", color: "white" }})
+        }else{
+            toast(response.payload.message,{style:{ backgroundColor: "#ff6347", color: "#eeeeee" }})
+        }
+    })
+
+  }
+
   return (
     <div className="fixed inset-0 z-50  flex items-center justify-center ">
       <div className="fixed inset-0 bg-gray-900 opacity-50"></div>
@@ -142,7 +162,7 @@ function Comments() {
                     className="max-w-sm mx-auto mb-4"
                   >
                     <Formik
-                      initialValues={editInitialValues}
+                      initialValues={{comment:''}}
                       onSubmit={handleEditCommentSubmit}
                       validationSchema={commentSchema}
                     >
@@ -214,7 +234,7 @@ function Comments() {
                               >
                                 <button>Edit</button>
                               </li>
-                              <li className="p-1 hover:bg-blue-500">
+                              <li onClick={()=>handleCommentDelete(item?._id,i)} className="p-1 hover:bg-blue-500">
                                 <button>Delete</button>
                               </li>
                             </>

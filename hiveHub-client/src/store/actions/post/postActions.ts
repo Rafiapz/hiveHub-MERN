@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { CREATE_POST_URL, DELETE_POST_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL } from "../../../utils/endPoint"
+import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL } from "../../../utils/endPoint"
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils"
 import apiClient from "../../../utils/axios"
 
@@ -125,6 +125,22 @@ export const postComment=createAsyncThunk('/post/post-comment',async ({formData,
         return response.data
         
         
+    } catch (error:any) {
+        console.log(error.message);
+        
+    }
+})
+
+export const deleteComment=createAsyncThunk('/post/delete-comment',async(commentId:number)=>{
+
+    try {
+
+        const response=await apiClient.delete(`${DELETE_COMMENT_URL}/${commentId}`)
+
+        console.log(response.data);
+        return response.data
+        
+
     } catch (error:any) {
         console.log(error.message);
         

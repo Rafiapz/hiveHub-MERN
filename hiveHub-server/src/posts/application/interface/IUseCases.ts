@@ -5,6 +5,7 @@ import { IFindAllPostsUseCase } from "../../domain/useCase/IFindAllPostUseCase";
 import { IUPdatePostUseCase } from "../../domain/useCase/IUpdatePostUseCase";
 import {IFindAllCommentsUseCase} from '../../domain/useCase/IFindAllCommentsUseCase'
 import { ICreateCommentUseCase } from "../../domain/useCase/ICreateCommentUseCase";
+import { IDeleteCommentUseCase } from "../../domain/useCase/IDeleteCommentUseCase";
 
 
 export interface IUseCases{
@@ -14,6 +15,7 @@ export interface IUseCases{
     deletePostUseCase:(dependencies:any)=>IDeletePostUseCase;
     updatePostUseCase:(dependencies:any)=>IUPdatePostUseCase;
     likePostUseCase:(dependencies:any)=>ICreateLikeUseCase;
-    findAllCommentsUseCase:(dependencies:any)=>IFindAllCommentsUseCase
-    createCommentUseCase:(dependencies:any)=>ICreateCommentUseCase
+    findAllCommentsUseCase:(dependencies:any)=>IFindAllCommentsUseCase;
+    createCommentUseCase:(dependencies:any)=>ICreateCommentUseCase;
+    deleteCommentUseCase:(dependencies:any)=>IDeleteCommentUseCase
 }

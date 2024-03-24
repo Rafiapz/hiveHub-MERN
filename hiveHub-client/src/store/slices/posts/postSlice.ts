@@ -64,6 +64,9 @@ const postSlice=createSlice({
             if(state.comments.data!==null)
            state.comments.data=action?.payload
 
+        },
+        handleCommentDeleteReducer:(state,action)=>{
+            state.comments.data=action?.payload
         }
         
                 
@@ -101,6 +104,13 @@ const postSlice=createSlice({
 })
 
 
-export const {handleCreatePostModal,handleEditPostModal,handleCommentModal,handleCommentsData,handleCommentsIsEditing} =postSlice.actions
+export const {
+  handleCreatePostModal,
+  handleEditPostModal,
+  handleCommentModal,
+  handleCommentsData,
+  handleCommentsIsEditing,
+  handleCommentDeleteReducer,
+} = postSlice.actions;
 
-export default postSlice.reducer    
+export default postSlice.reducer;    

@@ -27,3 +27,5 @@ export const LIKE_POST_URL='/post/like-post'
 export const FETCH_ALL_COMMENTS_URL='/post/fetch-all-comments'
 
 export const POST_COMMENT_URL='/post/post-comment'
+
+export const DELETE_COMMENT_URL='/post/delete-comment'

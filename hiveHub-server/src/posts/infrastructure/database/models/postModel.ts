@@ -12,7 +12,7 @@ const PostsSchema: Schema = new Schema({
   },
   createdAt: { type: Date },
   likes: Number,
-  comments:[{ type: Schema.Types.ObjectId,  }],
+  comments:[{ type: Number  }],
   saves:[{ type: Schema.Types.ObjectId,  }],
   shares:[{ type: Schema.Types.ObjectId,  }],
   

@@ -94,7 +94,7 @@ export const fetchuser=createAsyncThunk('/auth/fetch',async ()=>{
     }
 })
 
-export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:any)=>{
+export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:any,{rejectWithValue})=>{
 
     try {
 
@@ -105,6 +105,7 @@ export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:
         
         
     } catch (error:any) {
+        rejectWithValue(error.message)
         throw new Error(error.message)
     }
 })

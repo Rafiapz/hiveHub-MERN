@@ -8,7 +8,7 @@ export interface PostEntity{
     media?:{type:string,path:string};
     createdAt?:Date;
     likes?:Number;
-    comments?:ObjectId[] | null;
+    comments?:Number;
     saves?:ObjectId[] | null;
     shares?:ObjectId[] | null;
 }   

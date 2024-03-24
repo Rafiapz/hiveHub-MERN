@@ -1,4 +1,4 @@
-import { DeleteResult, ObjectId } from "mongodb";
+import { DeleteResult } from "mongodb";
 
 export interface IDeletePostUseCase{
 

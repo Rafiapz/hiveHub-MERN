@@ -12,6 +12,7 @@ import {
   deletePostAction,
   fetchAllCommentsOfPost,
   fetchAllposts,
+  fetchUsersPost,
   likePostAction,
 } from "../../store/actions/post/postActions";
 import Loading from "../loading/Loading";
@@ -19,11 +20,14 @@ import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
 import {
+  handleCleanUpPost,
   handleCommentModal,
   handleEditPostModal,
 } from "../../store/slices/posts/postSlice";
+import ConnectButton from "../connectButton/ConnectButton";
+import { useLocation, useSearchParams } from "react-router-dom";
 
-function Posts() {
+function Posts({id}:any) {
 
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector((state: RootState) => state.posts.posts.loading);
@@ -39,13 +43,24 @@ function Posts() {
     index: number;
   }>({ status: false, index: 0 });
 
+  const {pathname}=useLocation()
+ 
+
   useEffect(() => {
-    dispatch(fetchAllposts()).then((data) => {
-      if (data?.payload?.status !== "ok")
-        toast(data?.payload?.message, {
-          style: { backgroundColor: "#ff6347", color: "#eeeeee" },
-        });
-    });
+ 
+    if(pathname==='/profile'){
+
+      dispatch(fetchUsersPost(userId))
+      
+    }else{
+      dispatch(fetchAllposts()).then((data) => {
+        if (data?.payload?.status !== "ok")
+          toast(data?.payload?.message, {
+            style: { backgroundColor: "#ff6347", color: "#eeeeee" },
+          });
+      });
+    }
+
   }, []);
 
   const handleOptionsClick = (index: number) => {
@@ -73,8 +88,7 @@ function Posts() {
     dispatch(confirmationModalReducer({ status: false }));
 
     dispatch(deletePostAction(id)).then((response) => {
-      console.log(response.payload);
-
+     
       if (response?.payload?.status === "ok") {
         toast(response?.payload?.message, {
           style: { backgroundColor: "#4caf50", color: "white" },
@@ -88,8 +102,14 @@ function Posts() {
   };
 
   const handleLikePost = (id: number) => {
+    
     dispatch(likePostAction(id)).then(() => {
-      dispatch(fetchAllposts());
+      if(pathname==='/profile'){
+        dispatch(fetchUsersPost(userId))
+      }else{{
+        dispatch(fetchAllposts());
+      }}
+      
     });
   };
 
@@ -99,15 +119,20 @@ function Posts() {
     );
   };
 
-  const handleShowComments=(id:number)=>{
+  const handleShowComments = (id: number) => {
 
-    dispatch(fetchAllCommentsOfPost(id)).then((response)=>{
-      if(response.payload.status==='ok'){
-      dispatch(handleCommentModal({status:true,postId:id}))
-      
+    dispatch(fetchAllCommentsOfPost(id)).then((response) => {
+      if (response.payload.status === 'ok') {
+        dispatch(handleCommentModal({ status: true, postId: id }))
+
       }
     })
   }
+
+
+
+ console.log(pathname);
+ 
 
   return (
     <>
@@ -128,22 +153,26 @@ function Posts() {
                     alt="User"
                     className="rounded-full h-8 w-8 mr-2"
                   />
-                  <p className="font-bold">{item?.userId?.fullName}</p>
+                  <p className="font-bold">{item?.userId.fullName}</p>
                 </div>
-                <div>connect</div>
+               
+              <ConnectButton item={item} index={i}/>
+
                 <p className="p-4">{item?.content}</p>
 
+                {/* Media rendering */}
                 {item?.media?.type === "image" && (
                   <img
                     src={`${item?.media?.path}`}
                     alt="Posted"
-                    className="mb-4  rounded-lg w-full"
+                    className="mb-4 rounded-lg w-full"
                   />
                 )}
                 {item?.media?.type === "video" && (
                   <video controls src={`${item?.media?.path}`}></video>
                 )}
 
+                {/* Interactions */}
                 <div className="flex justify-between items-center">
                   <div className="flex">
                     <div>
@@ -153,9 +182,8 @@ function Posts() {
                           handleLikePost(item?._id);
                         }}
                         icon={faHeart}
-                        className={`${
-                          setClass(item?._id) ? "text-red-600" : "text-gray-400"
-                        }  mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
+                        className={`${setClass(item?._id) ? "text-red-600" : "text-gray-400"
+                          }  mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
                       />
                       <p>{item?.likes}</p>
                     </div>
@@ -163,7 +191,7 @@ function Posts() {
                       <FontAwesomeIcon
                         icon={faComment}
                         className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
-                        onClick={()=>{handleShowComments(item?._id)}}
+                        onClick={() => { handleShowComments(item?._id) }}
                       />
                       <p>{item?.comments}</p>
                     </div>
@@ -182,7 +210,8 @@ function Posts() {
                       className="text-gray-500 size-7 cursor-pointer"
                     />
                   </div>
-                
+
+                  {/* Three dots menu */}
                   <div className="absolute top-0 right-0 mt-2 mr-4">
                     <div
                       onClick={(e) => {
@@ -195,9 +224,10 @@ function Posts() {
                       <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                     </div>
                   </div>
+
+                  {/* Options menu */}
                   {showOptions?.status == true && showOptions?.index === i && (
                     <div className="absolute top-1  right-4 w-28 h-22 bg-blue-300 mt-2 mr-4 border border-gray-300 shadow-lg rounded-md">
-                    
                       <ul>
                         {userId === item?.userId?._id && (
                           <>
@@ -237,6 +267,7 @@ function Posts() {
                   )}
                 </div>
               </div>
+
             );
           })}
         </>

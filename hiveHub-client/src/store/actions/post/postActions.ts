@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL } from "../../../utils/endPoint"
+import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL } from "../../../utils/endPoint"
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils"
 import apiClient from "../../../utils/axios"
 
@@ -56,11 +56,11 @@ export const editPostAction = createAsyncThunk('/post/edit', async ({ formData, 
     }
 })
 
-export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async () => {
+export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async (id?:number) => {
 
     try {
 
-        const response = await apiClient.get(FETCH_ALL_POSTS_URL)
+        const response = await apiClient.get(`${FETCH_ALL_POSTS_URL}?user=${id}`)
         console.log(response.data);
         return response.data
 
@@ -144,5 +144,19 @@ export const deleteComment=createAsyncThunk('/post/delete-comment',async(comment
     } catch (error:any) {
         console.log(error.message);
         
+    }
+})
+
+export const fetchUsersPost=createAsyncThunk('/post/fetch-users-post',async(id:any)=>{
+
+    try {
+
+        const response=await apiClient.get(`${FETCH_USERS_POSTS_URL}/${id}`)
+       
+        return response.data
+        
+        
+    } catch (error:any) {
+        throw new Error(error.message)
     }
 })

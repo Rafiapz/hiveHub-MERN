@@ -7,6 +7,7 @@ import { likePostController} from "./likePost"
 import { fetChAllCommentsController} from './fetchAllComments'
 import { createCommentController } from "./createComment"
 import { deleteCommentController } from "./deleteComment"
+import { findUsersPostController } from "./findUsersPost"
 
 export const controllers=(dependencies:IPostDependencies)=>{
 
@@ -18,6 +19,7 @@ export const controllers=(dependencies:IPostDependencies)=>{
        likePost:likePostController(dependencies),
        fetchAllComments:fetChAllCommentsController(dependencies),
        createComment:createCommentController(dependencies),
-       deleteComment:deleteCommentController(dependencies)
+       deleteComment:deleteCommentController(dependencies),
+       findUsersPost:findUsersPostController(dependencies)
     }
 }

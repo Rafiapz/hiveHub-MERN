@@ -18,6 +18,7 @@ export const fetchUserController=(dependencies:IDependencies)=>{
                 const authorized=verifyToken(token) 
     
                 if(authorized){
+                                       
                                  
                     const userData=await findOneUserUseCase(dependencies).execute({email:authorized.email})
                     res.json({status:'ok',userData})

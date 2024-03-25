@@ -7,7 +7,7 @@ import { jsonConfig } from "../../../utils/apiUtils";
 import { FETCH_USER_URL, LOGIN_URL, LOGOUT_URL, OTP_VERIFICATION_URL, RESEND_OTP_URL, SIGNUP_URL } from "../../../utils/endPoint";
 
 
-export const signupAction=createAsyncThunk( '/signup',async (userCredentials:IUserSignupdata,{rejectWithValue})=>{   
+export const signupAction=createAsyncThunk( '/signup',async (userCredentials:IUserSignupdata,{})=>{   
         try {
             const response=await apiClient.post(SIGNUP_URL,userCredentials,jsonConfig)              
        
@@ -19,7 +19,7 @@ export const signupAction=createAsyncThunk( '/signup',async (userCredentials:IUs
     }
 )
 
-export const otpVerification=createAsyncThunk('/otp-verification',async (data:IOtp,{rejectWithValue})=>{
+export const otpVerification=createAsyncThunk('/otp-verification',async (data:IOtp,{})=>{
 
     try {
 
@@ -105,7 +105,6 @@ export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:
         
         
     } catch (error:any) {
-        rejectWithValue(error.message)
-        throw new Error(error.message)
+        rejectWithValue(error.message)     
     }
 })

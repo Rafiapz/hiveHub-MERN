@@ -9,9 +9,11 @@ export const fetchAllposts=(dependencies:IPostDependencies)=>{
     return async (req:Request,res:Response)=>{
 
         try {
+            
 
             const user = req?.user
             const userId = (user as any)?.id;
+
 
            const {posts,likes}=await findAllPostsUseCase(dependencies).execute(userId)
            

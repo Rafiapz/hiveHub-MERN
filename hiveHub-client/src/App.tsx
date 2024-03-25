@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store/store";
 import { fetchuser } from "./store/actions/auth/userActions";
+import Profile from "./pages/user/profile/Profile";
 
 function App() {
   const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
@@ -32,12 +33,14 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/" element={<Login />} />
             <Route path="/verification" element={<Verification />} />
+            <Route path="/profile" element={<Login/>}/>
           </Routes>
         </>
       ) : user === "user" ? (
         <>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile/>}/>
           </Routes>
         </>
       ) : (

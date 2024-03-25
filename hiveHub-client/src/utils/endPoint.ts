@@ -29,3 +29,7 @@ export const FETCH_ALL_COMMENTS_URL='/post/fetch-all-comments'
 export const POST_COMMENT_URL='/post/post-comment'
 
 export const DELETE_COMMENT_URL='/post/delete-comment'
+
+export const CONNECTION_REQUEST_URL='/networks/connection-request'
+
+export const FETCH_USERS_POSTS_URL='/post/fetch-users-post'

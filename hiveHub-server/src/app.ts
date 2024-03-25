@@ -3,6 +3,7 @@ import { authRoutes } from './auth/presentation/routes/authRoutes'
 import{postRoutes} from './posts/presentation/routes/postRoutes'
 import {authDependencies} from './_boot/dependencies'
 import {postDependencies} from './_boot/dependencies'
+import {networkDependencies} from './_boot/dependencies'
 import {connect} from './_boot/databse'
 import cors from 'cors'
 import { configDotenv } from 'dotenv'
@@ -10,6 +11,7 @@ import path from 'path'
 import session = require('express-session')
 import {Request,Response,NextFunction} from 'express'
 import cookieParser = require('cookie-parser')
+import { networksRoutes } from './posts/presentation/routes/networks/networkRoutes'
 
 
 
@@ -40,6 +42,8 @@ app.use(express.static(path.join(__dirname,'..','public')))
 app.use('/auth',authRoutes(authDependencies))
 
 app.use('/post',postRoutes(postDependencies))
+
+app.use('/networks',networksRoutes(networkDependencies))
 
 app.use((req:Request,res:Response)=>{
     res.json({message:'not found'}).status(404)

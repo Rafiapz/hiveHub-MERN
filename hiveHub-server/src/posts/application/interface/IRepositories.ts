@@ -11,5 +11,6 @@ export interface IRepositories {
     createLike: (data: LikesEntity) => any;
     findAllComments: (postId: any) => any;
     createComment:(data:any)=>Promise<CommentsEntity>;
-    deleteComment:(commentId:string)=>Promise<DeleteResult>
+    deleteComment:(commentId:string)=>Promise<DeleteResult>;
+    findUsersPost:(id:any)=>any
 }

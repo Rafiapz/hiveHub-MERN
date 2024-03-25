@@ -6,9 +6,16 @@ import{IPostDependencies} from '../posts/application/interface/IDependencies'
 import * as postUseCases from '../posts/application/useCase'
 import * as postRepositories from '../posts/infrastructure/database/repositories'
 
+import { INetworkDependencies } from '../posts/application/interface/network/IDependencies'
+import * as connectionUseCases from '../posts/application/useCase/networks'
+import * as connectionRepositories from '../posts/infrastructure/database/repositories/networks'
+
+
 
 
 export const authDependencies:IDependencies={repositories,useCases}
 
 export const postDependencies:IPostDependencies={postRepositories,postUseCases}
+
+export const networkDependencies:INetworkDependencies={connectionRepositories,connectionUseCases}
 

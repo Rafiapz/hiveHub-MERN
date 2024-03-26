@@ -4,6 +4,7 @@ import { controllers } from '../controllers'
 import passport from 'passport'
 import { currentUser } from '../../../posts/presentation/middlewares/currentUser'
 import { uploadSingleFile } from '../../../_lib/multer'
+import { validatePassword } from '../../../_lib/bcrypt'
 
 
 export const authRoutes = (dependencies: IDependencies) => {
@@ -32,7 +33,11 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route('/logout').get(logout)
 
-    router.route('/edit-user-profile/:type').post(currentUser,uploadSingleFile,editProfile)
+    router.route('/edit-user-images/:type').post(currentUser,uploadSingleFile,editProfile)
+
+    router.route('/edit-user-profile').post(currentUser,editProfile)
+
+    router.route('/edit-user-password').post(validatePassword,editProfile)
 
    
  

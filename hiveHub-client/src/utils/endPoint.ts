@@ -34,4 +34,8 @@ export const CONNECTION_REQUEST_URL='/networks/connection-request'
 
 export const FETCH_USERS_POSTS_URL='/post/fetch-users-post'
 
-export const EDIT_USER_PROFILE_URL='/auth/edit-user-profile'
+export const EDIT_USER_IMAGES_URL='/auth/edit-user-images'
+
+export const EDIT_USER_PROFILE='/auth/edit-user-profile'
+
+export const EDIT_USER_PASSWORD='/auth/edit-user-password'

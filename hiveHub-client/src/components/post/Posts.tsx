@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
@@ -20,12 +20,11 @@ import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
 import {
-  handleCleanUpPost,
   handleCommentModal,
   handleEditPostModal,
 } from "../../store/slices/posts/postSlice";
 import ConnectButton from "../connectButton/ConnectButton";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Posts({id}:any) {
 

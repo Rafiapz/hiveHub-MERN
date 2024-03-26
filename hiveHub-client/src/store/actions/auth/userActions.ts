@@ -4,7 +4,7 @@ import { IOtp } from "../../../interfaces/IOtp";
 import { IUserLogin } from "../../../interfaces/IUserLogin";
 import apiClient from "../../../utils/axios";
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils";
-import { EDIT_USER_PROFILE_URL, FETCH_USER_URL, LOGIN_URL, LOGOUT_URL, OTP_VERIFICATION_URL, RESEND_OTP_URL, SIGNUP_URL } from "../../../utils/endPoint";
+import { EDIT_USER_IMAGES_URL, EDIT_USER_PASSWORD, EDIT_USER_PROFILE, FETCH_USER_URL, LOGIN_URL, LOGOUT_URL, OTP_VERIFICATION_URL, RESEND_OTP_URL, SIGNUP_URL } from "../../../utils/endPoint";
 
 
 export const signupAction=createAsyncThunk( '/signup',async (userCredentials:IUserSignupdata,{})=>{   
@@ -109,15 +109,40 @@ export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:
     }
 })
 
-export const editUserProfile=createAsyncThunk('/auth/edit-user-profile',async ({formData,type}:any)=>{
+export const editUserImages=createAsyncThunk('/auth/edit-user-images',async ({formData,type}:any)=>{
     try {
                 
-        const response=await apiClient.post(`${EDIT_USER_PROFILE_URL}/image?${[type]}=${type}`,formData,multiPartConfig)
+        const response=await apiClient.post(`${EDIT_USER_IMAGES_URL}/image?${[type]}=${type}`,formData,multiPartConfig)
         console.log(response);
         return response.data
         
         
     } catch (error:any) {
         throw new Error (error.message)
+    }
+})
+
+export const editUserProfile=createAsyncThunk('/auth/edit-user-profile',async (form:any)=>{
+    try {
+
+        const response=await apiClient.post(EDIT_USER_PROFILE,form,jsonConfig)
+        console.log(response.data);
+        return response.data
+        
+        
+    } catch (error:any) {
+        throw new Error(error.message)
+    }
+})
+
+export const editUserPassword=createAsyncThunk('/auth/edit-user-password',async(form:any)=>{
+    try {
+
+        const response=await apiClient.post(EDIT_USER_PASSWORD,form,jsonConfig)
+        console.log(response.data)
+        return response.data
+        
+    } catch (error:any) {
+        throw new Error(error)
     }
 })

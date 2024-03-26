@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faFileAlt, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { handleCreatePostModal } from "../../store/slices/posts/postSlice";
 import { AppDispatch } from "../../store/store";

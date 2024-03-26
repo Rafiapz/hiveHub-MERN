@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { handleEditUserPhotosModal } from "../../store/slices/user/userSlice";
-import { editUserProfile, fetchuser } from "../../store/actions/auth/userActions";
+import { editUserImages, fetchuser } from "../../store/actions/auth/userActions";
 
 function EditUserPhotosModal() {
   const isOpen = useSelector(
@@ -60,7 +60,7 @@ function EditUserPhotosModal() {
 
     if (image) {
       formData.append("image", image);
-      dispatch(editUserProfile({formData,type})).then(()=>{
+      dispatch(editUserImages({formData,type})).then(()=>{
         dispatch(fetchuser())
       })
     }

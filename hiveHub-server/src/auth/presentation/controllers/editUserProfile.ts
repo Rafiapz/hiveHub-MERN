@@ -30,7 +30,7 @@ export const editUserProfile = (dependencies: IDependencies) => {
 
            const userData=await updateUserByIdUseCase(dependencies).execute(id,data)
 
-            res.status(200).json({status:'ok',data:userData,messgae:'Profile updated'})
+            res.status(200).json({status:'ok',data:userData,message:'Profile updated'})
            
            
 

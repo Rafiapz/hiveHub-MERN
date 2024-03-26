@@ -1,4 +1,5 @@
 import { genSalt, hash, compare } from "bcrypt";
+import {NextFunction, Request,Response} from 'express'
 
 export const passwordHashing = async (psw: string) => {
   try {
@@ -13,6 +14,25 @@ export const passwordHashing = async (psw: string) => {
     throw new Error (error.message)
   }
 };
+
+
+export const validatePassword=async(req:Request,res:Response,next:NextFunction)=>{
+
+  try {
+  
+   const status=await comparePassword(req?.body?.oldPassword,req?.body?.ogOldPassword)
+
+   if(status){
+     next()
+   }else{
+    
+    res.status(200).json({status:'invalid',error:'incorrect old password'})
+   }
+    
+  } catch (error:any) {
+    res.status(error.status||400)
+  }
+}
 
 export const comparePassword=async (reqPsw:string,ogPsw:string)=>{
 

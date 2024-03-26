@@ -22,8 +22,9 @@ const fileFilter = (req: any, file: any, callback: any) => {
 }
 
 export const uploadSingleFile = (req: any, res: any,next:any) => {
-
+ 
   try {
+       
     let type:string=''
     if(req.params.type==='image')
       type='image'
@@ -41,6 +42,7 @@ export const uploadSingleFile = (req: any, res: any,next:any) => {
         
         throw new Error( err.message)
       }
+            
       next()
     })
     

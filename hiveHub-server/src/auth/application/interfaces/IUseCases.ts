@@ -1,4 +1,4 @@
-import { ICreateUserUseCase, IFindOneUserUseCase } from "../../domain/useCase";
+import { ICreateUserUseCase, IFindOneUserUseCase, IUpdateUserByIdUseCase } from "../../domain/useCase";
 import { IVerifyUserUseCase } from "../../domain/useCase";
 import { IUpdateOneUserUseCase } from "../../domain/useCase/IUpdateOneUserUseCase";
 
@@ -7,4 +7,5 @@ export interface IUseCases{
     verifyUserUseCase:(dependencies:any)=>IVerifyUserUseCase;
     findOneUserUseCase:(dependencies:any)=>IFindOneUserUseCase;
     updateOneUserUseCase:(dependencies:any)=>IUpdateOneUserUseCase
+    updateUserByIdUseCase:(dependencies:any)=>IUpdateUserByIdUseCase
 }

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store/store";
 import { fetchuser } from "./store/actions/auth/userActions";
 import Profile from "./pages/user/profile/Profile";
+import EditProfile from "./pages/user/profile/EditProfile";
 
 function App() {
   const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
@@ -34,6 +35,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/verification" element={<Verification />} />
             <Route path="/profile" element={<Login/>}/>
+            <Route path="/edit-profile" element={<Login/>}/>
           </Routes>
         </>
       ) : user === "user" ? (
@@ -41,6 +43,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile/>}/>
+            <Route path="/edit-profile" element={<EditProfile/>}/>
           </Routes>
         </>
       ) : (

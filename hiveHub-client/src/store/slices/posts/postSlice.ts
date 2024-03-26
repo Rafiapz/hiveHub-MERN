@@ -74,7 +74,8 @@ const postSlice = createSlice({
         },
         handleCleanUpPost: (state) => {
             state.posts.data = null
-        }
+        },
+        
 
 
     },

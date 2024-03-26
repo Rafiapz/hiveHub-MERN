@@ -15,6 +15,10 @@ const initialState={
     },
     confirmationModal:{
         isOpen:false,
+    },
+    editUserPhotosModal:{
+        isOpen:false,
+        type:''
     }
     
 
@@ -26,7 +30,11 @@ const userSlice=createSlice({
     reducers:{
         confirmationModalReducer:(state,action)=>{
             state.confirmationModal.isOpen=action.payload.status
-        }    
+        },
+        handleEditUserPhotosModal:(state,action)=>{
+           state.editUserPhotosModal.isOpen=action?.payload?.status 
+           state.editUserPhotosModal.type=action?.payload?.type
+        } 
     },
     extraReducers:(builder)=>{
         builder
@@ -72,6 +80,6 @@ const userSlice=createSlice({
    
 })
 
-export const {confirmationModalReducer} =userSlice.actions
+export const {confirmationModalReducer,handleEditUserPhotosModal} =userSlice.actions
 
 export default userSlice.reducer

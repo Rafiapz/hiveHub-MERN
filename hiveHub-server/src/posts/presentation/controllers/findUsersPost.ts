@@ -14,7 +14,7 @@ const {postUseCases:{findUsersPostUseCase}}=dependencies
             const {posts,likes}=await findUsersPostUseCase(dependencies).execute(id)
 
             if(posts){
-                console.log(posts,'called');
+                
                 
                 res.status(200).json({status:'ok',data:{posts,likes},message:'success'})
             }else{

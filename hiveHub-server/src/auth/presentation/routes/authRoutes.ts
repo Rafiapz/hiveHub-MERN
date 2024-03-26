@@ -2,13 +2,13 @@ import { Router } from 'express'
 import { IDependencies } from '../../application/interfaces/IDependencies'
 import { controllers } from '../controllers'
 import passport from 'passport'
-
-
+import { currentUser } from '../../../posts/presentation/middlewares/currentUser'
+import { uploadSingleFile } from '../../../_lib/multer'
 
 
 export const authRoutes = (dependencies: IDependencies) => {
 
-    const { signup, verify, login, updateOtp, googleAuth, logout,fetchUser } = controllers(dependencies)
+    const { signup, verify, login, updateOtp, googleAuth, logout,fetchUser,editProfile } = controllers(dependencies)
 
 
 
@@ -32,6 +32,9 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route('/logout').get(logout)
 
+    router.route('/edit-user-profile/:type').post(currentUser,uploadSingleFile,editProfile)
+
+   
  
 
 

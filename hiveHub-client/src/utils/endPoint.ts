@@ -33,3 +33,5 @@ export const DELETE_COMMENT_URL='/post/delete-comment'
 export const CONNECTION_REQUEST_URL='/networks/connection-request'
 
 export const FETCH_USERS_POSTS_URL='/post/fetch-users-post'
+
+export const EDIT_USER_PROFILE_URL='/auth/edit-user-profile'

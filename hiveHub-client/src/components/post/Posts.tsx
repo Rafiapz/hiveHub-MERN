@@ -131,7 +131,6 @@ function Posts({id}:any) {
 
 
 
- console.log(pathname);
  
 
   return (
@@ -149,7 +148,7 @@ function Posts({id}:any) {
               >
                 <div className="flex items-center mb-4">
                   <img
-                    src="https://source.unsplash.com/150x150/?nature"
+                    src={item?.userId?.profilePhoto}
                     alt="User"
                     className="rounded-full h-8 w-8 mr-2"
                   />

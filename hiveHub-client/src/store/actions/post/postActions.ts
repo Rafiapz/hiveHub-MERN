@@ -117,7 +117,7 @@ export const fetchAllCommentsOfPost=createAsyncThunk('/post/fetch-all-comments',
 export const postComment=createAsyncThunk('/post/post-comment',async ({formData,postId}:any)=>{
 
     try {
-        console.log('id here',postId);
+      
         
         const response=await apiClient.post(`${POST_COMMENT_URL}/${postId}`,formData,jsonConfig)
         console.log(response.data);

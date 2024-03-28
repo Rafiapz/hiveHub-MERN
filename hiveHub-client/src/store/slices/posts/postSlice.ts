@@ -75,7 +75,7 @@ const postSlice = createSlice({
         handleCleanUpPost: (state) => {
             state.posts.data = null
         },
-        
+
 
 
     },
@@ -113,7 +113,7 @@ const postSlice = createSlice({
                     state.posts.data = action?.payload?.data?.posts
                     state.posts.likes = action?.payload?.data?.likes
                 }
-                
+
 
             })
 

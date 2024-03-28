@@ -10,7 +10,8 @@ export interface IRepositories {
     updatePost: (data: PostEntity) => Promise<PostEntity | null>;
     createLike: (data: LikesEntity) => any;
     findAllComments: (postId: any) => any;
-    createComment:(data:any)=>Promise<CommentsEntity>;
-    deleteComment:(commentId:string)=>Promise<DeleteResult>;
-    findUsersPost:(id:any)=>any
+    createComment: (data: any) => Promise<CommentsEntity>;
+    deleteComment: (commentId: string) => Promise<DeleteResult>;
+    findUsersPost: (id: any) => any;
+    updateComment: (commentId: any, comment: string) => Promise<CommentsEntity | null>
 }

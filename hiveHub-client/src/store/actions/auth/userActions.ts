@@ -4,7 +4,7 @@ import { IOtp } from "../../../interfaces/IOtp";
 import { IUserLogin } from "../../../interfaces/IUserLogin";
 import apiClient from "../../../utils/axios";
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils";
-import { EDIT_USER_IMAGES_URL, EDIT_USER_PASSWORD, EDIT_USER_PROFILE, FETCH_USER_URL, LOGIN_URL, LOGOUT_URL, OTP_VERIFICATION_URL, RESEND_OTP_URL, SIGNUP_URL } from "../../../utils/endPoint";
+import { EDIT_USER_IMAGES_URL, EDIT_USER_PASSWORD, EDIT_USER_PROFILE, FETCH_ALL_USERS, FETCH_USER_URL, LOGIN_URL, LOGOUT_URL, OTP_VERIFICATION_URL, RESEND_OTP_URL, SIGNUP_URL } from "../../../utils/endPoint";
 
 
 export const signupAction=createAsyncThunk( '/signup',async (userCredentials:IUserSignupdata,{})=>{   
@@ -140,6 +140,19 @@ export const editUserPassword=createAsyncThunk('/auth/edit-user-password',async(
 
         const response=await apiClient.post(EDIT_USER_PASSWORD,form,jsonConfig)
         console.log(response.data)
+        return response.data
+        
+    } catch (error:any) {
+        throw new Error(error)
+    }
+})
+
+export const fetchAllUsers=createAsyncThunk('/auth/find-all-users',async ()=>{
+    try {
+        
+        const response=await apiClient.get(FETCH_ALL_USERS)
+        console.log(response.data);
+
         return response.data
         
     } catch (error:any) {

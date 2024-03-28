@@ -1,5 +1,5 @@
 
-import {Router} from 'express'
+import { Router } from 'express'
 import { controllers } from '../controllers'
 import { IPostDependencies } from '../../application/interface/IDependencies'
 import { upload, uploadSingleFile } from '../../../_lib/multer'
@@ -8,42 +8,45 @@ import { currentUser } from '../middlewares/currentUser'
 
 
 
-export const postRoutes=(dependencies:IPostDependencies)=>{    
-        
-    const {
-      createPost,
-      fetchAllPosts,
-      deletePost,
-      editPost,
-      likePost,
-      fetchAllComments,
-      createComment,
-      deleteComment,
-      findUsersPost
-    } = controllers(dependencies);
+export const postRoutes = (dependencies: IPostDependencies) => {
 
-    const router=Router()
+  const {
+    createPost,
+    fetchAllPosts,
+    deletePost,
+    editPost,
+    likePost,
+    fetchAllComments,
+    createComment,
+    deleteComment,
+    findUsersPost,
+    updateComment
+  } = controllers(dependencies);
 
-    router.route('/create-post/:type').post(uploadSingleFile,createPost)
+  const router = Router()
 
-    router.route('/fetch-all-posts').get(currentUser,fetchAllPosts)
+  router.route('/create-post/:type').post(uploadSingleFile, createPost)
 
-    router.route('/delete-post').delete(deletePost)
+  router.route('/fetch-all-posts').get(currentUser, fetchAllPosts)
 
-    router.route('/edit-post/:type').put(uploadSingleFile,editPost)
+  router.route('/delete-post').delete(deletePost)
 
-    router.route('/like-post/:postId').post(currentUser,likePost)
+  router.route('/edit-post/:type').put(uploadSingleFile, editPost)
 
-    router.route('/fetch-all-comments/:postId').get(fetchAllComments)
+  router.route('/like-post/:postId').post(currentUser, likePost)
 
-    router.route('/post-comment/:postId').post(currentUser,createComment)
+  router.route('/fetch-all-comments/:postId').get(fetchAllComments)
 
-    router.route('/delete-comment/:commentId').delete(deleteComment)
+  router.route('/post-comment/:postId').post(currentUser, createComment)
 
-    router.route('/fetch-users-post/:id').get(findUsersPost)
-    
+  router.route('/delete-comment/:commentId').delete(deleteComment)
 
-    
+  router.route('/fetch-users-post/:id').get(findUsersPost)
 
-    return router
+  router.route('/edit-comment/:commentId').put(updateComment)
+
+
+
+
+  return router
 }

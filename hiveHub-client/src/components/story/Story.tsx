@@ -3,8 +3,8 @@ import React from 'react'
 function Story() {
 
     const stories = [
-        { name: "Add Story", image: "/add_story_icon.png" }, // Placeholder for Add Story
-        { name: "John", image: "https://source.unsplash.com/150x150/?nature" },
+
+        { name: "Add Story", image: "https://source.unsplash.com/150x150/?nature" },
         { name: "Jane", image: "https://source.unsplash.com/150x150/?nature" },
         { name: "Alex", image: "https://source.unsplash.com/150x150/?nature" },
         { name: "Emma", image: "https://source.unsplash.com/150x150/?nature" },

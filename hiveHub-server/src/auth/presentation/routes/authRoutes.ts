@@ -9,7 +9,7 @@ import { validatePassword } from '../../../_lib/bcrypt'
 
 export const authRoutes = (dependencies: IDependencies) => {
 
-    const { signup, verify, login, updateOtp, googleAuth, logout,fetchUser,editProfile } = controllers(dependencies)
+    const { signup, verify, login, updateOtp, googleAuth, logout,fetchUser,editProfile,findAllUsers } = controllers(dependencies)
 
 
 
@@ -37,7 +37,9 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route('/edit-user-profile').post(currentUser,editProfile)
 
-    router.route('/edit-user-password').post(validatePassword,editProfile)
+    router.route('/edit-user-password').post(validatePassword,currentUser,editProfile)
+
+    router.route('/fetch-all-users').get(findAllUsers)
 
    
  

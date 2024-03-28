@@ -28,7 +28,8 @@ export const createPostController = (dependencies: IPostDependencies) => {
                         userId: decoded.id,
                         media:mediaType?{type:mediaType,path:path}:undefined,
                         content: req?.body?.content,
-                        likes:0
+                        likes:0,
+                        comments:0
 
                     }
 

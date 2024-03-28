@@ -4,9 +4,8 @@ import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { handleCreatePostModal } from "../../store/slices/posts/postSlice";
 import { AppDispatch } from "../../store/store";
-import { createPostAction } from "../../store/actions/post/postActions";
+import { createPostAction, fetchAllposts } from "../../store/actions/post/postActions";
 import toast from "react-hot-toast";
-
 
 function CreatePost() {
   const [image, setImage] = useState<File | null>(null);
@@ -22,16 +21,7 @@ function CreatePost() {
 
     if (file) {
       setImage(file);
-      if (
-        ![
-          "image/jpeg",
-          "image/png",
-          "image/gif",
-          "video/mp4",
-          "video/webm",
-          "video/ogg",
-        ].includes(file.type)
-      ) {
+      if (!["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
         setError("Please select a valid image file (JPEG, PNG, GIF)");
         return;
       } else {
@@ -47,14 +37,11 @@ function CreatePost() {
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e?.target?.files?.[0];
-    
 
     if (file) {
       setVideo(file);
       if (!["video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
-        setError(
-          "Please select a valid video file (video/mp4, video/webm, video/ogg)"
-        );
+        setError("Please select a valid video file (video/mp4, video/webm, video/ogg)");
         return;
       } else {
         const reader = new FileReader();
@@ -62,7 +49,6 @@ function CreatePost() {
         reader.onload = () => {
           const thumbnailDataUrl = reader?.result as string;
           setThumbnail(thumbnailDataUrl);
-          
         };
 
         reader.readAsDataURL(file);
@@ -89,9 +75,10 @@ function CreatePost() {
 
     dispatch(createPostAction(formData)).then((response: any) => {
       if (response.payload.status === "ok") {
-        toast(response.payload.message,{style:{backgroundColor:'#4caf50',color:'white'}});
+        toast(response.payload.message, { style: { backgroundColor: "#4caf50", color: "white" } });
+        dispatch(fetchAllposts());
       } else {
-        toast(response.payload.message, { style: {backgroundColor:'#ff6347',color:'#eeeeee'}});
+        toast(response.payload.message, { style: { backgroundColor: "#ff6347", color: "#eeeeee" } });
       }
     });
   };
@@ -99,21 +86,12 @@ function CreatePost() {
   return (
     <div className=" bg-gray-200 w-full  mt-2 p-4 shadow-lg mx-auto">
       <div className="flex gap-3">
-        <label
-          htmlFor="image-upload"
-          className="cursor-pointer mb-4 flex items-center"
-        >
+        <label htmlFor="image-upload" className="cursor-pointer mb-4 flex items-center">
           <FontAwesomeIcon icon={faImage} className="text-blue-500 mr-2" />
           Upload Photo
         </label>
-        <input
-          id="image-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="hidden"
-        />
-        <label
+        <input id="image-upload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+        {/* <label
           htmlFor="video-upload"
           className="cursor-pointer mb-4 flex items-center"
         >
@@ -126,20 +104,13 @@ function CreatePost() {
           accept="video/*"
           onChange={handleVideoChange}
           className="hidden"
-        />
+        /> */}
       </div>
       <div className="flex  border border-gray-300 border-dashed p-4 text-center mb-4">
         {imageUrl && (
           <div>
-            <img
-              src={imageUrl}
-              alt="Uploaded"
-              className="max-w-60 max-h-60 p-1"
-            />
-            <i
-              onClick={() => setImageUrl("")}
-              className="fa-regular fa-circle-xmark fa-2x"
-            ></i>
+            <img src={imageUrl} alt="Uploaded" className="max-w-60 max-h-60 p-1" />
+            <i onClick={() => setImageUrl("")} className="fa-regular fa-circle-xmark fa-2x"></i>
           </div>
         )}
         {thumbnail && (
@@ -149,12 +120,7 @@ function CreatePost() {
               alt="Uploaded"
               className="max-w-60 max-h-40 p-1"
             />
-            <i
-              onClick={() => setThumbnail("")}
-              className="fa-regular fa-circle-xmark fa-2x"
-            >
-              
-            </i>
+            <i onClick={() => setThumbnail("")} className="fa-regular fa-circle-xmark fa-2x"></i>
           </div>
         )}
         <p className="text-red-700">{error}</p>
@@ -168,16 +134,10 @@ function CreatePost() {
         rows={4}
       ></textarea>
       <div className="flex justify-end">
-        <button
-          onClick={() => dispatch(handleCreatePostModal())}
-          className="bg-white text-black font-bold py-2 px-4 rounded mr-2"
-        >
+        <button onClick={() => dispatch(handleCreatePostModal())} className="bg-white text-black font-bold py-2 px-4 rounded mr-2">
           Cancel
         </button>
-        <button
-          onClick={handleSubmit}
-          className="bg-orange-400 text-white font-bold py-2 px-4 rounded"
-        >
+        <button onClick={handleSubmit} className="bg-orange-400 text-white font-bold py-2 px-4 rounded">
           Submit
         </button>
       </div>

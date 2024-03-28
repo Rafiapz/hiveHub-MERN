@@ -1,3 +1,4 @@
+import { passwordHashing } from "../../../_lib/bcrypt";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { Request, Response } from 'express'
 
@@ -23,9 +24,10 @@ export const editUserProfile = (dependencies: IDependencies) => {
             }else if(req?.query?.profilePhoto){
                 data.profilePhoto=`http://localhost:7700/posts/${req?.file?.filename}`
             }
+            if(data?.password){
 
-
-            console.log(data);
+                data.password=await passwordHashing(data.password)
+            }
             
 
            const userData=await updateUserByIdUseCase(dependencies).execute(id,data)

@@ -13,7 +13,7 @@ export const fetChAllCommentsController=(dependencies:IPostDependencies)=>{
             const postId=req?.params?.postId
               
             let comments= await findAllCommentsUseCase(dependencies).execute(postId)
-            // comments=comments.reverse()        
+           
             res.json({status:'ok',data:comments})
             
         } catch (error:any) {

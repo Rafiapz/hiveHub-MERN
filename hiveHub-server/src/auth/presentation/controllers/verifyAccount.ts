@@ -21,7 +21,7 @@ export const verifyController=(dependancies:IDependencies)=>{
         
            if(user){
             const token=genereateToken({id:user?._id,email:user?.email})
-            res.cookie('userToken',token)
+            res.cookie('userToken',token,{maxAge:1000*60*60,httpOnly:true})
             console.log(user);
             
             res.json({status:'ok',message:"You have successfully verified you account",userData:user}).status(200)

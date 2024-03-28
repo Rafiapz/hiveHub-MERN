@@ -1,5 +1,5 @@
 import { createSlice} from '@reduxjs/toolkit'
-import { fetchuser, loginAction, loginWithGoogle, logoutAction, otpVerification } from '../../actions/auth/userActions'
+import { fetchAllUsers, fetchuser, loginAction, loginWithGoogle, logoutAction, otpVerification } from '../../actions/auth/userActions'
 
 
 const initialState={
@@ -19,6 +19,9 @@ const initialState={
     editUserPhotosModal:{
         isOpen:false,
         type:''
+    },
+    allUsers:{
+        data:null
     }
     
 
@@ -74,6 +77,11 @@ const userSlice=createSlice({
         .addCase(logoutAction.fulfilled,(state,action)=>{
             if(action?.payload?.status==='ok'){
             state.user.auth.isAuth=false
+            }
+        })
+        .addCase(fetchAllUsers.fulfilled,(state,action)=>{
+            if(action?.payload?.status==='ok'){
+                state.allUsers.data=action?.payload?.data
             }
         })
     }

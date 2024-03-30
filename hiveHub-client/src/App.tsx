@@ -12,45 +12,47 @@ import { AppDispatch, RootState } from "./store/store";
 import { fetchuser } from "./store/actions/auth/userActions";
 import Profile from "./pages/user/profile/Profile";
 import EditProfile from "./pages/user/profile/EditProfile";
+import ForgotPassword from "./components/forgotPassword/ForgotPassword";
+import ResetPassword from "./pages/auth/login/resetPassword/ResetPassword";
 
 function App() {
-  const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
-  const user = useSelector((state: RootState) => state.user.user.auth.role);
-  const dispatch = useDispatch<AppDispatch>();
-  
-   
+   const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
+   const user = useSelector((state: RootState) => state.user.user.auth.role);
+   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    dispatch(fetchuser())
-  });
+   useEffect(() => {
+      dispatch(fetchuser());
+   }, []);
 
-  return (
-    <>
-      <Toaster position="top-center" containerClassName="text-red-500" />
+   return (
+      <>
+         <Toaster position="top-center" containerClassName="text-red-500" />
 
-      {!auth ? (
-        <>
-          <Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/" element={<Login />} />
-            <Route path="/verification" element={<Verification />} />
-            <Route path="/profile" element={<Login/>}/>
-            <Route path="/edit-profile" element={<Login/>}/>
-          </Routes>
-        </>
-      ) : user === "user" ? (
-        <>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile/>}/>
-            <Route path="/edit-profile" element={<EditProfile/>}/>
-          </Routes>
-        </>
-      ) : (
-        <></>
-      )}
-    </>
-  );
+         {!auth ? (
+            <>
+               <Routes>
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/" element={<Login />} />
+                  <Route path="/verification" element={<Verification />} />
+                  <Route path="/profile" element={<Login />} />
+                  <Route path="/edit-profile" element={<Login />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+               </Routes>
+            </>
+         ) : user === "user" ? (
+            <>
+               <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/edit-profile" element={<EditProfile />} />
+               </Routes>
+            </>
+         ) : (
+            <></>
+         )}
+      </>
+   );
 }
 
 export default App;

@@ -10,31 +10,30 @@ export const editUserProfile = (dependencies: IDependencies) => {
 
         try {
 
-            console.log('called');
-            
+
             const user = req?.user
             const id = (user as any)?.id;
             let data: any = {}
-            data=req?.body
-                       
+            data = req?.body
 
-            if(req?.query.coverPhoto){
-                
-                data.coverPhoto=`http://localhost:7700/posts/${req?.file?.filename}`
-            }else if(req?.query?.profilePhoto){
-                data.profilePhoto=`http://localhost:7700/posts/${req?.file?.filename}`
+
+            if (req?.query.coverPhoto) {
+
+                data.coverPhoto = `http://localhost:7700/posts/${req?.file?.filename}`
+            } else if (req?.query?.profilePhoto) {
+                data.profilePhoto = `http://localhost:7700/posts/${req?.file?.filename}`
             }
-            if(data?.password){
+            if (data?.password) {
 
-                data.password=await passwordHashing(data.password)
+                data.password = await passwordHashing(data.password)
             }
-            
 
-           const userData=await updateUserByIdUseCase(dependencies).execute(id,data)
 
-            res.status(200).json({status:'ok',data:userData,message:'Profile updated'})
-           
-           
+            const userData = await updateUserByIdUseCase(dependencies).execute(id, data)
+
+            res.status(200).json({ status: 'ok', data: userData, message: 'Profile updated' })
+
+
 
         } catch (error: any) {
             res.status(error.status || 400).json({ status: 'failed', message: error.message })

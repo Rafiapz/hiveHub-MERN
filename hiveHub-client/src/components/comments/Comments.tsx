@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { handleCommentDeleteReducer, handleCommentModal, handleCommentsIsEditing } from "../../store/slices/posts/postSlice";
-import { deleteComment, editComment, fetchAllCommentsOfPost, postComment } from "../../store/actions/post/postActions";
+import { deleteComment, editComment, fetchAllCommentsOfPost, fetchAllposts, postComment } from "../../store/actions/post/postActions";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { commentSchema } from "../../schemas/CommentSchema";
 import { FC, useState } from "react";
@@ -40,6 +40,9 @@ const Comments: FC = () => {
       dispatch(postComment({ formData, postId })).then((response) => {
          if (response.payload.status === "ok") {
             dispatch(fetchAllCommentsOfPost(postId));
+            dispatch(fetchAllposts()).then(() => {
+               document.body.style.overflow = "hidden";
+            });
          }
       });
       resetForm({ values: initialValues });

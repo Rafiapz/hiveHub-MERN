@@ -12,10 +12,6 @@ function EditUserProfile() {
 
    const dispatch = useDispatch<AppDispatch>();
 
-   useEffect(() => {
-      dispatch(fetchuser());
-   }, []);
-
    const handleFullNameSubmit = (values: any) => {
       const { fullName } = values;
       const formData = new FormData();
@@ -87,25 +83,17 @@ function EditUserProfile() {
       <div className="flex justify-center mt-3 -500 gap-52">
          <div className="flex justify-center h-screen mt-20 bg-green-300">
             <div className="bg-white  w-full max-w-md">
-               {" "}
-               {/* Set width constraints */}
                <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
                <div className="grid grid-cols-1 gap-4">
-                  {" "}
-                  {/* Change to grid-cols-1 */}
                   <Formik initialValues={{ fullName: userData?.fullName }} validationSchema={fullNameSchema} onSubmit={handleFullNameSubmit}>
                      <Form>
                         <div className="flex flex-col">
-                           {" "}
-                           {/* Use flex-col for vertical stacking */}
                            <label htmlFor="fullName" className="block mb-2">
                               Full Name
                            </label>
                            <Field type="text" id="fullName" name="fullName" className="w-full bg-gray-200 rounded-lg px-4 py-2" />
                            <ErrorMessage className="text-red-700" component="span" name="fullName" />
                            <div className="flex justify-end">
-                              {" "}
-                              {/* Align button to the right */}
                               <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4">
                                  Change
                               </button>
@@ -116,8 +104,6 @@ function EditUserProfile() {
                   <Formik initialValues={{ email: userData?.email }} validationSchema={emailSchema} onSubmit={handleEmailSubmit}>
                      <Form>
                         <div className="flex flex-col">
-                           {" "}
-                           {/* Use flex-col for vertical stacking */}
                            <label htmlFor="email" className="block mb-2">
                               Email
                            </label>
@@ -126,8 +112,6 @@ function EditUserProfile() {
                         </div>
 
                         <div className="flex justify-end">
-                           {" "}
-                           {/* Align button to the right */}
                            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4">
                               Change
                            </button>
@@ -139,20 +123,14 @@ function EditUserProfile() {
          </div>
          <div className="flex justify-center mt-28 h-screen  bg-white">
             <div className="bg-white  w-full max-w-md">
-               {" "}
-               {/* Set width constraints */}
                <Formik
                   initialValues={{ password: "", oldPassword: "", confirmPassword: "" }}
-                  validationSchema={() => passwordSchema(userData?.fullName)}
+                  validationSchema={passwordSchema}
                   onSubmit={handlePasswordSubmit}
                >
                   <Form>
                      <div className="grid grid-cols-1 gap-4">
-                        {" "}
-                        {/* Change to grid-cols-1 */}
                         <div className="flex flex-col">
-                           {" "}
-                           {/* Use flex-col for vertical stacking */}
                            <label htmlFor="oldPassword" className="block mb-2">
                               Old Password
                            </label>
@@ -161,8 +139,6 @@ function EditUserProfile() {
                            <span className="text-red-700">{error}</span>
                         </div>
                         <div className="flex flex-col">
-                           {" "}
-                           {/* Use flex-col for vertical stacking */}
                            <label htmlFor="password" className="block mb-2">
                               New Password
                            </label>
@@ -170,8 +146,6 @@ function EditUserProfile() {
                            <ErrorMessage className="text-red-700" component="span" name="password" />
                         </div>
                         <div className="flex flex-col">
-                           {" "}
-                           {/* Use flex-col for vertical stacking */}
                            <label htmlFor="confirmPassword" className="block mb-2">
                               Confirm Password
                            </label>
@@ -179,8 +153,6 @@ function EditUserProfile() {
                            <ErrorMessage className="text-red-700" component="span" name="confirmPassword" />
                         </div>
                         <div className="flex justify-end">
-                           {" "}
-                           {/* Align button to the right */}
                            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4">
                               Save
                            </button>

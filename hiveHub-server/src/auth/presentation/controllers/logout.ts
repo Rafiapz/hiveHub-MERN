@@ -7,13 +7,14 @@ export const logoutController = () => {
 
         try {
 
-                  
+
+
             res.cookie('userToken', '', { maxAge: 1 })
-            res.json({status:'ok',message:'logout successfull'}).status(200)
+            res.status(200).json({ status: 'ok', message: 'logout successfull' })
 
-        } catch (error:any) {
+        } catch (error: any) {
 
-            res.json({status:'failed'})
+            res.json({ status: 'failed' })
 
         }
     }

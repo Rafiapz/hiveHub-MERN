@@ -1,41 +1,43 @@
 import { comparePassword } from "../../../_lib/bcrypt";
 import { genereateToken } from "../../../_lib/jwt";
 import { IDependencies } from "../../application/interfaces/IDependencies";
-import {Request,Response,NextFunction} from 'express'
+import { Request, Response, NextFunction } from 'express'
 
 
-export const loginController=(dependencies:IDependencies)=>{
+export const loginController = (dependencies: IDependencies) => {
 
-    const {useCases:{findOneUserUseCase}}=dependencies
+  const { useCases: { findOneUserUseCase } } = dependencies
 
-    return async (req:Request,res:Response)=>{
-        try {
+  return async (req: Request, res: Response) => {
+    try {
 
-           
-          const user=await findOneUserUseCase(dependencies).execute({email:req.body.email})
-            
-          if(!user){
-            res.json({status:'failed',message:'Invalid email or password'}).status(400)
-          }else{
 
-             const status=await comparePassword(req?.body?.password,user?.password)
+      const user = await findOneUserUseCase(dependencies).execute({ email: req?.body?.email })
 
-             if(status){
-              const token= genereateToken({id:user?._id,email:user?.email})
-              const userData=await findOneUserUseCase(dependencies).execute({email:user.email})
-              res.cookie('userToken',token,{maxAge:1000*60*60,httpOnly:true})
-              res.json({status:'ok',message:'success',userData}).status(200)
-             }else{
+      if (!user) {
+        throw new Error('Invalid email or password')
 
-                res.json({status:'failed',message:'Invalid email or password'}).status(200)
-             }
-          }        
+      } else {
+        console.log(req?.body?.password);
 
-          
-            
-        } catch (error:any) {
-            res.json({status:'failed',message:error.message}).status(400)
+        const status = await comparePassword(req?.body?.password, user?.password)
+
+        if (status) {
+          const token = genereateToken({ id: user?._id, email: user?.email })
+          const userData = await findOneUserUseCase(dependencies).execute({ email: user.email })
+          res.cookie('userToken', token, { maxAge: 1000 * 60 * 60, httpOnly: true })
+          res.status(200).json({ status: 'ok', message: 'success', userData })
+        } else {
+
+          throw new Error('Invalid email or password')
+
         }
+      }
+
+
+    } catch (error: any) {
+      res.json({ status: 'failed', message: error.message })
     }
+  }
 
 }

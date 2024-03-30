@@ -63,9 +63,9 @@ function Login() {
                      <ErrorMessage name="password" className="text-red-700" component={"span"} />
                   </div>
                   <div className="flex justify-end items-center mb-1 ml-8">
-                     <a href="/forgot-password" className="text-blue-800">
+                     <Link className="text-blue-800" to={"/forgot-password"}>
                         Forgot Password?
-                     </a>
+                     </Link>
                   </div>
                   <button type="submit" className="bg-orange-400 text-white py-2 px-4 rounded-lg mb-4">
                      Login

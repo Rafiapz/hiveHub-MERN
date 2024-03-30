@@ -1,21 +1,21 @@
 import mongoose, { Schema, Document, ObjectId } from 'mongoose';
-import {PostEntity} from '../../../domain/entities'
+import { PostEntity } from '../../../domain/entities'
 
 
 
 const PostsSchema: Schema = new Schema({
-  userId: { type: Schema.Types.ObjectId, required: true,ref:'users' },
+  userId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   content: { type: String },
-  media: { 
-    path:{type:String},
-    type:{type:String}
+  media: {
+    path: { type: String },
+    type: { type: String }
   },
   createdAt: { type: Date },
-  likes: Number,
-  comments:[{ type: Number  }],
-  saves:[{ type: Schema.Types.ObjectId,  }],
-  shares:[{ type: Schema.Types.ObjectId,  }],
-  
+  likes: { type: Number },
+  comments: { type: Number },
+  saves: { type: Number },
+  shares: { type: Number },
+
 });
 
 export const Posts = mongoose.model<PostEntity>('Posts', PostsSchema);

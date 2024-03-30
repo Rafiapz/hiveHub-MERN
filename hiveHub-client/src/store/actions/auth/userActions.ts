@@ -1,161 +1,154 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {IUserSignupdata} from '../../../interfaces/IUserSignup'
+import { IUserSignupdata } from "../../../interfaces/IUserSignup";
 import { IOtp } from "../../../interfaces/IOtp";
 import { IUserLogin } from "../../../interfaces/IUserLogin";
 import apiClient from "../../../utils/axios";
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils";
-import { EDIT_USER_IMAGES_URL, EDIT_USER_PASSWORD, EDIT_USER_PROFILE, FETCH_ALL_USERS, FETCH_USER_URL, LOGIN_URL, LOGOUT_URL, OTP_VERIFICATION_URL, RESEND_OTP_URL, SIGNUP_URL } from "../../../utils/endPoint";
+import {
+    CHANGE_PASSWORD_URL,
+    EDIT_USER_IMAGES_URL,
+    EDIT_USER_PASSWORD,
+    EDIT_USER_PROFILE,
+    FETCH_ALL_USERS,
+    FETCH_USER_URL,
+    LOGIN_URL,
+    LOGOUT_URL,
+    OTP_VERIFICATION_URL,
+    RESEND_OTP_URL,
+    SIGNUP_URL,
+} from "../../../utils/endPoint";
+import cookie from 'js-cookie'
 
-
-export const signupAction=createAsyncThunk( '/signup',async (userCredentials:IUserSignupdata,{})=>{   
-        try {
-            const response=await apiClient.post(SIGNUP_URL,userCredentials,jsonConfig)              
-       
-            return response.data
-            
-        } catch (error:any) {
-            throw new Error (error.message)
-        }
-    }
-)
-
-export const otpVerification=createAsyncThunk('/otp-verification',async (data:IOtp,{})=>{
-
+export const signupAction = createAsyncThunk("/signup", async (userCredentials: IUserSignupdata, { }) => {
     try {
+        const response = await apiClient.post(SIGNUP_URL, userCredentials, jsonConfig);
 
-        const response=await apiClient.post(OTP_VERIFICATION_URL,data,jsonConfig)
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+});
+
+export const otpVerification = createAsyncThunk("/otp-verification", async (data: IOtp, { }) => {
+    try {
+        const response = await apiClient.post(OTP_VERIFICATION_URL, data, jsonConfig);
         console.log(response.data);
-        
-        return response.data
-        
-        
-    } catch (error:any) {
-        throw new Error (error.message)
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
     }
-})
+});
 
-export const resendOtpAction=createAsyncThunk('/resend-otp',async (email:string|null)=>{
+export const resendOtpAction = createAsyncThunk("/resend-otp", async (email: string | null) => {
+    try {
+        const response = await apiClient.get(`${RESEND_OTP_URL}?email=${email}`);
 
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+});
+
+export const loginAction = createAsyncThunk("/login", async (data: IUserLogin) => {
+    try {
+        const response = await apiClient.post(LOGIN_URL, data, jsonConfig);
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+});
+
+
+export const logoutAction = createAsyncThunk("/logout", async () => {
     try {
 
-        const response=await apiClient.get(`${RESEND_OTP_URL}?email=${email}`)
-                
-        return response.data
-        
-        
-    } catch (error:any) {
-        throw new Error (error.message)
-    }
-})
+        const response = await apiClient.get(LOGOUT_URL, { withCredentials: true });
 
+        return response.data;
+    } catch (error) { }
+});
 
-
-export const loginAction=createAsyncThunk('/login',async (data:IUserLogin)=>{
-
+export const fetchuser = createAsyncThunk("/auth/fetch", async () => {
     try {
-            
-        const response=await apiClient.post(LOGIN_URL,data)
-       
-        return response.data
-    } catch (error:any) {
-        throw new Error(error.message)
-    }
-})
+        const response = await apiClient.get(FETCH_USER_URL, { withCredentials: true });
 
-export const logoutAction=createAsyncThunk('/logout',async ()=>{
-
-    try {
-       
-       const response= await apiClient.get(LOGOUT_URL)
-             
-       return response.data
-       
-        
-    } catch (error) {
-        
-    }
-})
-
-export const fetchuser=createAsyncThunk('/auth/fetch',async ()=>{
-
-    try {
-               
-        const response=await apiClient.get(FETCH_USER_URL,)
-             
-        if(response.data.status!=='ok'){
-            throw new Error('Not authorized')
+        if (response.data.status !== "ok") {
+            throw new Error("Not authorized");
         }
-              
-        return response.data
-        
-        
-    } catch (error:any) {
-        throw new Error(error.message)
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
     }
-})
+});
 
-export const loginWithGoogle=createAsyncThunk('/auth/google',async (accessToken:any,{rejectWithValue})=>{
-
+export const loginWithGoogle = createAsyncThunk("/auth/google", async (accessToken: any, { rejectWithValue }) => {
     try {
-
-        const response=await apiClient.post('/auth/google',{googleAccesToken:accessToken})
+        const response = await apiClient.post("/auth/google", { googleAccesToken: accessToken });
         console.log(response.data);
-        
-        return response.data
-        
-        
-    } catch (error:any) {
-        rejectWithValue(error.message)     
-    }
-})
 
-export const editUserImages=createAsyncThunk('/auth/edit-user-images',async ({formData,type}:any)=>{
+        return response.data;
+    } catch (error: any) {
+        rejectWithValue(error.message);
+    }
+});
+
+export const editUserImages = createAsyncThunk("/auth/edit-user-images", async ({ formData, type }: any) => {
     try {
-                
-        const response=await apiClient.post(`${EDIT_USER_IMAGES_URL}/image?${[type]}=${type}`,formData,multiPartConfig)
+        const response = await apiClient.post(`${EDIT_USER_IMAGES_URL}/image?${[type]}=${type}`, formData, multiPartConfig);
         console.log(response);
-        return response.data
-        
-        
-    } catch (error:any) {
-        throw new Error (error.message)
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
     }
-})
+});
 
-export const editUserProfile=createAsyncThunk('/auth/edit-user-profile',async (form:any)=>{
+export const editUserProfile = createAsyncThunk("/auth/edit-user-profile", async (form: any) => {
     try {
-
-        const response=await apiClient.post(EDIT_USER_PROFILE,form,jsonConfig)
+        const response = await apiClient.post(EDIT_USER_PROFILE, form, jsonConfig);
         console.log(response.data);
-        return response.data
-        
-        
-    } catch (error:any) {
-        throw new Error(error.message)
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.message);
     }
-})
+});
 
-export const editUserPassword=createAsyncThunk('/auth/edit-user-password',async(form:any)=>{
+//EDITING FROM PROFILE
+
+export const editUserPassword = createAsyncThunk("/auth/edit-user-password", async (form: any) => {
     try {
-
-        const response=await apiClient.post(EDIT_USER_PASSWORD,form,jsonConfig)
-        console.log(response.data)
-        return response.data
-        
-    } catch (error:any) {
-        throw new Error(error)
+        const response = await apiClient.post(EDIT_USER_PASSWORD, form, jsonConfig);
+        console.log(response.data);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error);
     }
-})
+});
 
-export const fetchAllUsers=createAsyncThunk('/auth/find-all-users',async ()=>{
+//RESETING PASSWORD DUE TO FORGOT
+
+export const changePassword = createAsyncThunk("/auth/change-password", async (form: any) => {
     try {
-        
-        const response=await apiClient.get(FETCH_ALL_USERS)
+        console.log("pwd aclled");
+
+        const response = await apiClient.post(CHANGE_PASSWORD_URL, form, jsonConfig);
         console.log(response.data);
 
-        return response.data
-        
-    } catch (error:any) {
-        throw new Error(error)
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error);
     }
-})
+});
+
+export const fetchAllUsers = createAsyncThunk("/auth/find-all-users", async () => {
+    try {
+        const response = await apiClient.get(FETCH_ALL_USERS);
+        console.log(response.data);
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+});

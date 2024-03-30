@@ -43,3 +43,7 @@ export const EDIT_USER_PASSWORD = '/auth/edit-user-password'
 export const FETCH_ALL_USERS = '/auth/fetch-all-users'
 
 export const EDIT_COMMENT_URL = '/post/edit-comment'
+
+export const SEND_EMAIL_FOR_RESET_PASSWORD_URL = '/auth/send-confirmation-email-reset-password'
+
+export const CHANGE_PASSWORD_URL = '/auth/change-password'

@@ -2,20 +2,17 @@ import Searchbox from "../search/Searchbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { logoutAction } from "../../store/actions/auth/userActions";
 import { AppDispatch } from "../../store/store";
 import Users from "../users/Users";
 
 function RightSideBar() {
    const dispatch = useDispatch<AppDispatch>();
-   const navigate = useNavigate();
 
    const { pathname } = useLocation();
    const handleLogout = () => {
-      dispatch(logoutAction()).then(() => {
-         navigate("/");
-      });
+      dispatch(logoutAction());
    };
    return (
       <div className="bg-gray-50 h-full w-80 fixed top-0 right-0 flex flex-col  shadow-lg">

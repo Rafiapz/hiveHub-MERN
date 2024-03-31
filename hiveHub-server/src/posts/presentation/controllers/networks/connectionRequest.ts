@@ -1,40 +1,38 @@
 import { INetworkDependencies } from "../../../application/interface/network/IDependencies";
-import {Request,Response} from 'express'
+import { Request, Response } from 'express'
 import { NetworksEntity } from "../../../domain/entities";
 
-export const coneectionRequestController=(dependencies:INetworkDependencies)=>{
+export const coneectionRequestController = (dependencies: INetworkDependencies) => {
 
-    const {connectionUseCases:{connectionRequestUseCase}}=dependencies
+    const { connectionUseCases: { connectionRequestUseCase } } = dependencies
 
-    return async (req:Request,res:Response)=>{
+    return async (req: Request, res: Response) => {
 
         try {
 
 
-            console.log('called',req.params);
-   
             const user = req?.user
             const sourceUserId = (user as any)?.id;
-            const targetUserId:any=req?.params?.id
+            const targetUserId: any = req?.params?.id
 
-            const data:NetworksEntity={
-                sourceUserId:sourceUserId,
-                targetUserId:targetUserId,
-                status:'Pending'
+            const data: NetworksEntity = {
+                sourceUserId: sourceUserId,
+                targetUserId: targetUserId,
+                status: 'following'
             }
-            
-            
 
-           const createdData= await connectionRequestUseCase(dependencies).execute(data)
 
-           if(createdData){
-            res.status(200).json({status:'ok',message:'Your invitation to connect was sent ',data:{createdData}})
-           }else{
+
+            const createdData = await connectionRequestUseCase(dependencies).execute(data)
+
+            if (createdData) {
+                res.status(200).json({ status: 'ok', message: `You are now following ${createdData?.targetUserId?.fullName}`, data: { createdData } })
+            } else {
                 throw new Error('Unable to make request')
-           }
-            
-        } catch (error:any) {
-            res.status(error.status||500).json({status:'ok',message:error.message})
+            }
+
+        } catch (error: any) {
+            res.status(error.status || 500).json({ status: 'ok', message: error.message })
         }
     }
 }   

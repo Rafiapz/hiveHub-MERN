@@ -6,8 +6,9 @@ import { useLocation } from "react-router-dom";
 import { logoutAction } from "../../store/actions/auth/userActions";
 import { AppDispatch } from "../../store/store";
 import Users from "../users/Users";
+import { FC } from "react";
 
-function RightSideBar() {
+const RightSideBar: FC = () => {
    const dispatch = useDispatch<AppDispatch>();
 
    const { pathname } = useLocation();
@@ -30,6 +31,6 @@ function RightSideBar() {
          )}
       </div>
    );
-}
+};
 
 export default RightSideBar;

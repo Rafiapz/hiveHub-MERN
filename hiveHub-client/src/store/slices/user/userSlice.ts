@@ -58,7 +58,6 @@ const userSlice = createSlice({
                 }
             })
             .addCase(fetchuser.fulfilled, (state, action) => {
-                console.log('fetch', action?.payload?.userData);
 
                 if (action.payload.status === 'ok') {
                     state.user.auth.isAuth = true

@@ -14,6 +14,9 @@ import Profile from "./pages/user/profile/Profile";
 import EditProfile from "./pages/user/profile/EditProfile";
 import ForgotPassword from "./components/forgotPassword/ForgotPassword";
 import ResetPassword from "./pages/auth/login/resetPassword/ResetPassword";
+import UserPosts from "./components/activity/UsersPosts";
+import Following from "./components/networks/Following";
+import Followers from "./components/networks/Followers";
 
 function App() {
    const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
@@ -44,7 +47,12 @@ function App() {
             <>
                <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile" element={<Profile />}>
+                     <Route index element={<UserPosts />} />
+                     <Route path="/profile/following" element={<Following />} />
+                     <Route path="/profile/followers" element={<Followers />} />
+                  </Route>
+
                   <Route path="/edit-profile" element={<EditProfile />} />
                </Routes>
             </>

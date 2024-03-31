@@ -36,7 +36,7 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route("/edit-user-password").post(validatePassword, currentUser, editProfile);
 
-    router.route("/fetch-all-users").get(findAllUsers);
+    router.route("/fetch-all-users").get(currentUser, findAllUsers);
 
     router.route("/send-confirmation-email-reset-password/:email").get(resetPasswordVerification);
 

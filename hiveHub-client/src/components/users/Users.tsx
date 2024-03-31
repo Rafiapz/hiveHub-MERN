@@ -1,17 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import ConnectButton from "../connectButton/ConnectButton";
 import { AppDispatch, RootState } from "../../store/store";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { fetchAllUsers } from "../../store/actions/auth/userActions";
+import { fetchAllNetworks } from "../../store/actions/network/networkActions";
 
-function Users() {
+const Users: FC = () => {
    const users: any = useSelector((state: RootState) => state?.user?.allUsers?.data);
-
+   const networks: any = useSelector((state: RootState) => state?.networks?.network?.data);
+   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const dispatch = useDispatch<AppDispatch>();
 
    useEffect(() => {
       dispatch(fetchAllUsers());
+      dispatch(fetchAllNetworks());
    }, []);
+
+   const isFollowing = (id: any) => {
+      return networks?.some((ob: any) => {
+         return id == ob?.targetUserId && ob?.sourceUserId === userId;
+      });
+   };
 
    return (
       <div className="flex flex-wrap justify-center  overflow-y-auto">
@@ -23,8 +32,14 @@ function Users() {
                   </div>
                   <div className="user-name text-lg font-semibold">
                      {user?.fullName}
-                     <div key={user?.id + "button"}>
-                        <ConnectButton id={user?._id} />
+                     <div>
+                        {isFollowing(user?._id) ? (
+                           <button className="px-2 py-1 rounded-md text-blue-300 bg-white hover:bg-blue-700 focus:outline-none border border-blue-700">
+                              message
+                           </button>
+                        ) : (
+                           <ConnectButton id={user?._id} />
+                        )}
                      </div>
                   </div>
                </div>
@@ -32,6 +47,6 @@ function Users() {
          ))}
       </div>
    );
-}
+};
 
 export default Users;

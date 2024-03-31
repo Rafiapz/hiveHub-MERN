@@ -4,8 +4,8 @@ import { NetworksEntity } from '../../../domain/entities';
 
 
 const NetworksSchema: Schema = new Schema({
-    sourceUserId: { type: Schema.Types.ObjectId, required: true },
-    targetUserId: { type: Schema.Types.ObjectId, required: true },
+    sourceUserId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+    targetUserId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
     status: { type: String, required: true },
 });
 

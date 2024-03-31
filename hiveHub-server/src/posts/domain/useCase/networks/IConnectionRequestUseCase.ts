@@ -1,6 +1,6 @@
 import { NetworksEntity } from "../../entities";
 
-export interface IConnectionRequestUseCase{
+export interface IConnectionRequestUseCase {
 
-    execute:(data:NetworksEntity)=>Promise<NetworksEntity|null>
+    execute: (data: NetworksEntity) => any
 }

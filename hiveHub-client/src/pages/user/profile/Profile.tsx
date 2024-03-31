@@ -1,4 +1,5 @@
-import Activity from "../../../components/activity/Activity";
+import { Link, Outlet } from "react-router-dom";
+import Activity from "../../../components/activity/UsersPosts";
 import Comments from "../../../components/comments/Comments";
 import ConverPhoto from "../../../components/converPhoto/ConverPhoto";
 import Menu from "../../../components/menu/Menu";
@@ -9,7 +10,25 @@ function Profile() {
       <>
          <Menu />
          <ConverPhoto />
-         <Activity />
+         <div className="flex pl-96 pt-16 items-center gap-11 h-32 w-full">
+            <Link to={"/profile"} className="px-2 py-1  rounded-md text-black font-bold text-xl u focus:outline-none underline underline-offset-2">
+               Posts
+            </Link>
+            <Link
+               to={"/profile/following"}
+               className="px-2 py-1  font-bold text-xl  rounded-md text-black  focus:outline-none underline underline-offset-2"
+            >
+               Following
+            </Link>
+            <Link
+               to={"/profile/followers"}
+               className="px-2 py-1 font-bold text-xl rounded-md text-black  focus:outline-none underline underline-offset-2"
+            >
+               Followers
+            </Link>
+         </div>
+
+         <Outlet />
          <Comments />
          <RightSideBar />
       </>

@@ -7,13 +7,19 @@ import { INetworkDependencies } from '../../../application/interface/network/IDe
 
 export const networksRoutes = (dependencies: INetworkDependencies) => {
 
-    const { connectionRequest, fetchAllNetworks } = controllers(dependencies)
+    const { connectionRequest, fetchAllNetworks, fetchFollowing, fetchFollowers, unfollow } = controllers(dependencies)
 
     const router = Router()
 
     router.route('/connection-request/:id').post(currentUser, connectionRequest)
 
     router.route('/fetch-all-networks').get(currentUser, fetchAllNetworks)
+
+    router.route('/fetch-following').get(currentUser, fetchFollowing)
+
+    router.route('/fetch-followers').get(currentUser, fetchFollowers)
+
+    router.route('/unfollow/:id').delete(currentUser, unfollow)
 
 
 

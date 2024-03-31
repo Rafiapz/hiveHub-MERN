@@ -1,11 +1,12 @@
+import React from "react";
+import Menu from "../../../components/menu/Menu";
+import ConverPhoto from "../../../components/converPhoto/ConverPhoto";
 import { Link, Outlet } from "react-router-dom";
 import Comments from "../../../components/comments/Comments";
-import ConverPhoto from "../../../components/converPhoto/ConverPhoto";
-import Menu from "../../../components/menu/Menu";
-import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import UnfollowModal from "../../../components/modal/UnfollowModal";
+import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 
-function Profile() {
+function OthersProfile() {
    return (
       <>
          <Menu />
@@ -36,4 +37,4 @@ function Profile() {
    );
 }
 
-export default Profile;
+export default OthersProfile;

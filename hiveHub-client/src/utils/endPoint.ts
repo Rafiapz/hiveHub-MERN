@@ -49,3 +49,9 @@ export const SEND_EMAIL_FOR_RESET_PASSWORD_URL = '/auth/send-confirmation-email-
 export const CHANGE_PASSWORD_URL = '/auth/change-password'
 
 export const FETCH_ALL_NETWORKS = '/networks/fetch-all-networks'
+
+export const FETCH_FOLLOWING_URL = '/networks/fetch-following'
+
+export const FETCH_FOLLOWERS_URL = '/networks/fetch-followers'
+
+export const UNFOLLOW_URL = '/networks/unfollow'

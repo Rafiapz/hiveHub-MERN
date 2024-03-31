@@ -1,45 +1,29 @@
-import React, { FC } from "react";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import Loading from "../loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment, faShare, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark, faComment, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
+import { fetchAllCommentsOfPost, fetchUsersPost, likePostAction } from "../../store/actions/post/postActions";
+import { handleCommentModal } from "../../store/slices/posts/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { deletePostAction, fetchAllCommentsOfPost, fetchAllposts, fetchUsersPost, likePostAction } from "../../store/actions/post/postActions";
-import Loading from "../loading/Loading";
-import toast from "react-hot-toast";
-import ConfirmationModal from "../modal/ConfirmationModal";
-import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCommentModal, handleEditPostModal } from "../../store/slices/posts/postSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-const Posts: FC = ({ id }: any) => {
+const OthersPost: FC = () => {
    const dispatch = useDispatch<AppDispatch>();
    const loading = useSelector((state: RootState) => state.posts.posts.loading);
-   const userId = useSelector((state: RootState) => state.user.user.userId);
-   const [curPostId, setCurPostId] = useState<number | null>();
    const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
    const posts: any = useSelector((state: RootState) => state.posts.posts.data);
-
-   const navigate = useNavigate();
 
    const [showOptions, setShowOptions] = useState<{
       status: boolean;
       index: number;
    }>({ status: false, index: 0 });
 
-   const { pathname } = useLocation();
+   const [searchQuery, setSearchQuery] = useSearchParams();
 
+   const userId = searchQuery.get("userId");
    useEffect(() => {
-      if (pathname === "/profile") {
-         dispatch(fetchUsersPost(userId));
-      } else {
-         dispatch(fetchAllposts()).then((data) => {
-            if (data?.payload?.status !== "ok")
-               toast(data?.payload?.message, {
-                  style: { backgroundColor: "#ff6347", color: "#eeeeee" },
-               });
-         });
-      }
+      dispatch(fetchUsersPost(userId));
    }, []);
 
    const handleOptionsClick = (index: number) => {
@@ -58,37 +42,9 @@ const Posts: FC = ({ id }: any) => {
       });
    };
 
-   const handleDeletePostModal = (id: number) => {
-      setCurPostId(id);
-      dispatch(confirmationModalReducer({ status: true }));
-   };
-
-   const handleDelete = (id: number) => {
-      dispatch(confirmationModalReducer({ status: false }));
-
-      dispatch(deletePostAction(id)).then((response) => {
-         if (response?.payload?.status === "ok") {
-            toast(response?.payload?.message, {
-               style: { backgroundColor: "#4caf50", color: "white" },
-            });
-            dispatch(fetchAllposts());
-         } else {
-            toast(response?.payload?.message, {
-               style: { backgroundColor: "#ff6347", color: "#eeeeee" },
-            });
-         }
-      });
-   };
-
    const handleLikePost = (id: number) => {
       dispatch(likePostAction(id)).then(() => {
-         if (pathname === "/profile") {
-            dispatch(fetchUsersPost(userId));
-         } else {
-            {
-               dispatch(fetchAllposts());
-            }
-         }
+         dispatch(fetchUsersPost(userId));
       });
    };
 
@@ -97,15 +53,11 @@ const Posts: FC = ({ id }: any) => {
    };
 
    const handleShowComments = (id: number) => {
-      dispatch(fetchAllCommentsOfPost(id)).then((response) => {
-         if (response.payload.status === "ok") {
+      dispatch(fetchAllCommentsOfPost(id)).then((response: any) => {
+         if (response?.payload?.status === "ok") {
             dispatch(handleCommentModal({ status: true, postId: id }));
          }
       });
-   };
-
-   const viewOthersProfile = (id: number) => {
-      navigate(`/others-profile?userId=${id}`);
    };
 
    return (
@@ -122,7 +74,7 @@ const Posts: FC = ({ id }: any) => {
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
                         <div className="flex items-center justify-between mb-4 ">
-                           <div className="flex items-center hover:cursor-pointer" onClick={() => viewOthersProfile(item?.userId?._id)}>
+                           <div className="flex items-center hover:cursor-pointer">
                               <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full h-8 w-8 mr-2" />
                               <p className="font-bold">{item?.userId.fullName}</p>
                            </div>
@@ -195,31 +147,6 @@ const Posts: FC = ({ id }: any) => {
                            {showOptions?.status == true && showOptions?.index === i && (
                               <div className="absolute top-1  right-4 w-28 h-22 bg-blue-300 mt-2 mr-4 border border-gray-300 shadow-lg rounded-md">
                                  <ul>
-                                    {userId === item?.userId?._id && (
-                                       <>
-                                          <li
-                                             onClick={() =>
-                                                dispatch(
-                                                   handleEditPostModal({
-                                                      status: true,
-                                                      content: item?.content,
-                                                      media: {
-                                                         type: item?.media?.type,
-                                                         url: item?.media?.path,
-                                                      },
-                                                      _id: item?._id,
-                                                   })
-                                                )
-                                             }
-                                             className="p-1 hover:bg-blue-500"
-                                          >
-                                             <button>Edit</button>
-                                          </li>
-                                          <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-blue-500">
-                                             <button>Delete</button>
-                                          </li>
-                                       </>
-                                    )}
                                     {userId !== item?.userId?._id && (
                                        <li className="p-1 hover:bg-blue-500">
                                           <button>Report</button>
@@ -234,9 +161,8 @@ const Posts: FC = ({ id }: any) => {
                })}
             </>
          )}
-         <ConfirmationModal curId={curPostId} handleDelete={handleDelete} />
       </>
    );
 };
 
-export default Posts;
+export default OthersPost;

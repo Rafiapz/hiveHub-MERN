@@ -1,28 +1,23 @@
-import EditCoverPhoto from "../../../components/converPhoto/EditCoverPhoto"
-import Menu from "../../../components/menu/Menu"
-import EditUserPhotosModal from "../../../components/modal/EditUserPhotosModal"
+import { FC } from "react";
+import EditCoverPhoto from "../../../components/converPhoto/EditCoverPhoto";
+import Menu from "../../../components/menu/Menu";
+import EditUserPhotosModal from "../../../components/modal/EditUserPhotosModal";
 
-import EditUserProfile from "../../../components/profileEdit/EditUserProfile"
-import RightSideBar from "../../../components/rightSideBar/RightSideBar"
+import EditUserProfile from "../../../components/profileEdit/EditUserProfile";
+import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 
+const EditProfile: FC = () => {
+   return (
+      <>
+         <Menu />
 
-function EditProfile() {
-  return (
-   
-    <>
-     <Menu  />
+         <EditCoverPhoto />
+         <EditUserProfile />
+         <EditUserPhotosModal />
 
-        <EditCoverPhoto/> 
-        <EditUserProfile/>
-        <EditUserPhotosModal/>
-        
-            
+         <RightSideBar />
+      </>
+   );
+};
 
-
-    <RightSideBar />
-
-</>
-  )
-}
-
-export default EditProfile
+export default EditProfile;

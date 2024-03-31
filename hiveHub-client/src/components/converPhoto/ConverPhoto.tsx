@@ -9,8 +9,6 @@ const ConverPhoto: FC = () => {
    const navigate = useNavigate();
 
    const handleEditProfile = () => {
-      console.log("as;dlkfj");
-
       navigate("/edit-profile");
    };
 

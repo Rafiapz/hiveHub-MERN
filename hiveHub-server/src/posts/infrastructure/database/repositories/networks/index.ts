@@ -1,2 +1,5 @@
 export * from './connectionRequest'
 export * from './findAll'
+export * from './findFollowing'
+export * from './findFollowers'
+export * from './deleteOne'

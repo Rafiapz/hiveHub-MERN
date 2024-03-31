@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { connectionRequestAction, fetchAllNetworks } from "../../store/actions/network/networkActions";
+import { connectionRequestAction, fetchAllNetworks, fetchFollwing } from "../../store/actions/network/networkActions";
 import toast from "react-hot-toast";
 
 function ConnectButton({ id }: any) {
@@ -17,6 +17,7 @@ function ConnectButton({ id }: any) {
             toast(response?.payload?.message, {
                style: { backgroundColor: "#4caf50", color: "white" },
             });
+            dispatch(fetchFollwing());
          } else {
             toast(response?.payload?.message, {
                style: { backgroundColor: "#ff6347", color: "#eeeeee" },

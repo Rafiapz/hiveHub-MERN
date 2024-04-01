@@ -9,6 +9,7 @@ import { createCommentController } from "./createComment"
 import { deleteCommentController } from "./deleteComment"
 import { findUsersPostController } from "./findUsersPost"
 import { updateCommentController } from "./editComment"
+import { reportPostController } from "./reportPost"
 
 export const controllers = (dependencies: IPostDependencies) => {
 
@@ -22,6 +23,7 @@ export const controllers = (dependencies: IPostDependencies) => {
         createComment: createCommentController(dependencies),
         deleteComment: deleteCommentController(dependencies),
         findUsersPost: findUsersPostController(dependencies),
-        updateComment: updateCommentController(dependencies)
+        updateComment: updateCommentController(dependencies),
+        reportPost: reportPostController(dependencies)
     }
 }

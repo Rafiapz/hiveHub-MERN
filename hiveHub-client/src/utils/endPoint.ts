@@ -55,3 +55,9 @@ export const FETCH_FOLLOWING_URL = '/networks/fetch-following'
 export const FETCH_FOLLOWERS_URL = '/networks/fetch-followers'
 
 export const UNFOLLOW_URL = '/networks/unfollow'
+
+export const SEARCH_USER_URL = '/networks/search-user'
+
+export const FETCH_OTHER_USER_URL = '/auth/fetch-other-user'
+
+export const REPORT_POST_URL = '/post/report-post'

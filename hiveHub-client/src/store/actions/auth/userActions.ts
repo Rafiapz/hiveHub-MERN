@@ -10,6 +10,7 @@ import {
     EDIT_USER_PASSWORD,
     EDIT_USER_PROFILE,
     FETCH_ALL_USERS,
+    FETCH_OTHER_USER_URL,
     FETCH_USER_URL,
     LOGIN_URL,
     LOGOUT_URL,
@@ -67,7 +68,9 @@ export const logoutAction = createAsyncThunk("/logout", async () => {
         const response = await apiClient.get(LOGOUT_URL, { withCredentials: true });
 
         return response.data;
-    } catch (error) { }
+    } catch (error: any) {
+        throw new Error(error)
+    }
 });
 
 export const fetchuser = createAsyncThunk("/auth/fetch", async () => {
@@ -152,3 +155,15 @@ export const fetchAllUsers = createAsyncThunk("/auth/find-all-users", async () =
         throw new Error(error);
     }
 });
+
+export const fetchOtherUser = createAsyncThunk('/auth/fetch-user', async (email: string) => {
+
+    try {
+        const response = await apiClient.get(`${FETCH_OTHER_USER_URL}?email=${email}`)
+
+        return response.data
+    } catch (error: any) {
+        throw new Error(error)
+    }
+
+})

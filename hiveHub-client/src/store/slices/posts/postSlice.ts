@@ -32,6 +32,9 @@ const initialState = {
         loading: false,
         data: null,
         postId: null
+    },
+    report: {
+        postId: null
     }
 }
 
@@ -75,6 +78,9 @@ const postSlice = createSlice({
         handleCleanUpPost: (state) => {
             state.posts.data = null
         },
+        handleReportPostId: (state, action) => {
+            state.report.postId = action?.payload?.postId
+        }
 
 
 
@@ -129,7 +135,8 @@ export const {
     handleCommentsIsEditing,
     handleCommentDeleteReducer,
     handleConnectionRequest,
-    handleCleanUpPost
+    handleCleanUpPost,
+    handleReportPostId,
 } = postSlice.actions;
 
 export default postSlice.reducer;    

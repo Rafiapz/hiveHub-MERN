@@ -1,6 +1,6 @@
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { editUserProfile } from "./editUserProfile";
-import { fetchUserController } from "./fetchUser";
+import { fetchOtherUserController, fetchUserController } from "./fetchUser";
 import { findAllUsersController } from "./findAllUsers";
 import { googleAuthController } from "./googleAuth";
 import { loginController } from "./login";
@@ -25,6 +25,7 @@ export const controllers = (dependancies: IDependencies) => {
         editProfile: editUserProfile(dependancies),
         findAllUsers: findAllUsersController(dependancies),
         resetPasswordVerification: resetPasswordVerificationController(dependancies),
-        changePassword: changePasswordController(dependancies)
+        changePassword: changePasswordController(dependancies),
+        fetchOtherUser: fetchOtherUserController(dependancies)
     }
 }

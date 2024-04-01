@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import Comments from "../../../components/comments/Comments";
-import ConverPhoto from "../../../components/converPhoto/ConverPhoto";
+import ConverPhoto from "../../../components/converPhoto/CoverPhoto";
 import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import UnfollowModal from "../../../components/modal/UnfollowModal";

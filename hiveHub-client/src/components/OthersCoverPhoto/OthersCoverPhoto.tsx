@@ -1,16 +1,24 @@
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { RootState } from "../../store/store";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { fetchOtherUser } from "../../store/actions/auth/userActions";
 
-const ConverPhoto: FC = () => {
-   const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
+const OthersCoverPhoto: FC = () => {
+   const [userData, setUserData] = useState<any>({});
 
-   const navigate = useNavigate();
+   const [searchQuery, setSearchQuery] = useSearchParams();
+   const dispatch = useDispatch<AppDispatch>();
 
-   const handleEditProfile = () => {
-      navigate("/edit-profile");
-   };
+   const email = searchQuery.get("email");
+
+   useEffect(() => {
+      if (email) {
+         dispatch(fetchOtherUser(email)).then((reponse:any)=>{
+            setUserData(reponse?.payload?.data)
+         })
+      }
+   });
 
    return (
       <div className="flex justify-center w-full h-64 ">
@@ -20,15 +28,10 @@ const ConverPhoto: FC = () => {
             </div>
             <div className="flex justify-between profile-info ">
                <h1 className="text-xl ml-36 font-bold">{userData?.fullName}</h1>
-               <div className="profile-actions ">
-                  <button
-                     onClick={handleEditProfile}
-                     className="edit-profile-button bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mr-2"
-                  >
-                     Edit Profile
-                  </button>
+               {/* <div className="profile-actions ">
+                 
                   <button className="share-button bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">Share</button>
-               </div>
+               </div> */}
             </div>
             <div className="profile-photo absolute top-48 left-8 ml-4 mb-8">
                <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-24 h-24" />
@@ -38,4 +41,4 @@ const ConverPhoto: FC = () => {
    );
 };
 
-export default ConverPhoto;
+export default OthersCoverPhoto;

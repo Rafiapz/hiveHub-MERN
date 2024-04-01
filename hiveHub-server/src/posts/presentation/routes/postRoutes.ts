@@ -20,7 +20,8 @@ export const postRoutes = (dependencies: IPostDependencies) => {
     createComment,
     deleteComment,
     findUsersPost,
-    updateComment
+    updateComment,
+    reportPost
   } = controllers(dependencies);
 
   const router = Router()
@@ -44,6 +45,8 @@ export const postRoutes = (dependencies: IPostDependencies) => {
   router.route('/fetch-users-post/:id').get(findUsersPost)
 
   router.route('/edit-comment/:commentId').put(updateComment)
+
+  router.route('/report-post').post(currentUser, reportPost)
 
 
 

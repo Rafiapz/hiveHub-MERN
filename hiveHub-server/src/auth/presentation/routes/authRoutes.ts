@@ -7,7 +7,7 @@ import { uploadSingleFile } from "../../../_lib/multer";
 import { validatePassword } from "../../../_lib/bcrypt";
 
 export const authRoutes = (dependencies: IDependencies) => {
-    const { signup, verify, login, updateOtp, googleAuth, logout, fetchUser, editProfile, findAllUsers, resetPasswordVerification, changePassword } =
+    const { signup, verify, login, updateOtp, googleAuth, logout, fetchUser, editProfile, findAllUsers, resetPasswordVerification, changePassword, fetchOtherUser } =
         controllers(dependencies);
 
     const router = Router();
@@ -41,6 +41,8 @@ export const authRoutes = (dependencies: IDependencies) => {
     router.route("/send-confirmation-email-reset-password/:email").get(resetPasswordVerification);
 
     router.route("/change-password").post(changePassword);
+
+    router.route('/fetch-other-user').get(fetchOtherUser)
 
 
 

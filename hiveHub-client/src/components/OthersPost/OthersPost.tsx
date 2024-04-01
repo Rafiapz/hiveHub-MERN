@@ -24,7 +24,7 @@ const OthersPost: FC = () => {
    const userId = searchQuery.get("userId");
    useEffect(() => {
       dispatch(fetchUsersPost(userId));
-   }, []);
+   }, [userId]);
 
    const handleOptionsClick = (index: number) => {
       setShowOptions((prev) => {

@@ -32,3 +32,27 @@ export const fetchUserController = (dependencies: IDependencies) => {
         }
     }
 }
+
+
+export const fetchOtherUserController = (dependencies: IDependencies) => {
+
+    const { useCases: { findOneUserUseCase } } = dependencies
+    return async (req: Request, res: Response) => {
+
+        try {
+
+            const email = req?.query?.email
+
+            if (typeof email === 'string') {
+
+                const userData = await findOneUserUseCase(dependencies).execute({ email })
+                res.status(200).json({ status: 'ok', data: userData })
+            } else {
+                throw new Error('Something went wrong')
+            }
+
+        } catch (error: any) {
+            res.json({ status: 'failed', message: error.message })
+        }
+    }
+}

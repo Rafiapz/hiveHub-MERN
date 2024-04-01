@@ -9,10 +9,10 @@ import Loading from "../loading/Loading";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCommentModal, handleEditPostModal } from "../../store/slices/posts/postSlice";
+import { handleCommentModal, handleEditPostModal, handleReportPostId } from "../../store/slices/posts/postSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Posts: FC = ({ id }: any) => {
+const Posts = ({ openModal }: any) => {
    const dispatch = useDispatch<AppDispatch>();
    const loading = useSelector((state: RootState) => state.posts.posts.loading);
    const userId = useSelector((state: RootState) => state.user.user.userId);
@@ -104,8 +104,8 @@ const Posts: FC = ({ id }: any) => {
       });
    };
 
-   const viewOthersProfile = (id: number) => {
-      navigate(`/others-profile?userId=${id}`);
+   const viewOthersProfile = (id: number, email: string) => {
+      navigate(`/others-profile?userId=${id}&email=${email}`);
    };
 
    return (
@@ -122,7 +122,10 @@ const Posts: FC = ({ id }: any) => {
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
                         <div className="flex items-center justify-between mb-4 ">
-                           <div className="flex items-center hover:cursor-pointer" onClick={() => viewOthersProfile(item?.userId?._id)}>
+                           <div
+                              className="flex items-center hover:cursor-pointer"
+                              onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}
+                           >
                               <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full h-8 w-8 mr-2" />
                               <p className="font-bold">{item?.userId.fullName}</p>
                            </div>
@@ -221,7 +224,13 @@ const Posts: FC = ({ id }: any) => {
                                        </>
                                     )}
                                     {userId !== item?.userId?._id && (
-                                       <li className="p-1 hover:bg-blue-500">
+                                       <li
+                                          className="p-1 hover:bg-blue-500"
+                                          onClick={() => {
+                                             dispatch(handleReportPostId({ postId: item?._id }));
+                                             openModal();
+                                          }}
+                                       >
                                           <button>Report</button>
                                        </li>
                                     )}

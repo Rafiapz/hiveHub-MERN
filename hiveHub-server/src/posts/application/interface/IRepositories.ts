@@ -1,6 +1,7 @@
 import { DeleteResult } from "mongodb";
 import { LikesEntity, PostEntity } from "../../domain/entities"
 import { CommentsEntity } from "../../domain/entities/commentsEntity";
+import { ReportsEntity } from "../../domain/entities/reportsEntity";
 
 export interface IRepositories {
 
@@ -14,5 +15,6 @@ export interface IRepositories {
     deleteComment: (commentId: string) => Promise<DeleteResult>;
     findUsersPost: (id: any) => any;
     updateComment: (commentId: any, comment: string) => Promise<CommentsEntity | null>;
+    createReport: (data: ReportsEntity) => Promise<ReportsEntity | null>
 
 }

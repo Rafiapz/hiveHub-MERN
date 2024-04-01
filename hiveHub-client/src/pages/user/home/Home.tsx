@@ -5,21 +5,30 @@ import Posts from "../../../components/post/Posts";
 import CreatePostModal from "../../../components/modal/CreatePostModal";
 import EditPostModal from "../../../components/modal/EditPostModal";
 import Comments from "../../../components/comments/Comments";
-
+import ReportPost from "../../../components/reportPost/ReportPost";
+import { useState } from "react";
 
 function Home() {
+   const [modalIsOpen, setIsOpen] = useState(false);
 
-  return (
-    <div className="bg-gray-100" >
-      <Menu />
-      <Story />
-      <Posts/>
-      <CreatePostModal/>
-      <EditPostModal/>
-      <Comments/>
-      <RightSideBar/>
-    </div>
-  );
+   function openModal() {
+      setIsOpen(true);
+   }
+   function closeModal() {
+      setIsOpen(false);
+   }
+   return (
+      <div className="bg-gray-100">
+         <Menu />
+         <Story />
+         <Posts openModal={openModal} />
+         <CreatePostModal />
+         <EditPostModal />
+         <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
+         <Comments />
+         <RightSideBar />
+      </div>
+   );
 }
 
 export default Home;

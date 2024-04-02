@@ -126,10 +126,10 @@ const Posts = ({ openModal }: any) => {
                               className="flex items-center hover:cursor-pointer"
                               onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}
                            >
-                              <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full h-8 w-8 mr-2" />
+                              <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full  h-8 w-10 mr-2" />
                               <p className="font-bold">{item?.userId.fullName}</p>
                            </div>
-                           <p className="text-sm mr-20 font-bold text-blue-400">
+                           <p className="text-sm mr-20 font-bold text-gray-500">
                               {new Date(item?.createdAt).toLocaleString("en-GB", {
                                  day: "2-digit",
                                  month: "2-digit",
@@ -137,6 +137,7 @@ const Posts = ({ openModal }: any) => {
                               })}
                            </p>
                         </div>
+                        <p className="p-4">{item?.content}</p>
 
                         {item?.media?.type === "image" && <img src={`${item?.media?.path}`} alt="Posted" className="mb-4 rounded-lg w-full" />}
                         {item?.media?.type === "video" && <video controls src={`${item?.media?.path}`}></video>}
@@ -171,7 +172,7 @@ const Posts = ({ openModal }: any) => {
                                     icon={faShare}
                                     className="mr-4 text-yellow-300 size-7 cursor-pointer text-xl hover:text-green-600 transition duration-300"
                                  />
-                                 <p>{item?.shares?.length}</p>
+                                 <p>{0}</p>
                               </div>
                            </div>
 

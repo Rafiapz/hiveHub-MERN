@@ -18,7 +18,7 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
             next()
 
         } else {
-            throw new Error('token not found')
+            throw new Error('Please login and try again')
         }
 
 

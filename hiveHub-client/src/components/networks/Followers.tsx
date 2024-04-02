@@ -18,7 +18,7 @@ const Followers: FC = () => {
             <div key={item?._id} className="user-card bg-white rounded-lg w-72 shadow-lg p-4 m-4">
                <div className="flex items-center mb-2">
                   <div className="profile-photo mr-4">
-                     <img src={item?.sourceUserId?.profilePhoto} alt="Profile" className="w-20 h-20 rounded-full" />
+                     <img src={item?.sourceUserId?.profilePhoto} alt="Profile" className="w-24 h-20 rounded-full" />
                   </div>
                   <div className="user-name text-lg font-semibold">
                      {item?.sourceUserId?.fullName}

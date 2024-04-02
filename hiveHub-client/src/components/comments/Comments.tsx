@@ -183,16 +183,19 @@ const Comments: FC = () => {
                            </div>
                         ) : (
                            <li key={item?._id} className="relative mb-4 px-4 py-2 border border-gray-300 rounded">
-                              <div className="absolute top-0 right-0 mt-2 mr-1">
-                                 <div
-                                    onClick={() => handleOptionsClick(i)}
-                                    className="relative flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
-                                 >
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                              {item?.userId?._id === userId && (
+                                 <div className="absolute top-0 right-0 mt-2 mr-1">
+                                    <div
+                                       onClick={() => handleOptionsClick(i)}
+                                       className="relative flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
+                                    >
+                                       <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                       <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                       <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                    </div>
                                  </div>
-                              </div>
+                              )}
+
                               <div className="flex items-center">
                                  <img src={item?.userId?.profilePhoto} alt="" className="w-8 h-8 rounded-full mr-2" />
                                  <div>
@@ -205,19 +208,13 @@ const Comments: FC = () => {
                               {showOptions.index === i && showOptions.status && (
                                  <div className="absolute top-1 right-1 w-28 h-22 bg-blue-300 mt-2 mr-4 border border-gray-300 shadow-lg rounded-md">
                                     <ul>
-                                       {item?.userId?._id === userId ? (
+                                       {item?.userId?._id === userId && (
                                           <>
                                              <li onClick={() => handleIsEditing(i)} className="p-1 hover:bg-blue-500">
                                                 <button>Edit</button>
                                              </li>
                                              <li onClick={() => handleCommentDelete(item?._id, i)} className="p-1 hover:bg-blue-500">
                                                 <button>Delete</button>
-                                             </li>
-                                          </>
-                                       ) : (
-                                          <>
-                                             <li className="p-1 hover:bg-blue-500">
-                                                <button>Report</button>
                                              </li>
                                           </>
                                        )}

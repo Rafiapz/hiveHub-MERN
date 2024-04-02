@@ -28,7 +28,7 @@ const Users: FC = () => {
             <div key={user?._id} className="user-card bg-white rounded-lg w-72 shadow-lg p-4 m-4">
                <div className="flex items-center mb-2">
                   <div className="profile-photo mr-4">
-                     <img src={user?.profilePhoto} alt="Profile" className="w-20 h-20 rounded-full" />
+                     <img src={user?.profilePhoto} alt="Profile" className="w-20 h-16 rounded-full" />
                   </div>
                   <div className="user-name text-lg font-semibold">
                      {user?.fullName}

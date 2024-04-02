@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { handleEditPostModal } from "../../store/slices/posts/postSlice";
-import { editPostAction } from "../../store/actions/post/postActions";
+import { editPostAction, fetchAllposts } from "../../store/actions/post/postActions";
 import toast from "react-hot-toast";
 
 function EditPost() {
@@ -81,6 +81,7 @@ function EditPost() {
             toast(response.payload.message, {
                style: { backgroundColor: "#4caf50", color: "white" },
             });
+            dispatch(fetchAllposts());
          } else {
             toast(response.payload.message, {
                style: { backgroundColor: "#ff6347", color: "#eeeeee" },

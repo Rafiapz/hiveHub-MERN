@@ -12,7 +12,7 @@ export const editPostController = (dependencies: IPostDependencies) => {
 
         try {
 
-            const token: string | undefined = req.cookies.user_token
+            const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = getTokenPayloads(token)
                 let path = `http://localhost:7700/posts/${req?.file?.filename}`
@@ -21,7 +21,7 @@ export const editPostController = (dependencies: IPostDependencies) => {
                 if (decoded && typeof req?.query?.postId === 'string') {
                     let mediaType = req?.params?.type
                     const formData = req?.body
-               
+
                     let media
                     if (formData?.media) {
                         media = JSON.parse(formData?.media)

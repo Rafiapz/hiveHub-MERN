@@ -14,9 +14,9 @@ const OthersCoverPhoto: FC = () => {
 
    useEffect(() => {
       if (email) {
-         dispatch(fetchOtherUser(email)).then((reponse:any)=>{
-            setUserData(reponse?.payload?.data)
-         })
+         dispatch(fetchOtherUser(email)).then((reponse: any) => {
+            setUserData(reponse?.payload?.data);
+         });
       }
    });
 
@@ -34,7 +34,7 @@ const OthersCoverPhoto: FC = () => {
                </div> */}
             </div>
             <div className="profile-photo absolute top-48 left-8 ml-4 mb-8">
-               <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-24 h-24" />
+               <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-28 h-24" />
             </div>
          </div>
       </div>

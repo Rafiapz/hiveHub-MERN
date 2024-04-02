@@ -7,11 +7,13 @@ const Searchbox: FC = () => {
    const navigate = useNavigate();
 
    const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event?.target?.value === "") {
+         setSuggestions([]);
+         return;
+      }
       const searchQuery = event.target.value;
 
       const newSuggestions = await searchUser(searchQuery);
-
-      console.log(newSuggestions, "sug here");
 
       setSuggestions(newSuggestions?.data);
    };

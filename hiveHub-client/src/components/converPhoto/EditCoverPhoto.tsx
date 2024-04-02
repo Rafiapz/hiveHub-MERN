@@ -22,7 +22,7 @@ const EditCoverPhoto: FC = () => {
                >
                   <FontAwesomeIcon icon={faPen} className="text-blue-500" />
                </div>
-               <div className="profile-photo absolute bottom-0 left-12 top-56 rounded-full w-24 h-24 bg-white z-20">
+               <div className="profile-photo absolute bottom-0 left-12 top-56 rounded-full w-28 h-24 bg-white z-20">
                   <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-full h-full object-cover" />
                   <div
                      onClick={() => dispatch(handleEditUserPhotosModal({ status: true, type: "profilePhoto" }))}

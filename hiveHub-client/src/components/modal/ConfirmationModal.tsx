@@ -30,7 +30,7 @@ function ConfirmationModal({ handleDelete, curId }: any) {
                 flex flex-col items-center justify-center py-4 shadow-xl rounded-md fixed top-1/2 left-1/2 transform translate-x-[-50%] translate-y-[-50%]"
       >
          <h2 className="text-lg font-semibold mb-1">Confirm Delete</h2>
-         <p className="mb-6">Are you sure you want to delete the user ?</p>
+         <p className="mb-6">Are you sure you want to delete ?</p>
          <div className="flex items-center justify-center gap-4">
             <button
                onClick={() => {

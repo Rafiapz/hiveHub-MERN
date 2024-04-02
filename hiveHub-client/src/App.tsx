@@ -43,6 +43,7 @@ function App() {
                   <Route path="/edit-profile" element={<Login />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/others-profile" element={<Login />} />
                </Routes>
             </>
          ) : user === "user" ? (
@@ -57,8 +58,6 @@ function App() {
                   <Route path="/edit-profile" element={<EditProfile />} />
                   <Route path="/others-profile" element={<OthersProfile />}>
                      <Route index element={<OthersPost />} />
-                     <Route path="/others-profile/following" element={<Following />} />
-                     <Route path="/others-profile/followers" element={<Followers />} />
                   </Route>
                </Routes>
             </>

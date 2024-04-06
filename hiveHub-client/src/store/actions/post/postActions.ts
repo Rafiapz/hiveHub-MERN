@@ -85,7 +85,7 @@ export const deletePostAction = createAsyncThunk('/posts/delete-post', async (id
     }
 })
 
-export const likePostAction = createAsyncThunk('/post/like-post', async (id: number) => {
+export const likePostAction = createAsyncThunk('/likes/like-post', async (id: number) => {
 
     try {
 
@@ -100,7 +100,7 @@ export const likePostAction = createAsyncThunk('/post/like-post', async (id: num
     }
 })
 
-export const fetchAllCommentsOfPost = createAsyncThunk('/post/fetch-all-comments', async (id: any) => {
+export const fetchAllCommentsOfPost = createAsyncThunk('/comments/fetch-all-comments', async (id: any) => {
 
     try {
 
@@ -114,7 +114,7 @@ export const fetchAllCommentsOfPost = createAsyncThunk('/post/fetch-all-comments
     }
 })
 
-export const postComment = createAsyncThunk('/post/post-comment', async ({ formData, postId }: any) => {
+export const postComment = createAsyncThunk('/comments/post-comment', async ({ formData, postId }: any) => {
 
     try {
 
@@ -131,7 +131,7 @@ export const postComment = createAsyncThunk('/post/post-comment', async ({ formD
     }
 })
 
-export const deleteComment = createAsyncThunk('/post/delete-comment', async (commentId: number) => {
+export const deleteComment = createAsyncThunk('/comments/delete-comment', async (commentId: number) => {
 
     try {
 
@@ -147,7 +147,7 @@ export const deleteComment = createAsyncThunk('/post/delete-comment', async (com
     }
 })
 
-export const editComment = createAsyncThunk('/post/delete-comment', async ({ formData, commentId }: any) => {
+export const editComment = createAsyncThunk('/comments/delete-comment', async ({ formData, commentId }: any) => {
     try {
 
 
@@ -176,7 +176,7 @@ export const fetchUsersPost = createAsyncThunk('/post/fetch-users-post', async (
     }
 })
 
-export const reportPost = createAsyncThunk('/post/report-post', async (form: any) => {
+export const reportPost = createAsyncThunk('/reports/report-post', async (form: any) => {
     try {
 
         const response = await apiClient.post(`${REPORT_POST_URL}`, form, jsonConfig)

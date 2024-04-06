@@ -19,6 +19,7 @@ import Following from "./components/networks/Following";
 import Followers from "./components/networks/Followers";
 import OthersProfile from "./pages/user/othersProfile/OthersProfile";
 import OthersPost from "./components/OthersPost/OthersPost";
+import OthersProfilePosts from "./components/othersProfilePost/OthersProfilePosts";
 
 function App() {
    const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
@@ -57,7 +58,7 @@ function App() {
                   </Route>
                   <Route path="/edit-profile" element={<EditProfile />} />
                   <Route path="/others-profile" element={<OthersProfile />}>
-                     <Route index element={<OthersPost />} />
+                     <Route index element={<OthersProfilePosts />} />
                   </Route>
                </Routes>
             </>

@@ -71,7 +71,11 @@ const Posts = ({ openModal }: any) => {
             toast(response?.payload?.message, {
                style: { backgroundColor: "#4caf50", color: "white" },
             });
-            dispatch(fetchAllposts());
+            if (pathname === "/profile") {
+               dispatch(fetchUsersPost(userId));
+            } else {
+               dispatch(fetchAllposts());
+            }
          } else {
             toast(response?.payload?.message, {
                style: { backgroundColor: "#ff6347", color: "#eeeeee" },

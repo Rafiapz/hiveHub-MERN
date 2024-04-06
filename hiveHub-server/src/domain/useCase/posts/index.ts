@@ -1,0 +1,5 @@
+export * from './ICreatePostUseCase'
+export * from './IDeletePostUseCase'
+export * from './IFindAllPostUseCase'
+export * from './IFindUsersPostUsecase'
+export * from './IUpdatePostUseCase'

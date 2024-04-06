@@ -22,13 +22,13 @@ export const DELETE_POST_URL = '/post/delete-post'
 
 export const EDIT_POST_URL = '/post/edit-post'
 
-export const LIKE_POST_URL = '/post/like-post'
+export const LIKE_POST_URL = '/likes/like-post'
 
-export const FETCH_ALL_COMMENTS_URL = '/post/fetch-all-comments'
+export const FETCH_ALL_COMMENTS_URL = '/comments/fetch-all-comments'
 
-export const POST_COMMENT_URL = '/post/post-comment'
+export const POST_COMMENT_URL = '/comments/post-comment'
 
-export const DELETE_COMMENT_URL = '/post/delete-comment'
+export const DELETE_COMMENT_URL = '/comments/delete-comment'
 
 export const CONNECTION_REQUEST_URL = '/networks/connection-request'
 
@@ -42,7 +42,7 @@ export const EDIT_USER_PASSWORD = '/auth/edit-user-password'
 
 export const FETCH_ALL_USERS = '/auth/fetch-all-users'
 
-export const EDIT_COMMENT_URL = '/post/edit-comment'
+export const EDIT_COMMENT_URL = '/comments/edit-comment'
 
 export const SEND_EMAIL_FOR_RESET_PASSWORD_URL = '/auth/send-confirmation-email-reset-password'
 
@@ -60,4 +60,4 @@ export const SEARCH_USER_URL = '/networks/search-user'
 
 export const FETCH_OTHER_USER_URL = '/auth/fetch-other-user'
 
-export const REPORT_POST_URL = '/post/report-post'
+export const REPORT_POST_URL = '/reports/report-post'

@@ -1,7 +1,7 @@
 import express, { Application } from 'express'
-import { authRoutes } from './auth/presentation/routes/authRoutes'
-import { postRoutes } from './posts/presentation/routes/postRoutes'
-import { authDependencies } from './_boot/dependencies'
+import { authRoutes } from './presentation/routes/authRoutes'
+import { postRoutes } from './presentation/routes/postRoutes'
+import { authDependencies, commentsDependencies, likesDependencies, reportsDependencies } from './_boot/dependencies'
 import { postDependencies } from './_boot/dependencies'
 import { networkDependencies } from './_boot/dependencies'
 import { connect } from './_boot/databse'
@@ -12,7 +12,10 @@ import session = require('express-session')
 import { Request, Response, NextFunction } from 'express'
 import cookieParser = require('cookie-parser')
 import nocache from 'nocache'
-import { networksRoutes } from './posts/presentation/routes/networks/networkRoutes'
+import { networksRoutes } from './presentation/routes/networkRoutes'
+import { commentsRoutes } from './presentation/routes/commentRoutes'
+import { likesRoutes } from './presentation/routes/likesRoutes'
+import { reportsRoutes } from './presentation/routes/reportRoutes'
 
 
 
@@ -46,6 +49,12 @@ app.use('/auth', authRoutes(authDependencies))
 app.use('/post', postRoutes(postDependencies))
 
 app.use('/networks', networksRoutes(networkDependencies))
+
+app.use('/comments', commentsRoutes(commentsDependencies))
+
+app.use('/likes', likesRoutes(likesDependencies))
+
+app.use('/reports', reportsRoutes(reportsDependencies))
 
 app.use((req: Request, res: Response) => {
     res.json({ message: 'not found' }).status(404)

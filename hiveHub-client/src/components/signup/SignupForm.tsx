@@ -114,9 +114,9 @@ function SignupForm() {
             </Link>
          </p>
          <div className="flex justify-center items-center ml-8">
-            <button className="bg-red-600 text-white py-2 px-4 rounded-lg mr-4">
+            {/* <button className="bg-red-600 text-white py-2 px-4 rounded-lg mr-4">
                <FontAwesomeIcon icon={faGoogle} /> Login with Google
-            </button>
+            </button> */}
          </div>
       </div>
    );

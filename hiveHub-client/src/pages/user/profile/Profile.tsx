@@ -5,6 +5,8 @@ import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import UnfollowModal from "../../../components/modal/UnfollowModal";
 import { useState } from "react";
+import CreatePostModal from "../../../components/modal/CreatePostModal";
+import EditPostModal from "../../../components/modal/EditPostModal";
 
 function Profile() {
    const [classs, setClasss] = useState({ posts: "font-bold underline underline-offset-2", following: "", followers: "" });
@@ -50,6 +52,8 @@ function Profile() {
          </div>
 
          <Outlet />
+         <CreatePostModal />
+         <EditPostModal />
          <Comments />
          <UnfollowModal />
          <RightSideBar />

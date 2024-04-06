@@ -46,6 +46,7 @@ const userSlice = createSlice({
                     state.user.auth.isAuth = true
                     state.user.auth.role = action.payload.userData.role
                     state.user.data = action.payload.userData
+                    state.user.userId = action?.payload?.userData?._id
                 }
             })
             .addCase(loginAction.fulfilled, (state, action) => {

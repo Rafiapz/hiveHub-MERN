@@ -20,7 +20,7 @@ function OthersProfile() {
 
          <Outlet />
          <Comments />
-         {/* <UnfollowModal /> */}
+
          <RightSideBar />
       </>
    );

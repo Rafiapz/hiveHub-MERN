@@ -34,7 +34,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
 
          formData.append("postId", postId);
 
-         dispatch(reportPost(formData)).then((reponse) => {
+         dispatch(reportPost(formData)).then((reponse: any) => {
             if (reponse?.payload?.status === "ok") {
                toast.success("Report submitted succefully");
             } else {
@@ -48,6 +48,9 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
 
    const afterOpenModal = () => {
       document.body.style.overflow = "hidden";
+   };
+   const afterCloseModal = () => {
+      document.body.style.overflow = "auto";
    };
 
    const options = [
@@ -67,6 +70,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
             onRequestClose={closeModal}
             contentLabel="Report Post Modal"
             onAfterOpen={afterOpenModal}
+            onAfterClose={afterCloseModal}
          >
             <h2 className="text-center text-lg font-semibold mb-4">Report Post</h2>
             <Formik initialValues={{ option: "", otherReason: "" }} onSubmit={handleSubmit} validationSchema={reportSchema}>

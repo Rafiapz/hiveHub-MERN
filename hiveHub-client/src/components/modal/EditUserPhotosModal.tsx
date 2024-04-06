@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { handleEditUserPhotosModal } from "../../store/slices/user/userSlice";
 import { editUserImages, fetchuser } from "../../store/actions/auth/userActions";
+import toast from "react-hot-toast";
 
 function EditUserPhotosModal() {
    const isOpen = useSelector((state: RootState) => state?.user?.editUserPhotosModal?.isOpen);
@@ -47,7 +48,10 @@ function EditUserPhotosModal() {
 
       if (image) {
          formData.append("image", image);
-         dispatch(editUserImages({ formData, type })).then(() => {
+         dispatch(editUserImages({ formData, type })).then((response) => {
+            toast(response?.payload?.message, {
+               style: { backgroundColor: "#4caf50", color: "white" },
+            });
             dispatch(fetchuser());
          });
       }

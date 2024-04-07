@@ -4,7 +4,6 @@ import EditPost from "../post/EditPost";
 
 function EditPostModal() {
    const isOpen = useSelector((state: RootState) => state.posts.editPostModal.isOpen);
-   console.log(isOpen);
 
    if (!isOpen) {
       document.body.style.overflow = "auto";

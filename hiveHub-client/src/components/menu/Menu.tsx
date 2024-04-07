@@ -8,7 +8,7 @@ function Menu() {
    const dispatch = useDispatch();
 
    return (
-      <div className="bg-gray-50 h-full w-80 fixed top-0 left-0 flex flex-col justify-between shadow-lg">
+      <div className="bg-gray-50 h-full w-72 fixed flex flex-col justify-between shadow-lg">
          <div className="p-4 flex flex-col space-y-4">
             <Link to="/" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                <FontAwesomeIcon icon={faHome} className="mr-2 text-gray-700" />
@@ -20,10 +20,10 @@ function Menu() {
                Notifications
             </a>
 
-            <a href="#" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
+            <Link to={"/messages"} className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                <FontAwesomeIcon icon={faEnvelope} className="mr-2 text-gray-700" />
                Messages
-            </a>
+            </Link>
 
             <a href="#" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                <FontAwesomeIcon icon={faBookmark} className="mr-2 text-gray-700" />

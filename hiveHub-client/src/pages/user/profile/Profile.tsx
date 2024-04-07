@@ -9,7 +9,7 @@ import CreatePostModal from "../../../components/modal/CreatePostModal";
 import EditPostModal from "../../../components/modal/EditPostModal";
 
 function Profile() {
-   const [classs, setClasss] = useState({ posts: "font-bold underline underline-offset-2", following: "", followers: "" });
+   const [classs, setClasss] = useState({ posts: "font-bold underline underline-offset-2", following: "", followers: "", likes: "", reports: "" });
 
    const handleClick = (position: string) => {
       setClasss((prev) => {
@@ -18,6 +18,8 @@ function Profile() {
             followers: "",
             posts: "",
             following: "",
+            likes: "",
+            reports: "",
             [position]: "font-bold underline underline-offset-2",
          };
       });
@@ -48,6 +50,20 @@ function Profile() {
                className={`px-2 py-1  text-xl rounded-md ${classs.followers} text-black  focus:outline-none `}
             >
                Followers
+            </Link>
+            <Link
+               onClick={() => handleClick("likes")}
+               to={"/profile/likes"}
+               className={`px-2 py-1  text-xl rounded-md ${classs.likes} text-black  focus:outline-none `}
+            >
+               Likes
+            </Link>
+            <Link
+               onClick={() => handleClick("reports")}
+               to={"/profile/reports"}
+               className={`px-2 py-1  text-xl rounded-md ${classs.reports} text-black  focus:outline-none `}
+            >
+               Reports
             </Link>
          </div>
 

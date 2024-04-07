@@ -28,7 +28,7 @@ const Comments: FC = () => {
       document.body.style.overflow = "auto";
       return;
    } else {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "none";
    }
 
    const handleCommentSubmit = (values: { comment: string }, { resetForm }: any) => {

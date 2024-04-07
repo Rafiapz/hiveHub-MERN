@@ -9,15 +9,16 @@ import { ILikesDependencies } from '../../application/interface/likes/IDependenc
 export const likesRoutes = (dependencies: ILikesDependencies) => {
 
     const {
-
         likePost,
-
+        fetchMylikes
     } = controllers(dependencies);
 
     const router = Router()
 
 
     router.route('/like-post/:postId').post(currentUser, likePost)
+
+    router.route('/fetch-my-likes').get(currentUser, fetchMylikes)
 
 
 

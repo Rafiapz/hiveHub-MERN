@@ -12,13 +12,11 @@ import { confirmationModalReducer } from "../../store/slices/user/userSlice";
 import { handleCommentModal, handleEditPostModal, handleReportPostId } from "../../store/slices/posts/postSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Posts = ({ openModal }: any) => {
+const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
    const dispatch = useDispatch<AppDispatch>();
    const loading = useSelector((state: RootState) => state.posts.posts.loading);
    const userId = useSelector((state: RootState) => state.user.user.userId);
    const [curPostId, setCurPostId] = useState<number | null>();
-   const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
-   const posts: any = useSelector((state: RootState) => state.posts.posts.data);
 
    const navigate = useNavigate();
 
@@ -28,19 +26,6 @@ const Posts = ({ openModal }: any) => {
    }>({ status: false, index: 0 });
 
    const { pathname } = useLocation();
-
-   useEffect(() => {
-      if (pathname === "/profile") {
-         dispatch(fetchUsersPost(userId));
-      } else {
-         dispatch(fetchAllposts()).then((data) => {
-            if (data?.payload?.status !== "ok")
-               toast(data?.payload?.message, {
-                  style: { backgroundColor: "#ff6347", color: "#eeeeee" },
-               });
-         });
-      }
-   }, []);
 
    const handleOptionsClick = (index: number) => {
       setShowOptions((prev) => {
@@ -117,12 +102,12 @@ const Posts = ({ openModal }: any) => {
          {loading ? (
             <Loading />
          ) : (
-            <>
+            <div className="">
                {posts?.map((item: any, i: number) => {
                   return (
                      <div
                         key={item?._id}
-                        className="bg-gray-50 w-1/2 p-4 shadow-lg mx-auto mt-2 relative"
+                        className="bg-gray-50 w-2/3 ml-10 p-8 shadow-lg mx-auto mt-2"
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
                         <div className="flex items-center justify-between mb-4 ">
@@ -132,14 +117,73 @@ const Posts = ({ openModal }: any) => {
                            >
                               <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full  h-8 w-10 mr-2" />
                               <p className="font-bold">{item?.userId.fullName}</p>
+                              <div className="">
+                                 <p className="text-sm font-bold ml-80 text-gray-500">
+                                    {new Date(item?.createdAt).toLocaleString("en-GB", {
+                                       day: "2-digit",
+                                       month: "2-digit",
+                                       year: "numeric",
+                                    })}
+                                 </p>
+                              </div>
                            </div>
-                           <p className="text-sm mr-20 font-bold text-gray-500">
-                              {new Date(item?.createdAt).toLocaleString("en-GB", {
-                                 day: "2-digit",
-                                 month: "2-digit",
-                                 year: "numeric",
-                              })}
-                           </p>
+
+                           <div className="flex">
+                              {showOptions?.status == true && showOptions?.index === i && (
+                                 <div className="  w-28 h-22 bg-blue-300  border border-gray-300 shadow-lg rounded-md">
+                                    <ul>
+                                       {userId === item?.userId?._id && (
+                                          <>
+                                             <li
+                                                onClick={() =>
+                                                   dispatch(
+                                                      handleEditPostModal({
+                                                         status: true,
+                                                         content: item?.content,
+                                                         media: {
+                                                            type: item?.media?.type,
+                                                            url: item?.media?.path,
+                                                         },
+                                                         _id: item?._id,
+                                                      })
+                                                   )
+                                                }
+                                                className="p-1 hover:bg-blue-500"
+                                             >
+                                                <button>Edit</button>
+                                             </li>
+                                             <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-blue-500">
+                                                <button>Delete</button>
+                                             </li>
+                                          </>
+                                       )}
+                                       {userId !== item?.userId?._id && (
+                                          <li
+                                             className="p-1 hover:bg-blue-500"
+                                             onClick={() => {
+                                                dispatch(handleReportPostId({ postId: item?._id }));
+                                                openModal();
+                                             }}
+                                          >
+                                             <button>Report</button>
+                                          </li>
+                                       )}
+                                    </ul>
+                                 </div>
+                              )}
+                              <div className="">
+                                 <div
+                                    onClick={(e) => {
+                                       e.stopPropagation(), handleOptionsClick(i);
+                                    }}
+                                    className=" flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
+                                 >
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
                         <p className="p-4">{item?.content}</p>
 
@@ -183,70 +227,11 @@ const Posts = ({ openModal }: any) => {
                            <div>
                               <FontAwesomeIcon icon={faBookmark} className="text-gray-500 size-7 cursor-pointer" />
                            </div>
-
-                           {/* Three dots menu */}
-
-                           <div className="absolute top-0 right-0 mt-2 mr-4">
-                              <div
-                                 onClick={(e) => {
-                                    e.stopPropagation(), handleOptionsClick(i);
-                                 }}
-                                 className="relative flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
-                              >
-                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                              </div>
-                           </div>
-
-                           {/* Options menu */}
-                           {showOptions?.status == true && showOptions?.index === i && (
-                              <div className="absolute top-1  right-4 w-28 h-22 bg-blue-300 mt-2 mr-4 border border-gray-300 shadow-lg rounded-md">
-                                 <ul>
-                                    {userId === item?.userId?._id && (
-                                       <>
-                                          <li
-                                             onClick={() =>
-                                                dispatch(
-                                                   handleEditPostModal({
-                                                      status: true,
-                                                      content: item?.content,
-                                                      media: {
-                                                         type: item?.media?.type,
-                                                         url: item?.media?.path,
-                                                      },
-                                                      _id: item?._id,
-                                                   })
-                                                )
-                                             }
-                                             className="p-1 hover:bg-blue-500"
-                                          >
-                                             <button>Edit</button>
-                                          </li>
-                                          <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-blue-500">
-                                             <button>Delete</button>
-                                          </li>
-                                       </>
-                                    )}
-                                    {userId !== item?.userId?._id && (
-                                       <li
-                                          className="p-1 hover:bg-blue-500"
-                                          onClick={() => {
-                                             dispatch(handleReportPostId({ postId: item?._id }));
-                                             openModal();
-                                          }}
-                                       >
-                                          <button>Report</button>
-                                       </li>
-                                    )}
-                                 </ul>
-                              </div>
-                           )}
                         </div>
                      </div>
                   );
                })}
-            </>
+            </div>
          )}
          <ConfirmationModal curId={curPostId} handleDelete={handleDelete} />
       </>

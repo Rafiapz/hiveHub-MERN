@@ -1,31 +1,29 @@
-import React from 'react'
+import React from "react";
 
 function Story() {
+   const stories = [
+      { name: "Add Story", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Jane", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Alex", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Emma", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Michael", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Sophia", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Oliver", image: "https://source.unsplash.com/150x150/?nature" },
+      { name: "Ella", image: "https://source.unsplash.com/150x150/?nature" },
+   ];
 
-    const stories = [
-
-        { name: "Add Story", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Jane", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Alex", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Emma", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Michael", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Sophia", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Oliver", image: "https://source.unsplash.com/150x150/?nature" },
-        { name: "Ella", image: "https://source.unsplash.com/150x150/?nature" }
-      ];
-    
-      return (
-        <div className="flex items-center justify-center p-4 bg-gray-50 ">
-          {stories.map((story, index) => (
+   return (
+      <div className="flex items-center justify-center p-4 bg-gray-50 w-2/3 ml-10 ">
+         {stories.map((story, index) => (
             <div key={index} className="flex flex-col items-center justify-center m-2">
-              <div className="rounded-full border-2 border-blue-500 p-1">
-                <img src={story.image} alt={story.name} className="rounded-full h-16 w-16" />
-              </div>
-              <p className="mt-2 text-sm">{story.name}</p>
+               <div className="rounded-full border-2 border-blue-500 p-1">
+                  <img src={story.image} alt={story.name} className="rounded-full h-16 w-16" />
+               </div>
+               <p className="mt-2 text-sm">{story.name}</p>
             </div>
-          ))}
-        </div>
-      );
+         ))}
+      </div>
+   );
 }
 
-export default Story
+export default Story;

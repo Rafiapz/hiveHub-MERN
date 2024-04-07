@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, EDIT_COMMENT_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL, REPORT_POST_URL } from "../../../utils/endPoint"
+import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, EDIT_COMMENT_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_MY_LIKES_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL, REPORT_POST_URL } from "../../../utils/endPoint"
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils"
 import apiClient from "../../../utils/axios"
 
@@ -105,6 +105,7 @@ export const fetchAllCommentsOfPost = createAsyncThunk('/comments/fetch-all-comm
     try {
 
         const response = await apiClient.get(`${FETCH_ALL_COMMENTS_URL}/${id}`)
+        console.log(response.data);
 
         return response.data
 
@@ -180,6 +181,20 @@ export const reportPost = createAsyncThunk('/reports/report-post', async (form: 
     try {
 
         const response = await apiClient.post(`${REPORT_POST_URL}`, form, jsonConfig)
+        return response.data
+
+    } catch (error: any) {
+        throw new Error(error)
+    }
+})
+
+export const fetchUsersLikedPosts = createAsyncThunk('/likes/fetch-my-likes', async () => {
+
+    try {
+
+        const response = await apiClient.get(FETCH_MY_LIKES_URL)
+
+
         return response.data
 
     } catch (error: any) {

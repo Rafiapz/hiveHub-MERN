@@ -61,3 +61,5 @@ export const SEARCH_USER_URL = '/networks/search-user'
 export const FETCH_OTHER_USER_URL = '/auth/fetch-other-user'
 
 export const REPORT_POST_URL = '/reports/report-post'
+
+export const FETCH_MY_LIKES_URL = '/likes/fetch-my-likes'

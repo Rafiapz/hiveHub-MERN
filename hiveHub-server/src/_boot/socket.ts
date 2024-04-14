@@ -1,6 +1,41 @@
 import { Server } from 'http'
 import { Server as SocketIOServer, Socket } from 'socket.io'
-import cors from 'cors'
+
+
+let users: any = []
+
+const addUser = (userId: any, socketId: any) => {
+
+    let already
+
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].userId === userId) {
+            already = true;
+            break
+        }
+    }
+
+    if (!already) {
+        users.push({ userId, socketId });
+    }
+
+};
+
+const removeUser = (socketId: any) => {
+    users = users.filter((user: any) => user.socketId !== socketId);
+};
+
+const getUser = (userId: any) => {
+
+    for (let i = 0; i < users.length; i++) {
+
+        if (users[i].userId === userId) {
+            return users[i]
+        }
+    }
+
+
+};
 
 export const initializeSocketIO = (server: Server) => {
 
@@ -20,21 +55,35 @@ export const initializeSocketIO = (server: Server) => {
 
         io.on('connection', (socket: Socket) => {
 
+            socket.on("addUser", (userId) => {
+                addUser(userId, socket.id);
+                io.emit("getUsers", users);
+            });
+
             socket.on('join_room', (data) => {
                 socket.join(data)
             })
 
 
-            socket.on('send_message', (data: any) => {
-                console.log(data);
+            socket.on('sendMessage', ({ senderId, receiverId, message }) => {
 
-                socket.broadcast.emit('recieve_message', data)
+                const user = getUser(receiverId);
+                console.log(user);
+
+                io.to(user.socketId).emit("recieveMessage", {
+                    senderId,
+                    message,
+                });
+
+
 
             });
 
-            socket.on('disconnect', () => {
-
-            })
+            socket.on("disconnect", () => {
+                console.log("a user disconnected!");
+                removeUser(socket.id);
+                io.emit("getUsers", users);
+            });
 
         })
 

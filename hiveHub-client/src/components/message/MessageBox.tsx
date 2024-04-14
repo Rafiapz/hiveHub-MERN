@@ -6,17 +6,37 @@ import { faComment, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
 import { fetchConversations } from "../../service/api";
+import { connect, io } from "socket.io-client";
+import { newMessage } from "../../store/slices/messages/messagesSlice";
+const socket = io("http://localhost:7700");
 
 const MessageBox: FC = () => {
-   const users: any = useSelector((state: RootState) => state?.user?.allUsers?.data);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const [curChat, setCurChat] = useState<any>(null);
    const [conversations, setConversations] = useState<any>([]);
-   const messages: any = useSelector((state: RootState) => state?.messages?.messages);
-   const [value, setValue] = useState<string>("");
+   // const messages: string[] = useSelector((state: RootState) => state?.messages?.messages);
+   const [messages, setMessages] = useState<any>([]);
    const scrollRef = useRef<any>();
-
    const dispatch = useDispatch<AppDispatch>();
+   const [message, setMessage] = useState<string>("");
+   const [arrivalMessage, setArrivalMessage] = useState<any>(null);
+   const [onlineUsers, setOnlineUsers] = useState<any>([]);
+
+   useEffect(() => {
+      socket.on("recieveMessage", (data: any) => {
+         setArrivalMessage({
+            message: data?.message,
+            createdAt: Date.now(),
+            senderId: data?.senderId,
+         });
+      });
+   }, [socket]);
+
+   useEffect(() => {
+      if (curChat?.members[0]?._id === arrivalMessage?.senderId || curChat?.members[1]?._id === arrivalMessage?.senderId) {
+         setMessages((prev: any) => [...prev, arrivalMessage]);
+      }
+   }, [arrivalMessage]);
 
    useEffect(() => {
       fetchConversations(userId || "").then((response: any) => {
@@ -26,13 +46,21 @@ const MessageBox: FC = () => {
 
    useEffect(() => {
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-      console.log("called scroll");
    }, [messages]);
+
+   useEffect(() => {
+      socket.emit("addUser", userId);
+      socket.on("getUsers", (users) => {
+         setOnlineUsers(users);
+      });
+   }, [userId]);
 
    const handleSelectConversation = (chat: any) => {
       setCurChat(chat);
 
-      dispatch(fetchChats(chat?._id));
+      dispatch(fetchChats(chat?._id)).then((response) => {
+         setMessages(response?.payload?.data);
+      });
 
       // const form = new FormData();
 
@@ -42,18 +70,39 @@ const MessageBox: FC = () => {
       // dispatch(createConversation(form));
    };
 
-   const sendMessage = () => {
-      // socket.emit("send_message", { message });
+   const handleSubmit = (event: any) => {
+      event.preventDefault();
+
+      // const receiverId = curChat.members.find((member: any) => member !== userId);
+
+      let receiverId;
+
+      if (curChat?.members[0]._id === userId) {
+         receiverId = curChat.members[1]._id;
+      } else {
+         receiverId = curChat.members[0]._id;
+      }
+
+      if (message) {
+         socket.emit("sendMessage", {
+            senderId: userId,
+            receiverId,
+            message,
+         });
+
+         setMessage("");
+      }
 
       const form = new FormData();
 
-      form.append("message", value);
+      form.append("message", message);
       form.append("senderId", userId || "");
       form.append("conversationId", curChat?._id);
       dispatch(createMessage(form)).then((response) => {
          if (response?.payload?.status === "ok") {
-            dispatch(fetchChats(curChat?._id));
-            setValue("");
+            dispatch(fetchChats(curChat?._id)).then((response: any) => {
+               setMessages(response?.payload?.data);
+            });
          }
       });
    };
@@ -111,8 +160,8 @@ const MessageBox: FC = () => {
                         <h1 className="ml-2">{curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}</h1>
                      </div>
                      <div className="overflow-y-auto flex-grow">
-                        {messages?.map((ob: any) => (
-                           <div key={ob?._id} ref={scrollRef}>
+                        {messages?.map((ob: any, i: number) => (
+                           <div key={i + "message"} ref={scrollRef}>
                               <Chat message={ob} own={ob?.senderId === userId} />
                            </div>
                         ))}
@@ -122,10 +171,10 @@ const MessageBox: FC = () => {
                            type="text"
                            className="w-full p-2 border border-black rounded-md focus:outline-none"
                            placeholder="Type your message here"
-                           value={value}
-                           onChange={(e) => setValue(e?.target?.value)}
+                           value={message}
+                           onChange={(e) => setMessage(e?.target?.value)}
                         />
-                        <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
+                        <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
                            Send
                         </button>
                      </div>

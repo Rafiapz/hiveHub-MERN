@@ -63,3 +63,11 @@ export const FETCH_OTHER_USER_URL = '/auth/fetch-other-user'
 export const REPORT_POST_URL = '/reports/report-post'
 
 export const FETCH_MY_LIKES_URL = '/likes/fetch-my-likes'
+
+export const CREATE_CONVERSATION_URL = '/chats/create-conversation'
+
+export const CREATE_MESSAGE_URL = '/chats/create-message'
+
+export const FETCH_CONVERSATIONS_URL = '/chats/fetch-conversations'
+
+export const FETCH_MESSAGES_URL = '/chats/fetch-messages'

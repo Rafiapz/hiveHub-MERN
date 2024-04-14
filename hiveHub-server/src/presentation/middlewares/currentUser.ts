@@ -10,6 +10,7 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
 
         const userToken = req?.cookies?.userToken
 
+
         if (userToken) {
 
             const user: any = verifyToken(userToken)
@@ -23,7 +24,6 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
 
 
     } catch (error: any) {
-        console.log(error.message);
 
         res.json({ status: 'failed', message: error.message })
 

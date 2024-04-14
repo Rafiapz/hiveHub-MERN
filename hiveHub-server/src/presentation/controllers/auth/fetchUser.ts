@@ -12,6 +12,7 @@ export const fetchUserController = (dependencies: IDependencies) => {
         try {
 
 
+
             const token = req.cookies.userToken
 
 
@@ -25,6 +26,9 @@ export const fetchUserController = (dependencies: IDependencies) => {
                 } else {
                     throw new Error('User not authorized')
                 }
+            } else {
+                throw new Error("Please login and try again");
+
             }
 
         } catch (error: any) {

@@ -18,14 +18,14 @@ export const loginController = (dependencies: IDependencies) => {
         throw new Error('Invalid email or password')
 
       } else {
-        console.log(req?.body?.password);
 
         const status = await comparePassword(req?.body?.password, user?.password)
 
         if (status) {
           const token = genereateToken({ id: user?._id, email: user?.email })
           const userData = await findOneUserUseCase(dependencies).execute({ email: user.email })
-          res.cookie('userToken', token, { maxAge: 1000 * 60 * 60, httpOnly: true })
+
+          res.cookie('userToken', token, { maxAge: 1000 * 60 * 60, httpOnly: true, })
           res.status(200).json({ status: 'ok', message: 'success', userData })
         } else {
 

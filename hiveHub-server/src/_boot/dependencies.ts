@@ -22,6 +22,11 @@ import { IReportsDependencies } from '../application/interface/reports/IDependen
 import * as reportsUseCases from '../application/useCase/reports'
 import * as reportsRepositories from '../infrastructure/database/repositories/reports'
 
+import { IChatsDependencies } from '../application/interface/chats/IDependencies'
+import * as chatsUseCases from '../application/useCase/chats'
+import * as chatsRepositories from '../infrastructure/database/repositories/chats'
+
+
 
 
 export const authDependencies: IDependencies = { repositories, useCases }
@@ -36,4 +41,4 @@ export const likesDependencies: ILikesDependencies = { likesRepositories, likesU
 
 export const reportsDependencies: IReportsDependencies = { reportsRepositories, reportsUseCases }
 
-
+export const chatsDependencies: IChatsDependencies = { chatsRepositories, chatsUseCases }

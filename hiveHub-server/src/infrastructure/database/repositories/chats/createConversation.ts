@@ -7,7 +7,7 @@ export const createConversation = async (data: ConversationEntity) => {
 
     try {
 
-        const result = await conversation.create(data)
+        const result = (await conversation.create(data)).populate('members')
 
         return result
 

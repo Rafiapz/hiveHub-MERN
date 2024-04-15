@@ -60,30 +60,32 @@ export const initializeSocketIO = (server: Server) => {
                 io.emit("getUsers", users);
             });
 
-            socket.on('join_room', (data) => {
-                socket.join(data)
-            })
-
 
             socket.on('sendMessage', ({ senderId, receiverId, message }) => {
 
                 const user = getUser(receiverId);
-                console.log(user);
 
-                io.to(user.socketId).emit("recieveMessage", {
-                    senderId,
-                    message,
-                });
+                if (user) {
+                    io.to(user.socketId).emit("recieveMessage", {
+                        senderId,
+                        message,
+                    });
 
-
-
+                }
             });
 
             socket.on("disconnect", () => {
-                console.log("a user disconnected!");
                 removeUser(socket.id);
                 io.emit("getUsers", users);
             });
+
+            socket.on('callUser', ({ userToCall, signalData, from, name }: any) => {
+                io.to(userToCall).emit('callUser', { signal: signalData, from, name })
+            })
+
+            socket.on('answerCall', (data: any) => {
+                io.to(data.to).emit('callAccepted', data.signal)
+            })
 
         })
 

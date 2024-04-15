@@ -8,6 +8,8 @@ import { createConversation, createMessage, fetchChats } from "../../store/actio
 import { fetchConversations } from "../../service/api";
 import { connect, io } from "socket.io-client";
 import { newMessage } from "../../store/slices/messages/messagesSlice";
+import NewMessage from "../newMessage/NewMessage";
+import VideoCall from "../videoCall/VideoCall";
 const socket = io("http://localhost:7700");
 
 const MessageBox: FC = () => {
@@ -21,6 +23,7 @@ const MessageBox: FC = () => {
    const [message, setMessage] = useState<string>("");
    const [arrivalMessage, setArrivalMessage] = useState<any>(null);
    const [onlineUsers, setOnlineUsers] = useState<any>([]);
+   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
    useEffect(() => {
       socket.on("recieveMessage", (data: any) => {
@@ -39,9 +42,7 @@ const MessageBox: FC = () => {
    }, [arrivalMessage]);
 
    useEffect(() => {
-      fetchConversations(userId || "").then((response: any) => {
-         setConversations(response?.data?.conversations);
-      });
+      handleFetchConversations();
    }, [userId]);
 
    useEffect(() => {
@@ -61,19 +62,10 @@ const MessageBox: FC = () => {
       dispatch(fetchChats(chat?._id)).then((response) => {
          setMessages(response?.payload?.data);
       });
-
-      // const form = new FormData();
-
-      // form.append("senderId", userId || "");
-      // form.append("recieverId", chat?.members[1]?._id);
-
-      // dispatch(createConversation(form));
    };
 
    const handleSubmit = (event: any) => {
       event.preventDefault();
-
-      // const receiverId = curChat.members.find((member: any) => member !== userId);
 
       let receiverId;
 
@@ -107,6 +99,20 @@ const MessageBox: FC = () => {
       });
    };
 
+   const openModal = () => {
+      setModalIsOpen(true);
+   };
+
+   const closeModal = () => {
+      setModalIsOpen(false);
+   };
+
+   const handleFetchConversations = () => {
+      fetchConversations(userId || "").then((response: any) => {
+         setConversations(response?.data?.conversations);
+      });
+   };
+
    return (
       <div className="bg-white ml-0  w-full sm:w-3/5 sm:ml-72 h-96 flex flex-col">
          <div className="flex w-full h-10 mt-5 justify-between">
@@ -118,10 +124,18 @@ const MessageBox: FC = () => {
                   <FontAwesomeIcon icon={faVideo} className="mr-2" />
                   Video Call
                </button>
-               <button className="bg-blue-700 text-white px-4 py-2 rounded">
+               <button onClick={openModal} className="bg-blue-700 text-white px-4 py-2 rounded">
                   <FontAwesomeIcon icon={faComment} className="mr-2" />
-                  Write Message
+                  new Message
                </button>
+
+               <NewMessage
+                  modalIsOpen={modalIsOpen}
+                  closeModal={closeModal}
+                  handleFetchConversations={handleFetchConversations}
+                  handleSelectConversation={handleSelectConversation}
+                  conversations={conversations}
+               />
             </div>
          </div>
          <div className="flex  flex-grow">
@@ -183,9 +197,15 @@ const MessageBox: FC = () => {
             ) : (
                <>
                   {" "}
-                  <span className="noConversationText">Open a conversation to start a chat.</span>
+                  <span className=" text-5xl text-gray-300 cursor-default ">Open a conversation to start a chat.</span>
                </>
             )}
+            {/* <div className="chatOnline">
+               <div className="chatOnlineWrapper">
+                  <ChatOnline onlineUsers={onlineUsers} currentId={user._id} setCurrentChat={setCurrentChat} />
+               </div>
+            </div> */}
+            <VideoCall socket={socket} />
          </div>
       </div>
    );

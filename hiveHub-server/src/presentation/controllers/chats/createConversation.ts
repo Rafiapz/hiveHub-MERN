@@ -13,12 +13,12 @@ export const createConversationController = (dependencies: IChatsDependencies) =
 
 
             const data: ConversationEntity = {
-                members: [req?.body?.senderId, req?.body?.recieverId]
+                members: [req?.body?.senderId, req?.body?.receiverId]
             }
 
-            createConversationUseCase(dependencies).execute(data)
+            const conversation = await createConversationUseCase(dependencies).execute(data)
 
-            res.json({ status: 'ok' })
+            res.json({ status: 'ok', data: conversation })
         } catch (error: any) {
             res.status(error.status || 500)
         }

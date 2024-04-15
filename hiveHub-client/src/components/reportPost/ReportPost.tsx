@@ -68,7 +68,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
             className="bg-white w-1/3 py-4 shadow-xl rounded-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
-            contentLabel="Report Post Modal"
+            contentLabel="new message"
             onAfterOpen={afterOpenModal}
             onAfterClose={afterCloseModal}
          >

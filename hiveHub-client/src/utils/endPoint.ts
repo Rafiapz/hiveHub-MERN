@@ -71,3 +71,13 @@ export const CREATE_MESSAGE_URL = '/chats/create-message'
 export const FETCH_CONVERSATIONS_URL = '/chats/fetch-conversations'
 
 export const FETCH_MESSAGES_URL = '/chats/fetch-messages'
+
+export const ADMIN_FIND_ALL_USERS_URL = '/admin/find-all-users'
+
+export const BLOCK_UNBLOCK_USER_URL = '/admin/block-unblock-user'
+
+export const GET_ONLINE_USERS_URL = '/admin/get-online-users'
+
+export const UPLOAD_STORY_URL = '/story/create-story'
+
+export const FETCH_ALL_STORIES = '/story/fetch-all-stories'

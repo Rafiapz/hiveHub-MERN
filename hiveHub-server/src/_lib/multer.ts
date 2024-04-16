@@ -12,26 +12,28 @@ const storage = multer.diskStorage({
 
 
 const fileFilter = (req: any, file: any, callback: any) => {
-  
 
-  if (file.mimetype.startsWith('image') ||file.mimetype.startsWith('video') ) 
+
+  if (file.mimetype.startsWith('image') || file.mimetype.startsWith('video'))
     callback(null, true);
-  else 
+  else
     callback(null, false);
-  
+
 }
 
-export const uploadSingleFile = (req: any, res: any,next:any) => {
- 
+export const uploadSingleFile = (req: any, res: any, next: any) => {
+
   try {
-       
-    let type:string=''
-    if(req.params.type==='image')
-      type='image'
-    else if(req.params.type==='video')
-    type='video'
-    
-   const upload= multer({
+
+
+
+    let type: string = ''
+    if (req.params.type === 'image')
+      type = 'image'
+    else if (req.params.type === 'video')
+      type = 'video'
+
+    const upload = multer({
       storage: storage,
       limits: { fileSize: 10 * 1024 * 1024 },
       fileFilter: fileFilter
@@ -39,18 +41,21 @@ export const uploadSingleFile = (req: any, res: any,next:any) => {
 
     upload(req, res, (err: any) => {
       if (err) {
-        
-        throw new Error( err.message)
+
+        throw new Error(err)
       }
-            
+
+
+
+
       next()
     })
-    
-    
-  } catch (error:any) {
-    console.log(error);
-    
-    res.json({status:'failed',message:error.message})
+
+
+  } catch (error: any) {
+    console.log(error.message);
+
+    // res.json({ status: 'failed', message: error.message })
   }
 }
 

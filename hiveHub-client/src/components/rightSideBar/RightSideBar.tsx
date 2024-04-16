@@ -1,19 +1,22 @@
 import Searchbox from "../search/Searchbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { logoutAction } from "../../store/actions/auth/userActions";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 import Users from "../users/Users";
 import { FC } from "react";
 
 const RightSideBar: FC = () => {
+   const socket: any = useSelector((state: RootState) => state?.messages?.socket);
    const dispatch = useDispatch<AppDispatch>();
 
    const { pathname } = useLocation();
+
    const handleLogout = () => {
       dispatch(logoutAction());
+      socket.disconnect();
    };
 
    return (

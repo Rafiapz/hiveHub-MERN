@@ -1,7 +1,7 @@
 import express, { Application } from 'express'
 import { authRoutes } from './presentation/routes/authRoutes'
 import { postRoutes } from './presentation/routes/postRoutes'
-import { authDependencies, chatsDependencies, commentsDependencies, likesDependencies, reportsDependencies } from './_boot/dependencies'
+import { adminDependencies, authDependencies, chatsDependencies, commentsDependencies, likesDependencies, reportsDependencies, storyDependencies } from './_boot/dependencies'
 import { postDependencies } from './_boot/dependencies'
 import { networkDependencies } from './_boot/dependencies'
 import { connect } from './_boot/databse'
@@ -19,6 +19,8 @@ import { reportsRoutes } from './presentation/routes/reportRoutes'
 import http from 'http'
 import { initializeSocketIO } from './_boot/socket'
 import { chatRoutes } from './presentation/routes/chatRoutes'
+import { adminRoutes } from './presentation/routes/adminRoutes'
+import { storyRoutes } from './presentation/routes/storyRoutes'
 
 
 
@@ -69,6 +71,10 @@ app.use('/likes', likesRoutes(likesDependencies))
 app.use('/reports', reportsRoutes(reportsDependencies))
 
 app.use('/chats', chatRoutes(chatsDependencies))
+
+app.use('/admin', adminRoutes(adminDependencies))
+
+app.use('/story', storyRoutes(storyDependencies))
 
 app.use((req: Request, res: Response) => {
     res.json({ message: 'not found' }).status(404)

@@ -46,10 +46,6 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
       });
    };
 
-   const afterOpenModal = () => {};
-
-   const afterCloseModal = () => {};
-
    return (
       <div>
          <Modal
@@ -59,8 +55,6 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Report Post Modal"
-            onAfterOpen={afterOpenModal}
-            onAfterClose={afterCloseModal}
          >
             <div className="flex flex-wrap justify-center  overflow-y-auto">
                {users?.map((user: any) => (

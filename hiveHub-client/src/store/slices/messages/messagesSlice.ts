@@ -8,7 +8,8 @@ import { fetchChats } from "../../actions/message/messageActions";
 const initialState = {
 
     conversations: [],
-    messages: []
+    messages: [],
+    socket: null
 
 }
 
@@ -18,6 +19,9 @@ const messagesSlice = createSlice({
     reducers: {
         newMessage: (state, action) => {
             state.messages = action?.payload?.data
+        },
+        setSocket: (state, action) => {
+            state.socket = action?.payload?.socket
         }
     },
     extraReducers: (builder) => {
@@ -29,7 +33,7 @@ const messagesSlice = createSlice({
 })
 
 
-export const { newMessage } = messagesSlice.actions;
+export const { newMessage, setSocket } = messagesSlice.actions;
 
 
 

@@ -4,6 +4,11 @@ import { Server as SocketIOServer, Socket } from 'socket.io'
 
 let users: any = []
 
+export const getOnlineUsers = () => {
+
+    return users
+}
+
 const addUser = (userId: any, socketId: any) => {
 
     let already
@@ -80,6 +85,8 @@ export const initializeSocketIO = (server: Server) => {
             });
 
             socket.on('callUser', ({ userToCall, signalData, from, name }: any) => {
+                console.log('clled');
+
                 io.to(userToCall).emit('callUser', { signal: signalData, from, name })
             })
 

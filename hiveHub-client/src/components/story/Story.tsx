@@ -1,29 +1,54 @@
-import React from "react";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { FC, useEffect, useState } from "react";
+import AddStory from "../addStory/AddStory";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { fetchAllStories } from "../../store/actions/post/postActions";
 
-function Story() {
-   const stories = [
-      { name: "Add Story", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Jane", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Alex", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Emma", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Michael", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Sophia", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Oliver", image: "https://source.unsplash.com/150x150/?nature" },
-      { name: "Ella", image: "https://source.unsplash.com/150x150/?nature" },
-   ];
+const Story: FC<any> = ({ setView }: any) => {
+   const [modalIsOpen, setModalIsOpen] = useState(false);
+   const stories: any = useSelector((state: RootState) => state?.posts?.stories?.data);
+
+   const dispatch = useDispatch<AppDispatch>();
+
+   useEffect(() => {
+      dispatch(fetchAllStories());
+   });
+
+   const closeModal = () => {
+      setModalIsOpen(false);
+   };
 
    return (
       <div className="flex items-center justify-center p-4 bg-gray-50 w-2/3 ml-10 ">
-         {stories.map((story, index) => (
-            <div key={index} className="flex flex-col items-center justify-center m-2">
-               <div className="rounded-full border-2 border-blue-500 p-1">
-                  <img src={story.image} alt={story.name} className="rounded-full h-16 w-16" />
-               </div>
-               <p className="mt-2 text-sm">{story.name}</p>
+         <li className="flex flex-col items-center space-y-2">
+            <div className="bg-gradient-to-tr from-yellow-500 to-pink-600 rounded-full p-1 relative">
+               <a className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300" href="#">
+                  <img className="h-24 w-24 rounded-full" src="https://i.ibb.co/yhh0Ljy/profile.jpg" alt="image" />
+               </a>
+               <button
+                  onClick={() => setModalIsOpen(true)}
+                  className="transition duration-500 absolute bottom-0 right-0 bg-blue-700 h-8 w-8 rounded-full text-white text-2xl font-semibold border-4 border-white flex justify-center items-center hover:bg-blue-900"
+               >
+                  +
+               </button>
             </div>
+            <p>you</p>
+         </li>
+         <AddStory modalIsOpen={modalIsOpen} closeModal={closeModal} />
+         {stories?.map((story: any) => (
+            <li className="flex flex-col items-center space-y-2" onClick={() => setView()}>
+               <div className="bg-gradient-to-tr from-yellow-500 to-pink-600 rounded-full p-1">
+                  <a className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300" href="#">
+                     <img className="h-24 w-24 rounded-full" src={story?.media} alt="image" />
+                  </a>
+               </div>
+               <p>{story?.userId?.fullName}</p>
+            </li>
          ))}
       </div>
    );
-}
+};
 
 export default Story;

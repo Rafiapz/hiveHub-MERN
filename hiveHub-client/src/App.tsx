@@ -22,10 +22,12 @@ import OthersPost from "./components/OthersPost/OthersPost";
 import OthersProfilePosts from "./components/othersProfilePost/OthersProfilePosts";
 import UsersLikes from "./components/likes/UsersLikes";
 import Messages from "./pages/message/Messages";
+import Dashboard from "./pages/admin/dashboard/Dashboard";
+import BlockedUser from "./components/blockedUser/BlockedUser";
 
 function App() {
-   const auth = useSelector((state: RootState) => state.user.user.auth.isAuth);
-   const user = useSelector((state: RootState) => state.user.user.auth.role);
+   const auth = useSelector((state: RootState) => state?.user?.user?.auth?.isAuth);
+   const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
    const dispatch = useDispatch<AppDispatch>();
 
    useEffect(() => {
@@ -47,31 +49,35 @@ function App() {
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/others-profile" element={<Login />} />
-               </Routes>
-            </>
-         ) : user === "user" ? (
-            <>
-               <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/profile" element={<Profile />}>
-                     <Route index element={<UserPosts />} />
-                     <Route path="/profile/following" element={<Following />} />
-                     <Route path="/profile/followers" element={<Followers />} />
-                     <Route path="/profile/likes" element={<UsersLikes />} />
-                     <Route path="/profile/reports" element={<Followers />} />
-                  </Route>
-                  <Route path="/edit-profile" element={<EditProfile />} />
-                  <Route path="/others-profile" element={<OthersProfile />}>
-                     <Route index element={<OthersProfilePosts />} />
-                  </Route>
+                  <Route path="/dashboard" element={<Login />} />
+                  <Route path="/messages" element={<Login />} />
                </Routes>
             </>
          ) : (
-            <></>
+            <>
+               {userData && userData?.isBlocked !== true ? (
+                  <Routes>
+                     <Route path="/" element={<Home />} />
+                     <Route path="/messages" element={<Messages />} />
+                     <Route path="/profile" element={<Profile />}>
+                        <Route index element={<UserPosts />} />
+                        <Route path="/profile/following" element={<Following />} />
+                        <Route path="/profile/followers" element={<Followers />} />
+                        <Route path="/profile/likes" element={<UsersLikes />} />
+                        <Route path="/profile/reports" element={<Followers />} />
+                     </Route>
+                     <Route path="/edit-profile" element={<EditProfile />} />
+                     <Route path="/others-profile" element={<OthersProfile />}>
+                        <Route index element={<OthersProfilePosts />} />
+                     </Route>
+                     <Route path="/dashboard" element={<Dashboard />} />
+                  </Routes>
+               ) : (
+                  <BlockedUser />
+               )}
+            </>
          )}
       </>
    );
 }
-
 export default App;

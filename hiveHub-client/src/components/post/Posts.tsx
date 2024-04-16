@@ -11,6 +11,7 @@ import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
 import { handleCommentModal, handleEditPostModal, handleReportPostId } from "../../store/slices/posts/postSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { format } from "timeago.js";
 
 const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
    const dispatch = useDispatch<AppDispatch>();
@@ -107,7 +108,7 @@ const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
                   return (
                      <div
                         key={item?._id}
-                        className="bg-gray-50 w-2/3 ml-10 p-8 shadow-lg mx-auto mt-2"
+                        className="bg-gray-50 w-2/3 ml-10 p-8 h-auto shadow-lg mx-auto mt-2"
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
                         <div className="flex items-center justify-between mb-4 ">
@@ -118,19 +119,13 @@ const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
                               <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full  h-8 w-10 mr-2" />
                               <p className="font-bold">{item?.userId.fullName}</p>
                               <div className="">
-                                 <p className="text-sm font-bold ml-80 text-gray-500">
-                                    {new Date(item?.createdAt).toLocaleString("en-GB", {
-                                       day: "2-digit",
-                                       month: "2-digit",
-                                       year: "numeric",
-                                    })}
-                                 </p>
+                                 <p className="text-sm ml-10 font-bold  text-gray-500">{format(item?.createdAt)}</p>
                               </div>
                            </div>
 
                            <div className="flex">
                               {showOptions?.status == true && showOptions?.index === i && (
-                                 <div className="  w-28 h-22 bg-blue-300  border border-gray-300 shadow-lg rounded-md">
+                                 <div className="z-10  w-28 h-22 bg-blue-300  border border-gray-300 shadow-lg rounded-md">
                                     <ul>
                                        {userId === item?.userId?._id && (
                                           <>
@@ -185,7 +180,7 @@ const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
                               </div>
                            </div>
                         </div>
-                        <p className="p-4">{item?.content}</p>
+                        <p className="p-4 ">{item?.content}</p>
 
                         {item?.media?.type === "image" && <img src={`${item?.media?.path}`} alt="Posted" className="mb-4 rounded-lg w-full" />}
                         {item?.media?.type === "video" && <video controls src={`${item?.media?.path}`}></video>}

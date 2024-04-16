@@ -26,6 +26,14 @@ import { IChatsDependencies } from '../application/interface/chats/IDependencies
 import * as chatsUseCases from '../application/useCase/chats'
 import * as chatsRepositories from '../infrastructure/database/repositories/chats'
 
+import { IAdminDependencies } from '../application/interface/admin/IDependencies'
+import * as adminUseCases from '../application/useCase/admin'
+import * as adminRepositories from '../infrastructure/database/repositories/admin'
+
+import { IStoryDependencies } from '../application/interface/story/IDependencies'
+import * as storyUseCases from '../application/useCase/story'
+import * as storyRepositories from '../infrastructure/database/repositories/story'
+
 
 
 
@@ -42,3 +50,7 @@ export const likesDependencies: ILikesDependencies = { likesRepositories, likesU
 export const reportsDependencies: IReportsDependencies = { reportsRepositories, reportsUseCases }
 
 export const chatsDependencies: IChatsDependencies = { chatsRepositories, chatsUseCases }
+
+export const adminDependencies: IAdminDependencies = { adminRepositories, adminUseCases }
+
+export const storyDependencies: IStoryDependencies = { storyRepositories, storyUseCases }

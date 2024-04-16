@@ -1,11 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faBell, faEnvelope, faBookmark, faUsers, faUser, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { faHome, faBell, faEnvelope, faBookmark, faUsers, faUser, faPlus, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
 import { handleCreatePostModal } from "../../store/slices/posts/postSlice";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { RootState } from "../../store/store";
 
 function Menu() {
+   const role = useSelector((state: RootState) => state.user.user.auth.role);
    const dispatch = useDispatch();
 
    const [showSidebar, setShowSidebar] = useState(true);
@@ -23,6 +25,13 @@ function Menu() {
          </div>
          <div className={`bg-gray-50 h-full w-72 fixed flex flex-col justify-between shadow-lg ${showSidebar ? "block" : "hidden"} sm:block`}>
             <div className="p-4 flex flex-col space-y-4">
+               {role === "admin" && (
+                  <Link to="/dashboard" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
+                     <FontAwesomeIcon icon={faChartLine} className="mr-2 text-gray-700" />
+                     Dashboard
+                  </Link>
+               )}
+
                <Link to="/" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                   <FontAwesomeIcon icon={faHome} className="mr-2 text-gray-700" />
                   Home

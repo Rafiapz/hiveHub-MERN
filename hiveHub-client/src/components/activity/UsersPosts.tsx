@@ -15,7 +15,7 @@ const UserPosts: FC = () => {
    });
 
    return (
-      <div className="flex w-full ml-80">
+      <div className="flex  ml-80 overflow-hidden">
          <Posts likes={likes} posts={posts} />
       </div>
    );

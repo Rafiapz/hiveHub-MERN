@@ -13,7 +13,6 @@ export const resetPasswordVerificationController = (dependencies: IDependencies)
         try {
 
             const email = req?.params?.email
-            console.log(email);
 
             const user = await findOneUserUseCase(dependencies).execute({ email })
 

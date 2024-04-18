@@ -3,5 +3,6 @@ import { StoryEntity } from "../../../domain/entities/storyEntity";
 
 export interface IRepositories {
     createStory: (data: StoryEntity) => Promise<StoryEntity | null>;
-    findAllStories: () => any
+    findAllStories: (userId: any) => any;
+    deleteStory: (id: any) => any
 }

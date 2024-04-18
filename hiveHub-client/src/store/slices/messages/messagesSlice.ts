@@ -21,7 +21,7 @@ const messagesSlice = createSlice({
             state.messages = action?.payload?.data
         },
         setSocket: (state, action) => {
-            state.socket = action?.payload?.socket
+
         }
     },
     extraReducers: (builder) => {

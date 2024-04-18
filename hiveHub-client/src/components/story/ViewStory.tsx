@@ -1,86 +1,63 @@
-import React, { FC, useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchAllStories } from "../../store/actions/post/postActions";
-import { Carousel } from "flowbite-react";
+import Modal from "react-modal";
+import { deleteStory, fetchAllStories } from "../../store/actions/post/postActions";
+import toast from "react-hot-toast";
 
-const ViewStory: FC<any> = ({ view }: any) => {
-   const stories: any = useSelector((state: RootState) => state?.posts?.stories?.data);
+const ViewStory = ({ modalIsOpen, closeModal }: any) => {
+   const current: any = useSelector((state: RootState) => state?.posts?.stories?.current);
+   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
 
    const dispatch = useDispatch<AppDispatch>();
-   useEffect(() => {
-      dispatch(fetchAllStories());
-   }, []);
+
+   const handleDeleteStory = (id: any) => {
+      dispatch(deleteStory(id)).then((response) => {
+         if (response?.payload?.status === "ok") {
+            toast.success("Succefully deleted story");
+            dispatch(fetchAllStories(userId));
+         } else {
+            toast.error("Faild to delete Story");
+         }
+         closeModal();
+      });
+   };
 
    return (
-      <div className="h-56 sm:h-64 xl:h-80 2xl:h-96 ">
-         <Carousel slide={true}>
-            <img src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..." />
-            <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..." />
-            <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..." />
-            <img src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..." />
-            <img src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..." />
-         </Carousel>
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+         <Modal
+            appElement={document.getElementById("root") as HTMLElement}
+            overlayClassName="modal-bg-overlay"
+            className="bg-white max-w-full overflow-hidden shadow-xl rounded-md absolute h-2/3 w-1/2 left-1/2 transform -translate-x-1/2 -translate-y-2/3 md:translate-y-0"
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Report Post Modal"
+         >
+            <div className="p-4 bg-gray-100 border-b border-gray-200 rounded-t-md flex justify-between items-center">
+               <button className="text-gray-600 hover:text-gray-800 focus:outline-none" onClick={closeModal}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+               </button>
+               {current?.userId?._id === userId && (
+                  <button
+                     onClick={() => handleDeleteStory(current?._id)}
+                     className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none"
+                  >
+                     Delete Story
+                  </button>
+               )}
+            </div>
+            <img src={current?.media} alt="" className="w-full h-full object-cover" />
+            <div className="p-4">
+               <button className="w-full bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600 focus:outline-none">Submit</button>
+               <button className="mt-2 w-full bg-gray-300 text-gray-800 font-semibold py-2 rounded-md hover:bg-gray-400 focus:outline-none">
+                  Cancel
+               </button>
+            </div>
+         </Modal>
       </div>
    );
 };
 
 export default ViewStory;
-
-// const stories: any = useSelector((state: RootState) => state?.posts?.stories?.data);
-
-// const dispatch = useDispatch<AppDispatch>();
-// useEffect(() => {
-//    dispatch(fetchAllStories());
-// });
-
-// return (
-//    <>
-//       <div id="controls-carousel" classNameNameNameName="relative w-full" data-carousel="static">
-//          <div classNameNameNameName="relative h-56 overflow-hidden rounded-lg md:h-96">
-//             {stories?.map((story: any) => (
-//                <div classNameNameNameName="hidden duration-700 ease-in-out" data-carousel-item>
-//                   <img src={story?.media} classNameNameNameName="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
-//                </div>
-//             ))}
-//          </div>
-
-//          <button
-//             type="button"
-//             classNameNameNameName="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-//             data-carousel-prev
-//          >
-//             <span classNameNameNameName="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-//                <svg
-//                   classNameNameNameName="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-//                   aria-hidden="true"
-//                   xmlns="http://www.w3.org/2000/svg"
-//                   fill="none"
-//                   viewBox="0 0 6 10"
-//                >
-//                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-//                </svg>
-//                <span classNameNameNameName="sr-only">Previous</span>
-//             </span>
-//          </button>
-//          <button
-//             type="button"
-//             classNameNameNameName="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-//             data-carousel-next
-//          >
-//             <span classNameNameNameName="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-//                <svg
-//                   classNameNameNameName="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
-//                   aria-hidden="true"
-//                   xmlns="http://www.w3.org/2000/svg"
-//                   fill="none"
-//                   viewBox="0 0 6 10"
-//                >
-//                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-//                </svg>
-//                <span classNameNameNameName="sr-only">Next</span>
-//             </span>
-//          </button>
-//       </div>
-//    </>
-// );

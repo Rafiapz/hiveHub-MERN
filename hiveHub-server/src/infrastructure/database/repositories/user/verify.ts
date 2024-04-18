@@ -13,14 +13,6 @@ export const verify = async (data: { email: string, otp: string }) => {
             throw new Error('Incorrect otp')
         }
 
-        const timeStamp: any = new Date(userData.createdAt)
-        const currentTime = Date.now()
-        const timeDifference = currentTime - timeStamp
-        if (timeDifference >= 1000 * 60 * 1) {
-
-            throw new Error('OTP has expired')
-        }
-
 
         const user = await User.findOneAndUpdate({ email: data.email, otp: data.otp }, { isVerified: true, otp: '' })
 

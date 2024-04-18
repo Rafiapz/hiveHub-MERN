@@ -81,3 +81,7 @@ export const GET_ONLINE_USERS_URL = '/admin/get-online-users'
 export const UPLOAD_STORY_URL = '/story/create-story'
 
 export const FETCH_ALL_STORIES = '/story/fetch-all-stories'
+
+export const DELETE_STORY_URL = '/story/delete-story'
+
+export const VERIFY_EMAIL_UPDATE_OTP_URL = '/auth/verify-email-update-otp'

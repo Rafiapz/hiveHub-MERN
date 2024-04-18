@@ -7,8 +7,21 @@ import { uploadSingleFile } from "../../_lib/multer";
 import { validatePassword } from "../../_lib/bcrypt";
 
 export const authRoutes = (dependencies: IDependencies) => {
-    const { signup, verify, login, updateOtp, googleAuth, logout, fetchUser, editProfile, findAllUsers, resetPasswordVerification, changePassword, fetchOtherUser } =
-        controllers(dependencies);
+    const {
+        signup,
+        verify,
+        login,
+        updateOtp,
+        googleAuth,
+        logout,
+        fetchUser,
+        editProfile,
+        findAllUsers,
+        resetPasswordVerification,
+        changePassword,
+        fetchOtherUser,
+        editEmailVerifyandUpdate
+    } = controllers(dependencies);
 
     const router = Router();
 
@@ -34,6 +47,8 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route("/edit-user-profile").post(currentUser, editProfile);
 
+    router.route("/verify-email-update-otp").put(currentUser, editEmailVerifyandUpdate);
+
     router.route("/edit-user-password").post(validatePassword, currentUser, editProfile);
 
     router.route("/fetch-all-users").get(currentUser, findAllUsers);
@@ -42,11 +57,7 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route("/change-password").post(changePassword);
 
-    router.route('/fetch-other-user').get(fetchOtherUser)
-
-
-
-
+    router.route("/fetch-other-user").get(fetchOtherUser);
 
     router.get("/failure", (req, res) => {
         console.log("called failure");

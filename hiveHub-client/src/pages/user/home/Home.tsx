@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import { setSocket } from "../../../store/slices/messages/messagesSlice";
 import ViewStory from "../../../components/story/ViewStory";
-const socket = io("http://localhost:7700");
+// const socket = io("http://localhost:7700");
 
 const Home: FC = () => {
    const [modalIsOpen, setIsOpen] = useState(false);
@@ -31,14 +31,13 @@ const Home: FC = () => {
             toast(data?.payload?.message, {
                style: { backgroundColor: "#ff6347", color: "#eeeeee" },
             });
-         console.log("pro", posts);
       });
    }, []);
 
-   useEffect(() => {
-      dispatch(setSocket({ socket }));
-      socket.emit("addUser", userId);
-   }, []);
+   // useEffect(() => {
+   //    dispatch(setSocket({ socket }));
+   //    socket.emit("addUser", userId);
+   // }, []);
 
    const openModal = () => {
       setIsOpen(true);
@@ -48,24 +47,24 @@ const Home: FC = () => {
    };
 
    const handleStoryView = () => {
-      setStoryViewing(!storyViewing);
+      setStoryViewing(false);
    };
 
    return (
       <div className="bg-gray-100 ">
-         {/* <Menu /> */}
-         {/* <div className="flex  ml-80 overflow-hidden">
+         <Menu />
+         <div className="flex  ml-80 overflow-hidden">
             <Story setView={setStoryViewing} />
-         </div> */}
-         {/* <div className="flex  ml-80 overflow-hidden ">
+         </div>
+         <div className="flex  ml-80 overflow-hidden ">
             <Posts openModal={openModal} likes={likes} posts={posts} />
          </div>
          <CreatePostModal />
          <EditPostModal />
          <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
-         <Comments /> */}
-         <ViewStory view={storyViewing} setView={setStoryViewing} />
-         {/* <RightSideBar /> */}
+         <Comments />
+         <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />
+         <RightSideBar />
       </div>
    );
 };

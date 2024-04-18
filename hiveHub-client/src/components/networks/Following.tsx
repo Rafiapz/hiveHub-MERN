@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchFollwing, unFollow } from "../../store/actions/network/networkActions";
 import { handleUnfollowModal } from "../../store/slices/network/networkSlice";
+import { useNavigate } from "react-router-dom";
 
 const Following: FC = () => {
    const following: any = useSelector((state: RootState) => state?.networks?.following?.data);
    const [options, setOptions] = useState<{ index: number; status: boolean }>({ index: 0, status: false });
+
+   const navigate = useNavigate();
 
    useEffect(() => {
       dispatch(fetchFollwing());
@@ -35,13 +38,22 @@ const Following: FC = () => {
       dispatch(handleUnfollowModal({ status: true, curId: id }));
    };
 
+   const handleClick = (id: number, email: string) => {
+      navigate(`/others-profile?userId=${id}&email=${email}`);
+   };
+
    return (
       <div className="flex flex-col ml-96 relative overflow-y-auto">
          {following?.map((item: any, i: number) => (
             <div key={item?._id} className="user-card bg-white rounded-lg w-80 shadow-lg p-4 m-4 relative">
                <div className="flex items-center mb-2">
                   <div className="profile-photo mr-4">
-                     <img src={item?.targetUserId?.profilePhoto} alt="Profile" className="w-24 h-20 rounded-full" />
+                     <img
+                        src={item?.targetUserId?.profilePhoto}
+                        onClick={() => handleClick(item?.targetUserId?._id, item?.targetUserId?.email)}
+                        alt="Profile"
+                        className="w-24 h-20 rounded-full"
+                     />
                   </div>
                   <div className="user-name text-lg font-semibold">
                      {item?.targetUserId?.fullName}

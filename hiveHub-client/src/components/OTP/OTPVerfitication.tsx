@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OtpInput from "react-otp-input";
-import CountDownTimer from "../CountDownTimer/CountDownTimer";
+import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import { useDispatch } from "react-redux";
 import { otpVerification } from "../../store/actions/auth/userActions";
 import { AppDispatch } from "../../store/store";
@@ -75,7 +75,7 @@ function OTPVerfitication() {
          </div>
          <span className="text-red-700">{error}</span>
          <div className="flex items-center mt-4 mr-32">
-            <CountDownTimer email={email} timer={timer} setTimer={setTimer} />
+            <CountdownTimer email={email} timer={timer} setTimer={setTimer} />
          </div>
       </div>
    );

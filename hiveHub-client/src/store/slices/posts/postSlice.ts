@@ -41,7 +41,9 @@ const initialState = {
         likes: null
     },
     stories: {
-        data: null
+        data: null,
+        current: null,
+        myStories: null
     }
 }
 
@@ -87,6 +89,9 @@ const postSlice = createSlice({
         },
         handleReportPostId: (state, action) => {
             state.report.postId = action?.payload?.postId
+        },
+        setCurrentStory: (state, action) => {
+            state.stories.current = action?.payload?.data
         }
 
 
@@ -137,8 +142,8 @@ const postSlice = createSlice({
 
             })
             .addCase(fetchAllStories.fulfilled, (state, action) => {
-
-                state.stories.data = action?.payload?.data
+                state.stories.data = action?.payload?.data?.allStories
+                state.stories.myStories = action?.payload?.data?.myStories
             })
 
     }
@@ -155,6 +160,7 @@ export const {
     handleConnectionRequest,
     handleCleanUpPost,
     handleReportPostId,
+    setCurrentStory
 } = postSlice.actions;
 
 export default postSlice.reducer;    

@@ -103,7 +103,7 @@ const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
          {loading ? (
             <Loading />
          ) : (
-            <div className="">
+            <div className="min w-full">
                {posts?.map((item: any, i: number) => {
                   return (
                      <div

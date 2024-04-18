@@ -1,5 +1,5 @@
 
 
 export interface IFindAllStoriesUseCase {
-    execute: () => any
+    execute: (userId: any) => any
 }

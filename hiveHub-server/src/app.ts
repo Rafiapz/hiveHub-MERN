@@ -23,8 +23,6 @@ import { adminRoutes } from './presentation/routes/adminRoutes'
 import { storyRoutes } from './presentation/routes/storyRoutes'
 
 
-
-
 configDotenv()
 const PORT = process.env.PORT || 7700
 const app: Application = express()

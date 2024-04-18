@@ -20,7 +20,7 @@ export const generateOtp = (email: string) => {
       if (error) {
         console.log(error);
       } else {
-        console.log("Success", success);
+
       }
     });
 
@@ -37,7 +37,7 @@ export const generateOtp = (email: string) => {
         if (error) {
           console.error("Error sending OTP:", error);
         } else {
-          console.log("OTP sent:", info.response);
+
         }
       });
     };
@@ -104,6 +104,7 @@ export const sendVerificationEmail = async (email: string, token: any) => {
     return { status: "failed", message: error?.message };
   }
 }
+
 
 
 

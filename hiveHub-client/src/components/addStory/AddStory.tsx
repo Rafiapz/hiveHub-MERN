@@ -4,8 +4,9 @@ import { FC, useState } from "react";
 import Modal from "react-modal";
 import { uploadStory } from "../../service/api";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { fetchAllStories } from "../../store/actions/post/postActions";
 
 const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
@@ -13,6 +14,8 @@ const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
    const [error, setError] = useState<string>("");
    const [content, setContent] = useState<string>("");
    const [image, setImage] = useState<File | null>(null);
+
+   const dispatch = useDispatch<AppDispatch>();
 
    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -54,6 +57,7 @@ const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
          uploadStory(formData).then((response) => {
             toast.success(response?.data?.message);
             handleCancel();
+            dispatch(fetchAllStories(userId));
          });
       } catch (error: any) {
          toast.error(error.message);

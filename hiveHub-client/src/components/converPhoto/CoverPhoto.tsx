@@ -1,12 +1,19 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../store/store";
-import { FC } from "react";
+import { AppDispatch, RootState } from "../../store/store";
+import { FC, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShare } from "@fortawesome/free-solid-svg-icons";
+import { fetchuser } from "../../store/actions/auth/userActions";
 
 const CoverPhoto: FC = () => {
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
+
+   const dispatch = useDispatch<AppDispatch>();
+
+   useEffect(() => {
+      dispatch(fetchuser());
+   });
 
    const navigate = useNavigate();
 

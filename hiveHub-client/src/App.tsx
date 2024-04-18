@@ -55,7 +55,9 @@ function App() {
             </>
          ) : (
             <>
-               {userData && userData?.isBlocked !== true ? (
+               {userData && userData?.isBlocked === true ? (
+                  <BlockedUser />
+               ) : (
                   <Routes>
                      <Route path="/" element={<Home />} />
                      <Route path="/messages" element={<Messages />} />
@@ -72,8 +74,6 @@ function App() {
                      </Route>
                      <Route path="/dashboard" element={<Dashboard />} />
                   </Routes>
-               ) : (
-                  <BlockedUser />
                )}
             </>
          )}

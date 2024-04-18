@@ -3,7 +3,6 @@ import Posts from "../post/Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchUsersLikedPosts, fetchUsersPost } from "../../store/actions/post/postActions";
-import toast from "react-hot-toast";
 
 const UsersLikes: FC = () => {
    const dispatch = useDispatch<AppDispatch>();

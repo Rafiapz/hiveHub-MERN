@@ -9,9 +9,11 @@ export const findAllStoriesController = (dependencies: IStoryDependencies) => {
 
         try {
 
-            const allStories = await findAllStoryUseCase(dependencies).execute()
+            const userId = req?.params?.userId
 
-            res.status(200).json({ status: 'ok', data: allStories })
+            const { allStories, myStories } = await findAllStoryUseCase(dependencies).execute(userId)
+
+            res.status(200).json({ status: 'ok', data: { allStories, myStories } })
 
         } catch (error: any) {
             res.status(error.status).json({ status: 'failed', message: error.message })

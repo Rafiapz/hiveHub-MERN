@@ -9,14 +9,14 @@ import Users from "../users/Users";
 import { FC } from "react";
 
 const RightSideBar: FC = () => {
-   const socket: any = useSelector((state: RootState) => state?.messages?.socket);
+   // const socket: any = useSelector((state: RootState) => state?.messages?.socket);
    const dispatch = useDispatch<AppDispatch>();
 
    const { pathname } = useLocation();
 
    const handleLogout = () => {
       dispatch(logoutAction());
-      socket.disconnect();
+      // socket.disconnect();
    };
 
    return (

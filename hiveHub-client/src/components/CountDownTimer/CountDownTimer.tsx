@@ -10,7 +10,7 @@ interface ChildProps {
    email: string | null;
 }
 
-const CountDownTimer: React.FC<ChildProps> = ({ timer, setTimer, email }) => {
+const CountdownTimer: React.FC<ChildProps> = ({ timer, setTimer, email }) => {
    const intervalRef = useRef<any>();
    const dispatch = useDispatch<AppDispatch>();
 
@@ -64,4 +64,4 @@ const CountDownTimer: React.FC<ChildProps> = ({ timer, setTimer, email }) => {
    );
 };
 
-export default React.memo(CountDownTimer);
+export default React.memo(CountdownTimer);

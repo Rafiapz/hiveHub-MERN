@@ -65,7 +65,7 @@ export const loginAction = createAsyncThunk("/login", async (data: IUserLogin) =
 export const logoutAction = createAsyncThunk("/logout", async () => {
     try {
 
-        const response = await apiClient.get(LOGOUT_URL, { withCredentials: true });
+        const response = await apiClient.get(LOGOUT_URL);
 
         return response.data;
     } catch (error: any) {
@@ -73,9 +73,9 @@ export const logoutAction = createAsyncThunk("/logout", async () => {
     }
 });
 
-export const fetchuser = createAsyncThunk("/auth/fetch", async () => {
+export const fetchuser = createAsyncThunk("/auth/fetch-user", async () => {
     try {
-        const response = await apiClient.get(FETCH_USER_URL, { withCredentials: true });
+        const response = await apiClient.get(FETCH_USER_URL);
 
         if (response.data.status !== "ok") {
             throw new Error("Not authorized");
@@ -167,3 +167,5 @@ export const fetchOtherUser = createAsyncThunk('/auth/fetch-user', async (email:
     }
 
 })
+
+

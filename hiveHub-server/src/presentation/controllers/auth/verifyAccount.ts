@@ -3,21 +3,20 @@ import { IDependencies } from "../../../application/interface/user/IDependencies
 import { Request, Response, NextFunction } from 'express'
 
 
-export const verifyController = (dependancies: IDependencies) => {
+export const verifyController = (dependencies: IDependencies) => {
 
-    const { useCases: { verifyUserUseCase } } = dependancies
+    const { useCases: { verifyUserUseCase } } = dependencies
 
     return async (req: Request, res: Response, next: NextFunction) => {
 
         try {
 
-            console.log(req.body);
             const data = req.body
             if (!data.email || !data.otp) {
                 throw new Error('verification failed')
             }
 
-            const user = await verifyUserUseCase(dependancies).execute(data)
+            const user = await verifyUserUseCase(dependencies).execute(data)
 
             if (user) {
                 const token = genereateToken({ id: user?._id, email: user?.email })

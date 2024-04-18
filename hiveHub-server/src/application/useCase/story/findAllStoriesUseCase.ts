@@ -7,11 +7,11 @@ export const findAllStoryUseCase = (dependencies: IStoryDependencies) => {
 
     return {
 
-        execute: async () => {
+        execute: async (userId: any) => {
 
             try {
 
-                return await findAllStories()
+                return await findAllStories(userId)
 
             } catch (error: any) {
                 throw new Error(error)

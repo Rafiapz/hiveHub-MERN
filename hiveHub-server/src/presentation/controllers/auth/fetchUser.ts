@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 
 export const fetchUserController = (dependencies: IDependencies) => {
 
-    const { useCases: { findOneUserUseCase } } = dependencies
+    const { useCases: { findOneUserByIdUseCase } } = dependencies
 
     return async (req: Request, res: Response) => {
 
@@ -18,7 +18,9 @@ export const fetchUserController = (dependencies: IDependencies) => {
 
                 if (authorized) {
 
-                    const userData = await findOneUserUseCase(dependencies).execute({ email: authorized.email })
+                    const id = authorized.id
+
+                    const userData = await findOneUserByIdUseCase(dependencies).execute(id)
                     res.json({ status: 'ok', userData })
                 } else {
                     throw new Error('User not authorized')

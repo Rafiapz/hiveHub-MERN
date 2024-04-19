@@ -31,8 +31,6 @@ export const resetPasswordVerificationController = (dependencies: IDependencies)
                 }
             }
 
-
-
         } catch (error: any) {
             res.json({ status: 'failed', message: error.message })
         }

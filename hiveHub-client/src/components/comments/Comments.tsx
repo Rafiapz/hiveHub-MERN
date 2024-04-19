@@ -3,18 +3,29 @@ import { AppDispatch, RootState } from "../../store/store";
 import { faHeart, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { handleCommentDeleteReducer, handleCommentModal, handleCommentsIsEditing } from "../../store/slices/posts/postSlice";
-import { deleteComment, editComment, fetchAllCommentsOfPost, fetchAllposts, postComment } from "../../store/actions/post/postActions";
+import {
+   deleteComment,
+   editComment,
+   fetchAllCommentsOfPost,
+   fetchAllReplies,
+   fetchAllposts,
+   postComment,
+} from "../../store/actions/post/postActions";
 import { Formik, Form, ErrorMessage, Field } from "formik";
-import { commentSchema } from "../../schemas/CommentSchema";
+import { commentSchema, replyCommentSchema } from "../../schemas/CommentSchema";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
+import { replyComment } from "../../service/api";
+import Replies from "./Replies";
 
 const Comments: FC = () => {
    const isOpen = useSelector((state: RootState) => state.posts.comments.modalIsOpen);
    const dispatch = useDispatch<AppDispatch>();
    const postId = useSelector((state: RootState) => state.posts.comments.postId);
    const allComments: any = useSelector((state: RootState) => state.posts.comments.data);
-   const userId = useSelector((state: RootState) => state.user.user.userId);
+   const userId: any = useSelector((state: RootState) => state.user.user.userId);
+   const [replying, setReplying] = useState<boolean>(false);
+   const [seeReplies, setSeeReplies] = useState<any>({ status: false, index: null });
    const [showOptions, setShowOptions] = useState<{
       status: boolean;
       index: number;
@@ -28,7 +39,7 @@ const Comments: FC = () => {
       document.body.style.overflow = "auto";
       return;
    } else {
-      document.body.style.overflow = "none";
+      document.body.style.overflow = "hidden";
    }
 
    const handleCommentSubmit = (values: { comment: string }, { resetForm }: any) => {
@@ -104,14 +115,73 @@ const Comments: FC = () => {
       });
    };
 
+   const handleReplyCommentSubmit = async (values: { reply: string }, { resetForm }: any, commentId: any, index: any) => {
+      const { reply } = values;
+
+      const formData = new FormData();
+      formData.append("content", reply);
+      formData.append("userId", userId);
+      formData.append("commentId", commentId);
+
+      try {
+         const response = await replyComment(formData);
+
+         if (response.data.status === "ok") {
+            toast.success("Success");
+            setReplying(false);
+            handleOptionsClick(index);
+            dispatch(fetchAllReplies(commentId));
+         }
+      } catch (error: any) {
+         toast.error(error?.response?.data?.message);
+      }
+
+      resetForm({ values: initialValues });
+   };
+
+   const handleSeeReplies = (commentId: any, index: number) => {
+      setSeeReplies((prev: any) => {
+         if (index == prev.index) {
+            return {
+               index: index,
+               status: !prev.status,
+            };
+         } else {
+            return {
+               index: index,
+               status: true,
+            };
+         }
+      });
+      dispatch(fetchAllReplies(commentId));
+   };
+
+   const handleCloseSeeReplies = (index: number) => {
+      setSeeReplies((prev: any) => {
+         if (index == prev.index) {
+            return {
+               index: index,
+               status: !prev.status,
+            };
+         } else {
+            return {
+               index: index,
+               status: true,
+            };
+         }
+      });
+   };
+
+   const handleCloseModal = () => {
+      dispatch(handleCommentModal({ status: false }));
+      setSeeReplies({});
+   };
+
    return (
-      <div className="fixed inset-0 z-50  flex items-center justify-center ">
+      <div className="fixed inset-0 z-50   flex items-center justify-center ">
          <div className="fixed inset-0 bg-gray-900 opacity-50"></div>
-         <div className="bg-white p-8 rounded-lg z-50 w-1/2 max-w-md relative">
-            <button
-               className="absolute top-0 right-0 m-1 text-gray-500 focus:outline-none"
-               onClick={() => dispatch(handleCommentModal({ status: false }))}
-            >
+         <div className="bg-white p-8 rounded-lg z-50 w-1/3  relative">
+            <button className="absolute top-0 right-0 m-1 text-gray-500 focus:outline-none" onClick={() => handleCloseModal()}>
                <i className="fa-regular fa-circle-xmark fa-2x "></i>
             </button>
             <div className="max-w-sm mx-auto mb-4">
@@ -135,7 +205,7 @@ const Comments: FC = () => {
             <ul className="list-none p-0 max-h-[300px] overflow-y-auto">
                {allComments?.map((item: any, i: number) => {
                   return (
-                     <div key={item?._id + "editing"}>
+                     <div key={item?._id + "comments"}>
                         {item?.isEditing ? (
                            <div className="relative mb-4 px-4 pt-2 border border-gray-300 rounded">
                               <div className="max-w-sm mx-auto mb-4">
@@ -182,7 +252,7 @@ const Comments: FC = () => {
                               </div>
                            </div>
                         ) : (
-                           <li key={item?._id} className="relative mb-4 px-4 py-2 border border-gray-300 rounded">
+                           <li key={item?._id} className="relative mb-4 px-4 py-2  rounded">
                               {
                                  <div className="absolute top-0 right-0 mt-2 mr-1">
                                     <div
@@ -192,17 +262,6 @@ const Comments: FC = () => {
                                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                    </div>
-                                    <div>
-                                       <FontAwesomeIcon
-                                          key={item?.id}
-                                          // onClick={() => {
-                                          //    handleLikePost(item?._id);
-                                          // }}
-                                          icon={faHeart}
-                                          className={`text-red-600 mt-4 mr-4 size-4 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
-                                       />
-                                       <p>{item?.likes}</p>
                                     </div>
                                  </div>
                               }
@@ -215,7 +274,36 @@ const Comments: FC = () => {
                                  </div>
                               </div>
                               <br />
-                              <p>{item?.comment}</p>
+                              <p className="ml-3 font-sans">{item?.comment}</p>
+                              <div className="">
+                                 <div className="flex items-center">
+                                    <FontAwesomeIcon
+                                       key={item?.id}
+                                       // onClick={() => {
+                                       //    handleLikePost(item?._id);
+                                       // }}
+                                       icon={faHeart}
+                                       className={`text-red-600 mr-4 mt-3 ml-2 size-4 cursor-pointer inline-block hover:text-red-600 transition duration-300`}
+                                    />
+                                    <p>{item?.likes}</p>
+                                    {seeReplies?.status === true && seeReplies?.index === i ? (
+                                       <p
+                                          className="text-gray-700 rounded mt-3 hover:text-gray-900 hover:cursor-pointer text-sm"
+                                          onClick={() => handleCloseSeeReplies(i)} // Add your click handler function
+                                       >
+                                          Hide replies
+                                       </p>
+                                    ) : (
+                                       <p
+                                          className="px-4 text-gray-700 mt-3 rounded hover:text-gray-900 hover:cursor-pointer text-sm"
+                                          onClick={() => handleSeeReplies(item?._id, i)} // Add your click handler function
+                                       >
+                                          See replies
+                                       </p>
+                                    )}
+                                 </div>
+                              </div>
+
                               {showOptions.index === i && showOptions.status && (
                                  <div className="absolute top-1 right-5 w-28 h-22 bg-blue-300 mt-2 mr-4 border border-gray-300 shadow-lg rounded-md">
                                     <ul>
@@ -230,7 +318,12 @@ const Comments: FC = () => {
                                           </>
                                        ) : (
                                           <>
-                                             <li onClick={() => handleIsEditing(i)} className="p-1 hover:bg-blue-500">
+                                             <li
+                                                onClick={() => {
+                                                   setReplying(true);
+                                                }}
+                                                className="p-1 hover:bg-blue-500"
+                                             >
                                                 <button>Reply</button>
                                              </li>
                                           </>
@@ -238,6 +331,32 @@ const Comments: FC = () => {
                                     </ul>
                                  </div>
                               )}
+                              {replying && (
+                                 <div className="max-w-sm mt-2 mx-auto mb-4">
+                                    <Formik
+                                       initialValues={{ reply: "" }}
+                                       onSubmit={(values, actions) => handleReplyCommentSubmit(values, actions, item?._id, i)}
+                                       validationSchema={replyCommentSchema}
+                                    >
+                                       <Form>
+                                          <div className="flex">
+                                             <Field
+                                                name="reply"
+                                                type="text"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded"
+                                                placeholder="Reply to this comment..."
+                                             />
+                                             <button type="submit" className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                                <FontAwesomeIcon icon={faPaperPlane} />
+                                             </button>
+                                          </div>
+                                          <ErrorMessage className="text-red-700" name="reply" component="span" />
+                                       </Form>
+                                    </Formik>
+                                 </div>
+                              )}
+
+                              {seeReplies?.status === true && seeReplies?.index === i && <Replies />}
                            </li>
                         )}
                      </div>

@@ -58,9 +58,9 @@ const Story: FC<any> = ({ setView }: any) => {
 
          <AddStory modalIsOpen={modalIsOpen} closeModal={closeModal} />
          {stories?.map((story: any) => (
-            <>
+            <div key={story?._id}>
                {story?.userId._id !== userId && (
-                  <li key={story?._id} className="flex flex-col items-center space-y-2" onClick={() => handleCurrentStory(story)}>
+                  <li className="flex flex-col items-center space-y-2" onClick={() => handleCurrentStory(story)}>
                      <div className="bg-gradient-to-tr from-yellow-500 to-pink-600 rounded-full p-1">
                         <a className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300" href="#">
                            <img className="h-24 w-24 rounded-full" src={story?.media} alt="image" />
@@ -69,7 +69,7 @@ const Story: FC<any> = ({ setView }: any) => {
                      <p>{story?.userId?.fullName}</p>
                   </li>
                )}
-            </>
+            </div>
          ))}
       </div>
    );

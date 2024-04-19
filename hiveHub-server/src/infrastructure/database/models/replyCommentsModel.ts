@@ -4,9 +4,9 @@ import { ReplyCommentsEntity } from '../../../domain/entities/replyCommentsEntit
 
 
 const ReplyCommentsSchema: Schema = new Schema({
-    CommentId: { type: Schema.Types.ObjectId, required: true },
-    UserId: { type: Schema.Types.ObjectId, required: true },
-    Content: { type: String, required: true },
+    commentId: { type: Schema.Types.ObjectId, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+    content: { type: String, required: true },
 }, { timestamps: true });
 
 const ReplyComments = mongoose.model<ReplyCommentsEntity>('ReplyComments', ReplyCommentsSchema);

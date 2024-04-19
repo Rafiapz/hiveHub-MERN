@@ -1,7 +1,9 @@
 import { jsonConfig, multiPartConfig } from "../utils/apiUtils";
 import apiClient from "../utils/axios";
 import {
+    DELETE_REPLY_COMMENT_URL,
     FETCH_CONVERSATIONS_URL,
+    REPLY_COMMENT_URL,
     SEARCH_USER_URL,
     SEND_EMAIL_FOR_RESET_PASSWORD_URL,
     UPLOAD_STORY_URL,
@@ -36,4 +38,12 @@ export const uploadStory = async (form: any) => {
 
 export const verifyEmailUpdateOtp = async (data: any) => {
     return await apiClient.put(VERIFY_EMAIL_UPDATE_OTP_URL, data, jsonConfig)
+}
+
+export const replyComment = async (form: any) => {
+    return await apiClient.post(REPLY_COMMENT_URL, form, jsonConfig)
+}
+
+export const deleteReplyComment = async (id: any) => {
+    return await apiClient.delete(DELETE_REPLY_COMMENT_URL + '/' + id)
 }

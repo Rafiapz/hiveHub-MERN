@@ -5,8 +5,6 @@ export const findAllComments = async (postId: any) => {
 
     try {
 
-        console.log(postId);
-
         const comments = await Comments.find({ postId: postId }).sort({ createdAt: -1 }).populate('userId')
 
         return comments

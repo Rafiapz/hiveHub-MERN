@@ -12,7 +12,7 @@ const UsersLikes: FC = () => {
 
    useEffect(() => {
       dispatch(fetchUsersLikedPosts());
-   }, [likes]);
+   }, []);
 
    return (
       <div className="flex  ml-80 overflow-hidden">

@@ -85,3 +85,9 @@ export const FETCH_ALL_STORIES = '/story/fetch-all-stories'
 export const DELETE_STORY_URL = '/story/delete-story'
 
 export const VERIFY_EMAIL_UPDATE_OTP_URL = '/auth/verify-email-update-otp'
+
+export const REPLY_COMMENT_URL = '/comments/create-reply-comment/'
+
+export const FETCH_ALL_REPLIES_URL = '/comments/fetch-all-replies'
+
+export const DELETE_REPLY_COMMENT_URL = '/comments/delete-reply-comment'

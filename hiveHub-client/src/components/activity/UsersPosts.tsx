@@ -12,7 +12,7 @@ const UserPosts: FC = () => {
 
    useEffect(() => {
       dispatch(fetchUsersPost(userId));
-   });
+   }, []);
 
    return (
       <div className="flex  ml-80 overflow-hidden">

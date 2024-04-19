@@ -13,7 +13,7 @@ const CoverPhoto: FC = () => {
 
    useEffect(() => {
       dispatch(fetchuser());
-   });
+   }, []);
 
    const navigate = useNavigate();
 

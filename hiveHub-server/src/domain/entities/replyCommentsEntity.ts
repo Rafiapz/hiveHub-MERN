@@ -1,8 +1,8 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import { ObjectId } from 'mongoose';
 
-export interface ReplyCommentsEntity extends Document {
-    _id: ObjectId;
-    CommentId: ObjectId;
-    UserId: ObjectId;
-    Content: String;
+export interface ReplyCommentsEntity {
+    _id?: ObjectId;
+    commentId: ObjectId;
+    userId: ObjectId;
+    content: String;
 }

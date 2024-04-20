@@ -1,4 +1,4 @@
-import { IFindAllCommentsUseCase, ICreateCommentUseCase, IDeleteCommentUseCase, IUpdateCommentUseCase, ICreateReplyCommentUseCase, IFindAllRepliesUseCase, IDeleteReplyCommentUseCase } from "../../../domain/useCase/comments";
+import { IFindAllCommentsUseCase, ICreateCommentUseCase, IDeleteCommentUseCase, IUpdateCommentUseCase, ICreateReplyCommentUseCase, IFindAllRepliesUseCase, IDeleteReplyCommentUseCase, ICommentLikeUseCase, IFindAllCommentLikesUseCase } from "../../../domain/useCase/comments";
 
 export interface IUseCases {
 
@@ -10,4 +10,6 @@ export interface IUseCases {
     createReplyCommentUseCase: (dependencies: any) => ICreateReplyCommentUseCase;
     findAllRepliesUseCase: (dependencies: any) => IFindAllRepliesUseCase;
     deleteReplyCommentUseCase: (dependencies: any) => IDeleteReplyCommentUseCase;
+    commentLikeUseCase: (dependencies: any) => ICommentLikeUseCase;
+    findAllCommentLikesUseCase: (dependencies: any) => IFindAllCommentLikesUseCase
 }

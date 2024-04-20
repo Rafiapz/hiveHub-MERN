@@ -6,6 +6,7 @@ import { CommentsLikesEntity } from '../../../domain/entities/commentsLIkesEntit
 const commentsLikesSchema: Schema = new Schema({
     commentId: { type: Schema.Types.ObjectId, required: true, ref: 'comments' },
     userId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+    postId: { type: Schema.Types.ObjectId, required: true }
 });
 
 const CommentsLikes = mongoose.model<CommentsLikesEntity>('CommentsLikes', commentsLikesSchema);

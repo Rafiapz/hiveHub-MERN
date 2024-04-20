@@ -32,7 +32,7 @@ const Replies: FC = () => {
                   <img src={reply?.userId?.profilePhoto} alt="User Avatar" className="w-8 h-8 rounded-full mr-2" />
                   <div>
                      <p className="font-semibold">{reply?.userId?.fullName}</p>
-                     <p className="text-gray-600">{reply?.content}</p>
+                     <p className="font-sans ml-1">{reply?.content}</p>
                   </div>
                   <div className="ml-auto flex items-center">
                      {" "}

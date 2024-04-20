@@ -13,7 +13,9 @@ export const commentsRoutes = (dependencies: ICommentsDependencies) => {
         updateComment,
         createReplyComment,
         fetchAllReplies,
-        deleteReplyComment
+        deleteReplyComment,
+        likeComment,
+        fetchCommentLikes
     } = controllers(dependencies);
 
     const router = Router()
@@ -32,6 +34,10 @@ export const commentsRoutes = (dependencies: ICommentsDependencies) => {
     router.route('/fetch-all-replies/:commentId').get(currentUser, fetchAllReplies)
 
     router.route('/delete-reply-comment/:id').delete(currentUser, deleteReplyComment)
+
+    router.route('/like-comment').post(currentUser, likeComment)
+
+    router.route('/fetch-likes-of-comment/:postId').get(currentUser, fetchCommentLikes)
 
 
     return router

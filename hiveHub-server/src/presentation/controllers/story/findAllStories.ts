@@ -16,7 +16,7 @@ export const findAllStoriesController = (dependencies: IStoryDependencies) => {
             res.status(200).json({ status: 'ok', data: { allStories, myStories } })
 
         } catch (error: any) {
-            res.status(error.status).json({ status: 'failed', message: error.message })
+            res.status(error.status || 500).json({ status: 'failed', message: error.message })
         }
     }
 }

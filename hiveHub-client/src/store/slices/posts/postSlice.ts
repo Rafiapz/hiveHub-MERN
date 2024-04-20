@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createPostAction, editPostAction, fetchAllCommentsOfPost, fetchAllReplies, fetchAllStories, fetchAllposts, fetchUsersLikedPosts, fetchUsersPost } from '../../actions/post/postActions'
+import { createPostAction, editPostAction, fetchAllCommentsOfPost, fetchAllReplies, fetchAllStories, fetchAllposts, fetchOthersStory, fetchUsersLikedPosts, fetchUsersPost, fetchallCommentLikes } from '../../actions/post/postActions'
 
 
 
@@ -32,7 +32,8 @@ const initialState = {
         loading: false,
         data: null,
         postId: null,
-        replies: null
+        replies: null,
+        likes: null
     },
     report: {
         postId: null
@@ -149,6 +150,14 @@ const postSlice = createSlice({
             .addCase(fetchAllReplies.fulfilled, (state, action) => {
                 state.comments.replies = action?.payload?.data
             })
+            .addCase(fetchallCommentLikes.fulfilled, (state, action) => {
+                state.comments.likes = action?.payload?.data
+            })
+            .addCase(fetchOthersStory.fulfilled, (state, action) => {
+                state.stories.current = action?.payload?.data
+            })
+
+
 
     }
 })

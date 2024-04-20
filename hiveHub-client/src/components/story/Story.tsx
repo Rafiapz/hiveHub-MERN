@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import AddStory from "../addStory/AddStory";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchAllStories } from "../../store/actions/post/postActions";
+import { fetchAllStories, fetchOthersStory } from "../../store/actions/post/postActions";
 import { setCurrentStory } from "../../store/slices/posts/postSlice";
 
 const Story: FC<any> = ({ setView }: any) => {
@@ -26,7 +26,7 @@ const Story: FC<any> = ({ setView }: any) => {
    const handleCurrentStory = (story: any) => {
       setView(true);
 
-      dispatch(setCurrentStory({ data: story }));
+      dispatch(fetchOthersStory(story?.userId?._id));
    };
 
    return (

@@ -9,20 +9,23 @@ import {
    fetchAllCommentsOfPost,
    fetchAllReplies,
    fetchAllposts,
+   fetchallCommentLikes,
    postComment,
 } from "../../store/actions/post/postActions";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { commentSchema, replyCommentSchema } from "../../schemas/CommentSchema";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { replyComment } from "../../service/api";
+import { likeComment, replyComment } from "../../service/api";
 import Replies from "./Replies";
+import HeartIcon from "./HeartIcon";
 
 const Comments: FC = () => {
    const isOpen = useSelector((state: RootState) => state.posts.comments.modalIsOpen);
    const dispatch = useDispatch<AppDispatch>();
-   const postId = useSelector((state: RootState) => state.posts.comments.postId);
+   const postId: any = useSelector((state: RootState) => state.posts.comments.postId);
    const allComments: any = useSelector((state: RootState) => state.posts.comments.data);
+   const allLikes: any = useSelector((state: RootState) => state?.posts?.comments?.likes);
    const userId: any = useSelector((state: RootState) => state.user.user.userId);
    const [replying, setReplying] = useState<boolean>(false);
    const [seeReplies, setSeeReplies] = useState<any>({ status: false, index: null });
@@ -277,26 +280,19 @@ const Comments: FC = () => {
                               <p className="ml-3 font-sans">{item?.comment}</p>
                               <div className="">
                                  <div className="flex items-center">
-                                    <FontAwesomeIcon
-                                       key={item?.id}
-                                       // onClick={() => {
-                                       //    handleLikePost(item?._id);
-                                       // }}
-                                       icon={faHeart}
-                                       className={`text-red-600 mr-4 mt-3 ml-2 size-4 cursor-pointer inline-block hover:text-red-600 transition duration-300`}
-                                    />
-                                    <p>{item?.likes}</p>
+                                    <HeartIcon commentId={item?._id} />
+                                    <p className="mt-2 ">{item?.likes}</p>
                                     {seeReplies?.status === true && seeReplies?.index === i ? (
                                        <p
-                                          className="text-gray-700 rounded mt-3 hover:text-gray-900 hover:cursor-pointer text-sm"
-                                          onClick={() => handleCloseSeeReplies(i)} // Add your click handler function
+                                          className="text-gray-700 px-4 rounded mt-3 hover:text-gray-900 hover:cursor-pointer text-sm"
+                                          onClick={() => handleCloseSeeReplies(i)}
                                        >
                                           Hide replies
                                        </p>
                                     ) : (
                                        <p
                                           className="px-4 text-gray-700 mt-3 rounded hover:text-gray-900 hover:cursor-pointer text-sm"
-                                          onClick={() => handleSeeReplies(item?._id, i)} // Add your click handler function
+                                          onClick={() => handleSeeReplies(item?._id, i)}
                                        >
                                           See replies
                                        </p>

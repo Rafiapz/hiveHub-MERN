@@ -91,3 +91,9 @@ export const REPLY_COMMENT_URL = '/comments/create-reply-comment/'
 export const FETCH_ALL_REPLIES_URL = '/comments/fetch-all-replies'
 
 export const DELETE_REPLY_COMMENT_URL = '/comments/delete-reply-comment'
+
+export const LIKE_COMMENT_URL = '/comments/like-comment'
+
+export const FETCH_COMMENT_LIKES = '/comments/fetch-likes-of-comment'
+
+export const FETCH_OTHERS_STORY_URL = '/story/fetch-others-story'

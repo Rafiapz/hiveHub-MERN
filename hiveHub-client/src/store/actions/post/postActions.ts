@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, DELETE_STORY_URL, EDIT_COMMENT_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_ALL_REPLIES_URL, FETCH_ALL_STORIES, FETCH_MY_LIKES_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL, REPORT_POST_URL } from "../../../utils/endPoint"
+import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, DELETE_STORY_URL, EDIT_COMMENT_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_ALL_REPLIES_URL, FETCH_ALL_STORIES, FETCH_COMMENT_LIKES, FETCH_MY_LIKES_URL, FETCH_OTHERS_STORY_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL, REPORT_POST_URL } from "../../../utils/endPoint"
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils"
 import apiClient from "../../../utils/axios"
 
@@ -163,6 +163,18 @@ export const editComment = createAsyncThunk('/comments/delete-comment', async ({
     }
 })
 
+export const fetchallCommentLikes = createAsyncThunk('/comments/fetch-likes-of-comment', async ({ postId, commentId }: any) => {
+    try {
+
+        const response = await apiClient.get(`${FETCH_COMMENT_LIKES}/${postId}?commentId=${commentId}`)
+
+        return response.data
+
+    } catch (error: any) {
+        throw new Error(error)
+    }
+})
+
 export const fetchAllReplies = createAsyncThunk('/comments/fetch-all-replies', async (id: any) => {
 
     try {
@@ -233,6 +245,20 @@ export const deleteStory = createAsyncThunk('/story/delete-story', async (id: an
     try {
 
         const response = await apiClient.delete(DELETE_STORY_URL + '/' + id)
+
+        return response.data
+
+    } catch (error: any) {
+        throw new Error(error);
+
+    }
+})
+
+export const fetchOthersStory = createAsyncThunk('/story/fetch-others-story', async (id: any) => {
+
+    try {
+
+        const response = await apiClient.get(FETCH_OTHERS_STORY_URL + '/' + id)
 
         return response.data
 

@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import { setSocket } from "../../../store/slices/messages/messagesSlice";
 import ViewStory from "../../../components/story/ViewStory";
+import Carousel from "../../../components/carousel/Carousel";
 // const socket = io("http://localhost:7700");
 
 const Home: FC = () => {

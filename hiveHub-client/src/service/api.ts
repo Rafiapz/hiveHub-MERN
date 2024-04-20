@@ -3,6 +3,7 @@ import apiClient from "../utils/axios";
 import {
     DELETE_REPLY_COMMENT_URL,
     FETCH_CONVERSATIONS_URL,
+    LIKE_COMMENT_URL,
     REPLY_COMMENT_URL,
     SEARCH_USER_URL,
     SEND_EMAIL_FOR_RESET_PASSWORD_URL,
@@ -47,3 +48,8 @@ export const replyComment = async (form: any) => {
 export const deleteReplyComment = async (id: any) => {
     return await apiClient.delete(DELETE_REPLY_COMMENT_URL + '/' + id)
 }
+
+export const likeComment = async (form: any) => {
+    return await apiClient.post(LIKE_COMMENT_URL, form, jsonConfig)
+}
+

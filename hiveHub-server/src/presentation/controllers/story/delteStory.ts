@@ -11,13 +11,17 @@ export const deleteStoryController = (dependencies: IStoryDependencies) => {
 
             const id = req?.params?.id
 
-            const result = await deleteStoryUseCase(dependencies).execute(id)
+            console.log(id);
 
+
+            const result = await deleteStoryUseCase(dependencies).execute(id)
 
             res.status(200).json({ status: 'ok' })
 
 
         } catch (error: any) {
+            console.log(error);
+
             res.status(error.status || 500).json({ status: 'failed', message: error.message })
         }
     }

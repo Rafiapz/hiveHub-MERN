@@ -44,7 +44,7 @@ const Carousel: FC<any> = ({ slides, user, closeModal }) => {
             }}
          >
             {slides?.map((s: any) => {
-               return <img className="" src={s} />;
+               return <img className="w-full" src={s} />;
             })}
          </div>
 

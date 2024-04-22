@@ -1,5 +1,16 @@
 import { Server } from 'http'
 import { Server as SocketIOServer, Socket } from 'socket.io'
+import fs from 'fs';
+import path from 'path';
+
+
+interface VideoChunkData {
+    chunk: Uint8Array;
+    offset: number;
+}
+
+
+const uploadsDir = './public/posts'
 
 
 let users: any = []
@@ -66,8 +77,36 @@ export const initializeSocketIO = (server: Server) => {
             });
 
 
-            socket.on('sendMessage', ({ senderId, receiverId, message }) => {
+            let fileData: Uint8Array[] = [];
+            let fileName: string | undefined;
 
+            socket.on('video-chunk', (data: VideoChunkData) => {
+                fileData[data.offset] = data.chunk;
+            });
+
+            socket.on('video-transfer-complete', ({ senderId, receiverId }) => {
+                const filteredFileData = fileData.filter((chunk): chunk is Uint8Array => chunk !== undefined);
+                const fileBuffer = Buffer.concat(filteredFileData);
+                const timestamp = Date.now();
+                fileName = `video-${timestamp}.mp4`;
+                const filePath = path.join(uploadsDir, fileName);
+
+                fs.writeFile(filePath, fileBuffer, (err) => {
+                    if (err) {
+                        console.error('Error saving video file:', err);
+                        socket.emit('video-upload-error', 'Error saving video file');
+                    } else {
+                        console.log('Video file saved successfully');
+                        const user = getUser(receiverId);
+                        if (user) {
+                            io.to(user?.socketId).emit('video-upload-success', { fileName, senderId });
+                        }
+
+                    }
+                });
+            });
+
+            socket.on('sendMessage', ({ senderId, receiverId, message }) => {
                 const user = getUser(receiverId);
 
                 if (user) {
@@ -77,6 +116,26 @@ export const initializeSocketIO = (server: Server) => {
                     });
 
                 }
+            });
+
+            socket.on('image', (data) => {
+
+                const user = getUser(data?.receiverId);
+
+                if (user) {
+                    io.to(user.socketId).emit('image', data);
+                }
+
+            });
+            socket.on('video', (data) => {
+
+                console.log('viedo called', data);
+                const user = getUser(data?.receiverId);
+
+                if (user) {
+                    io.to(user.socketId).emit('video', data);
+                }
+
             });
 
             socket.on("disconnect", () => {

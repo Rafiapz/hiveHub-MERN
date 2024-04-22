@@ -5,6 +5,8 @@ export interface ChatsEntity {
     _id?: ObjectId;
     message: string;
     senderId: ObjectId;
-    conversationId: ObjectId
+    conversationId: ObjectId;
+    image?: string,
+    video?: string
 
 }

@@ -2,14 +2,16 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
 import { fetchConversations } from "../../service/api";
 import { connect, io } from "socket.io-client";
-import { newMessage } from "../../store/slices/messages/messagesSlice";
 import NewMessage from "../newMessage/NewMessage";
 import VideoCall from "../videoCall/VideoCall";
+import EmojiPicker from "emoji-picker-react";
+import ReactPlayer from "react-player";
+
 const socket = io("http://localhost:7700");
 
 const MessageBox: FC = () => {
@@ -24,6 +26,43 @@ const MessageBox: FC = () => {
    const [arrivalMessage, setArrivalMessage] = useState<any>(null);
    const [onlineUsers, setOnlineUsers] = useState<any>([]);
    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+   const [emojiOn, setEmojiOn] = useState(false);
+   const [image, setImage] = useState<any>(null);
+   const [receivedImage, setReceivedImage] = useState<any>(null);
+   const [video, setVideo] = useState<any>(null);
+   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+   const [progress, setProgress] = useState<number>(0);
+
+   const handleVideoChange = (event: any) => {
+      if (event.target.files && event.target.files.length > 0) {
+         setSelectedFile(event.target.files[0]);
+      }
+   };
+
+   useEffect(() => {
+      socket.on("image", (data) => {
+         setReceivedImage(data?.data);
+         setArrivalMessage({
+            message: data?.message,
+            createdAt: Date.now(),
+            senderId: data?.senderId,
+            image: data?.data,
+         });
+      });
+   }, [socket]);
+
+   const onEmojiClick = (event: any, emojiObject: any) => {
+      let sym = event.unified.split("-");
+      let codesArray: any = [];
+      sym.forEach((el: any) => codesArray.push("0x" + el));
+      let emoji = String.fromCodePoint(...codesArray);
+      setMessage(message + emoji);
+   };
+
+   const handleImageChange = (event: any) => {
+      const selectedFile = event.target.files[0];
+      setImage(selectedFile);
+   };
 
    useEffect(() => {
       socket.on("recieveMessage", (data: any) => {
@@ -66,8 +105,57 @@ const MessageBox: FC = () => {
 
    const handleSubmit = (event: any) => {
       event.preventDefault();
+      let receiverId: any;
+      const form = new FormData();
+      let type = "message";
 
-      let receiverId;
+      if (image) {
+         const reader = new FileReader();
+         reader.readAsDataURL(image);
+         reader.onloadend = () => {
+            const fileData = reader.result;
+            socket.emit("image", { data: fileData, senderId: userId, receiverId });
+         };
+         form.append("image", image);
+         type = "image";
+         setImage(null);
+      }
+
+      if (selectedFile) {
+         const chunkSize = 64 * 1024; // 64KB chunk sizes
+         const fileReader = new FileReader();
+         let offset = 0;
+
+         fileReader.addEventListener("error", (event) => {
+            console.error("Error reading file:", event);
+         });
+
+         fileReader.addEventListener("load", (event) => {
+            if (event.target?.readyState === FileReader.DONE) {
+               const chunk = event.target.result as ArrayBuffer;
+               socket.emit("video-chunk", { chunk, offset });
+               offset += chunk.byteLength;
+               setProgress((offset / selectedFile.size) * 100);
+               sendNextChunk();
+            }
+         });
+
+         const sendNextChunk = () => {
+            if (offset < selectedFile.size) {
+               const chunk = selectedFile.slice(offset, offset + chunkSize);
+               fileReader.readAsArrayBuffer(chunk);
+            } else {
+               socket.emit("video-transfer-complete", {
+                  senderId: userId,
+                  receiverId,
+               });
+               setProgress(100);
+               setSelectedFile(null);
+            }
+         };
+
+         sendNextChunk();
+      }
 
       if (curChat?.members[0]._id === userId) {
          receiverId = curChat.members[1]._id;
@@ -85,12 +173,14 @@ const MessageBox: FC = () => {
          setMessage("");
       }
 
-      const form = new FormData();
-
       form.append("message", message);
       form.append("senderId", userId || "");
       form.append("conversationId", curChat?._id);
-      dispatch(createMessage(form)).then((response) => {
+
+      if (!form.get("message") && !form.get("image") && !form.get("video")) {
+         return;
+      }
+      dispatch(createMessage({ form, type })).then((response) => {
          if (response?.payload?.status === "ok") {
             dispatch(fetchChats(curChat?._id)).then((response: any) => {
                setMessages(response?.payload?.data);
@@ -112,6 +202,33 @@ const MessageBox: FC = () => {
          setConversations(response?.data?.conversations);
       });
    };
+
+   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+   const playerRef = useRef<ReactPlayer>(null);
+
+   useEffect(() => {
+      socket.on("video-upload-success", (data: any) => {
+         const url = `http://localhost:7700/posts/${data?.fileName}`;
+         setVideoUrl(url);
+         setArrivalMessage({
+            createdAt: Date.now(),
+            senderId: data?.senderId,
+            video: url,
+         });
+      });
+
+      return () => {
+         socket.off("video-upload-success");
+      };
+   }, [socket]);
+
+   useEffect(() => {
+      if (videoUrl && playerRef.current) {
+         playerRef.current.seekTo(0);
+      }
+   }, [videoUrl]);
+
+   console.log(videoUrl);
 
    return (
       <div className="bg-white ml-0  w-full sm:w-3/5 sm:ml-72 h-96 flex flex-col">
@@ -160,6 +277,13 @@ const MessageBox: FC = () => {
                      </div>
                   </div>
                ))}
+               <div>
+                  {videoUrl ? (
+                     <ReactPlayer ref={playerRef} url={videoUrl} controls playing width="100%" height="auto" />
+                  ) : (
+                     <p>No video uploaded yet</p>
+                  )}
+               </div>
             </div>
 
             {curChat ? (
@@ -173,21 +297,41 @@ const MessageBox: FC = () => {
                         />
                         <h1 className="ml-2">{curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}</h1>
                      </div>
+
                      <div className="overflow-y-auto flex-grow">
                         {messages?.map((ob: any, i: number) => (
                            <div key={i + "message"} ref={scrollRef}>
-                              <Chat message={ob} own={ob?.senderId === userId} />
+                              <Chat message={ob} own={ob?.senderId === userId} playerRef={playerRef} videoUrl={videoUrl} />
                            </div>
                         ))}
                      </div>
+                     <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
+
                      <div className="flex items-center mt-4">
                         <input
                            type="text"
                            className="w-full p-2 border border-black rounded-md focus:outline-none"
                            placeholder="Type your message here"
                            value={message}
-                           onChange={(e) => setMessage(e?.target?.value)}
+                           onChange={(e) => setMessage(e.target.value)}
                         />
+
+                        <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2">
+                           😊
+                        </button>
+                        <div className="flex items-center bg-gray-400 ml-2 h-10 rounded-md ">
+                           <label htmlFor="image-upload" className="cursor-pointer flex px-4  items-center">
+                              <FontAwesomeIcon icon={faFileImage} className="h-6  w-6 mr-2" />
+                           </label>
+                           <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                        </div>
+                        <div className="flex i  tems-center bg-gray-400 ml-2 h-10 rounded-md ">
+                           <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
+                              <FontAwesomeIcon icon={faVideo} className="text-blue-500 mr-2" />
+                              Upload Video
+                           </label>
+                           <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
+                        </div>
                         <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
                            Send
                         </button>
@@ -196,16 +340,9 @@ const MessageBox: FC = () => {
                </div>
             ) : (
                <>
-                  {" "}
                   <span className=" text-5xl text-gray-300 cursor-default ">Open a conversation to start a chat.</span>
                </>
             )}
-            {/* <div className="chatOnline">
-               <div className="chatOnlineWrapper">
-                  <ChatOnline onlineUsers={onlineUsers} currentId={user._id} setCurrentChat={setCurrentChat} />
-               </div>
-            </div> */}
-            <VideoCall socket={socket} />
          </div>
       </div>
    );

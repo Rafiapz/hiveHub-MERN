@@ -10,11 +10,20 @@ export const createChatController = (dependencies: IChatsDependencies) => {
 
         try {
 
+            const params = req?.params?.type
 
-            const data: ChatsEntity = {
+            let data: ChatsEntity = {
                 message: req?.body?.message,
                 senderId: req?.body?.senderId,
                 conversationId: req?.body?.conversationId,
+            }
+            if (req?.file?.filename && params === 'image') {
+                const path = `http://localhost:7700/posts/${req?.file?.filename}`
+                data.image = path
+
+            } else if (req?.file?.filename && params === 'video') {
+                const path = `http://localhost:7700/posts/${req?.file?.filename}`
+                data.video = path
             }
 
             const result = await createChatUseCase(dependencies).execute(data)

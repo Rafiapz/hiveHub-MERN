@@ -31,7 +31,7 @@ const Story: FC<any> = ({ setView }: any) => {
 
    return (
       <div className="flex items-center justify-center p-4 bg-gray-50 w-2/3 ml-10 ">
-         <li className="flex flex-col items-center space-y-2">
+         {/* <li className="flex flex-col items-center space-y-2">
             <div className="bg-gradient-to-tr from-yellow-500 to-pink-600 rounded-full p-1 relative">
                <a className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300" href="#">
                   {myStories?.length <= 0 ? (
@@ -70,7 +70,7 @@ const Story: FC<any> = ({ setView }: any) => {
                   </li>
                )}
             </div>
-         ))}
+         ))} */}
       </div>
    );
 };

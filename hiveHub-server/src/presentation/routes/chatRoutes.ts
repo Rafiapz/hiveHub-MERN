@@ -5,6 +5,7 @@ import { currentUser } from '../middlewares/currentUser'
 import { INetworkDependencies } from '../../application/interface/network/IDependencies'
 import { IChatsDependencies } from '../../application/interface/chats/IDependencies'
 import { controllers } from '../controllers/chats'
+import { uploadSingleFile } from '../../_lib/multer'
 
 
 
@@ -18,7 +19,7 @@ export const chatRoutes = (dependencies: IChatsDependencies) => {
 
     router.route('/fetch-conversations/:userId').get(fetchConversations)
 
-    router.route('/create-message').post(createChat)
+    router.route('/create-message/:type').post(uploadSingleFile, createChat)
 
     router.route('/fetch-messages/:id').get(fetchChats)
 

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../../utils/axios";
 import { CREATE_CONVERSATION_URL, CREATE_MESSAGE_URL, FETCH_MESSAGES_URL } from "../../../utils/endPoint";
-import { jsonConfig } from "../../../utils/apiUtils";
+import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils";
 
 
 export const createConversation = createAsyncThunk('/chats/create-conversation', async (form: any) => {
@@ -17,11 +17,11 @@ export const createConversation = createAsyncThunk('/chats/create-conversation',
     }
 })
 
-export const createMessage = createAsyncThunk('/chats/create-message', async (form: any) => {
+export const createMessage = createAsyncThunk('/chats/create-message', async ({ form, type }: any) => {
 
     try {
 
-        const response = await apiClient.post(CREATE_MESSAGE_URL, form, jsonConfig)
+        const response = await apiClient.post(CREATE_MESSAGE_URL + '/' + type, form, multiPartConfig)
 
         return response.data
 

@@ -23,6 +23,7 @@ const Home: FC = () => {
    const posts: any = useSelector((state: RootState) => state.posts.posts.data);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const [storyViewing, setStoryViewing] = useState<boolean>(false);
+   const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -34,11 +35,6 @@ const Home: FC = () => {
             });
       });
    }, []);
-
-   // useEffect(() => {
-   //    dispatch(setSocket({ socket }));
-   //    socket.emit("addUser", userId);
-   // }, []);
 
    const openModal = () => {
       setIsOpen(true);
@@ -52,21 +48,41 @@ const Home: FC = () => {
    };
 
    return (
-      <div className="bg-gray-100 ">
-         <Menu />
-         <div className="flex  ml-80 overflow-hidden">
-            <Story setView={setStoryViewing} />
-         </div>
-         <div className="flex  ml-80 overflow-hidden ">
-            <Posts openModal={openModal} likes={likes} posts={posts} />
-         </div>
-         <CreatePostModal />
-         <EditPostModal />
-         <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
-         <Comments />
-         <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />
-         <RightSideBar />
-      </div>
+      <>
+         {userData?.role === "admin" ? (
+            <div className="bg-gray-100 ">
+               <Menu />
+               {/* <div className="flex  ml-80 overflow-hidden">
+               <Story setView={setStoryViewing} />
+            </div> */}
+               {/* <div className="flex  ml-80 overflow-hidden ">
+               <Posts openModal={openModal} likes={likes} posts={posts} />
+            </div> */}
+               {/* <CreatePostModal />
+            <EditPostModal /> */}
+               {/* <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
+            <Comments /> */}
+               {/* <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} /> */}
+               {/* <RightSideBar /> */}
+            </div>
+         ) : (
+            <div className="bg-gray-100 ">
+               <Menu />
+               <div className="flex  ml-80 overflow-hidden">
+                  <Story setView={setStoryViewing} />
+               </div>
+               <div className="flex  ml-80 overflow-hidden ">
+                  <Posts openModal={openModal} likes={likes} posts={posts} />
+               </div>
+               <CreatePostModal />
+               <EditPostModal />
+               <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
+               <Comments />
+               <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />
+               <RightSideBar />
+            </div>
+         )}
+      </>
    );
 };
 

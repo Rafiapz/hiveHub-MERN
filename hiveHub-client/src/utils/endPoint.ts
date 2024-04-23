@@ -97,3 +97,5 @@ export const LIKE_COMMENT_URL = '/comments/like-comment'
 export const FETCH_COMMENT_LIKES = '/comments/fetch-likes-of-comment'
 
 export const FETCH_OTHERS_STORY_URL = '/story/fetch-others-story'
+
+export const SEND_VIDEO_URL = '/chats/send-video'

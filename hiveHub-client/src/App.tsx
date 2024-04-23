@@ -24,6 +24,7 @@ import UsersLikes from "./components/likes/UsersLikes";
 import Messages from "./pages/message/Messages";
 import Dashboard from "./pages/admin/dashboard/Dashboard";
 import BlockedUser from "./components/blockedUser/BlockedUser";
+import Reports from "./pages/admin/reports/Reports";
 
 function App() {
    const auth = useSelector((state: RootState) => state?.user?.user?.auth?.isAuth);
@@ -58,22 +59,32 @@ function App() {
                {userData && userData?.isBlocked === true ? (
                   <BlockedUser />
                ) : (
-                  <Routes>
-                     <Route path="/" element={<Home />} />
-                     <Route path="/messages" element={<Messages />} />
-                     <Route path="/profile" element={<Profile />}>
-                        <Route index element={<UserPosts />} />
-                        <Route path="/profile/following" element={<Following />} />
-                        <Route path="/profile/followers" element={<Followers />} />
-                        <Route path="/profile/likes" element={<UsersLikes />} />
-                        <Route path="/profile/reports" element={<Followers />} />
-                     </Route>
-                     <Route path="/edit-profile" element={<EditProfile />} />
-                     <Route path="/others-profile" element={<OthersProfile />}>
-                        <Route index element={<OthersProfilePosts />} />
-                     </Route>
-                     <Route path="/dashboard" element={<Dashboard />} />
-                  </Routes>
+                  <>
+                     {userData?.role === "admin" && (
+                        <Routes>
+                           <Route path="/" element={<Navigate to={"/admin"} />} />
+                           <Route path="/admin/">
+                              <Route index element={<Dashboard />} />
+                              <Route path="reports" element={<Reports />} />
+                           </Route>
+                        </Routes>
+                     )}
+                     <Routes>
+                        <Route path="/" element={userData?.role === "admin" ? <Navigate to={"/admin"} /> : <Home />} />
+                        <Route path="/messages" element={<Messages />} />
+                        <Route path="/profile" element={<Profile />}>
+                           <Route index element={<UserPosts />} />
+                           <Route path="/profile/following" element={<Following />} />
+                           <Route path="/profile/followers" element={<Followers />} />
+                           <Route path="/profile/likes" element={<UsersLikes />} />
+                           <Route path="/profile/reports" element={<Followers />} />
+                        </Route>
+                        <Route path="/edit-profile" element={<EditProfile />} />
+                        <Route path="/others-profile" element={<OthersProfile />}>
+                           <Route index element={<OthersProfilePosts />} />
+                        </Route>
+                     </Routes>
+                  </>
                )}
             </>
          )}

@@ -23,6 +23,8 @@ export const chatRoutes = (dependencies: IChatsDependencies) => {
 
     router.route('/fetch-messages/:id').get(fetchChats)
 
+    router.route('/send-video/:type').post(createChat)
+
 
 
 

@@ -7,6 +7,7 @@ import {
     REPLY_COMMENT_URL,
     SEARCH_USER_URL,
     SEND_EMAIL_FOR_RESET_PASSWORD_URL,
+    SEND_VIDEO_URL,
     UPLOAD_STORY_URL,
     VERIFY_EMAIL_UPDATE_OTP_URL,
 } from "../utils/endPoint";
@@ -51,5 +52,9 @@ export const deleteReplyComment = async (id: any) => {
 
 export const likeComment = async (form: any) => {
     return await apiClient.post(LIKE_COMMENT_URL, form, jsonConfig)
+}
+
+export const sendVideo = async (data: any) => {
+    return apiClient.post(SEND_VIDEO_URL + '/video', data, jsonConfig)
 }
 

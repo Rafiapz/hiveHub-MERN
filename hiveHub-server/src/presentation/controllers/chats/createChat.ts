@@ -17,12 +17,14 @@ export const createChatController = (dependencies: IChatsDependencies) => {
                 senderId: req?.body?.senderId,
                 conversationId: req?.body?.conversationId,
             }
+
             if (req?.file?.filename && params === 'image') {
                 const path = `http://localhost:7700/posts/${req?.file?.filename}`
                 data.image = path
 
-            } else if (req?.file?.filename && params === 'video') {
-                const path = `http://localhost:7700/posts/${req?.file?.filename}`
+            }
+            if (params === 'video') {
+                const path = `http://localhost:7700/posts/${req?.body?.fileName}`
                 data.video = path
             }
 

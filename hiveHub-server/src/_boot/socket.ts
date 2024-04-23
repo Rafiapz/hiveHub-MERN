@@ -2,7 +2,7 @@ import { Server } from 'http'
 import { Server as SocketIOServer, Socket } from 'socket.io'
 import fs from 'fs';
 import path from 'path';
-
+import axios from 'axios';
 
 interface VideoChunkData {
     chunk: Uint8Array;
@@ -84,22 +84,45 @@ export const initializeSocketIO = (server: Server) => {
                 fileData[data.offset] = data.chunk;
             });
 
-            socket.on('video-transfer-complete', ({ senderId, receiverId }) => {
+            socket.on('video-transfer-complete', ({ senderId, receiverId, conversationId }: any) => {
                 const filteredFileData = fileData.filter((chunk): chunk is Uint8Array => chunk !== undefined);
                 const fileBuffer = Buffer.concat(filteredFileData);
                 const timestamp = Date.now();
                 fileName = `video-${timestamp}.mp4`;
                 const filePath = path.join(uploadsDir, fileName);
 
-                fs.writeFile(filePath, fileBuffer, (err) => {
+
+                fs.writeFile(filePath, fileBuffer, async (err) => {
                     if (err) {
                         console.error('Error saving video file:', err);
                         socket.emit('video-upload-error', 'Error saving video file');
                     } else {
                         console.log('Video file saved successfully');
+                        try {
+
+                            const form = new FormData()
+
+                            form.append('fileName', fileName || '')
+                            form.append('senderId', senderId)
+                            form.append('conversationId', conversationId)
+                            form.append('from', 'socket')
+
+                            await axios.post('http://localhost:7700/chats/send-video/video', form, {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                            })
+                            io.emit('upload-comepleted', { conversationId })
+                        } catch (error) {
+                            const sender = getUser(senderId)
+                            io.to(sender?.socketId).emit('failed to upload')
+                            return
+                        }
                         const user = getUser(receiverId);
+
                         if (user) {
                             io.to(user?.socketId).emit('video-upload-success', { fileName, senderId });
+
                         }
 
                     }

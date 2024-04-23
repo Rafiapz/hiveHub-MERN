@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
-import { fetchConversations } from "../../service/api";
+import { fetchConversations, sendVideo } from "../../service/api";
 import { connect, io } from "socket.io-client";
 import NewMessage from "../newMessage/NewMessage";
 import VideoCall from "../videoCall/VideoCall";
 import EmojiPicker from "emoji-picker-react";
 import ReactPlayer from "react-player";
+import LoadingButton from "../loading/LoadingButton";
+import toast from "react-hot-toast";
 
 const socket = io("http://localhost:7700");
 
@@ -32,6 +34,7 @@ const MessageBox: FC = () => {
    const [video, setVideo] = useState<any>(null);
    const [selectedFile, setSelectedFile] = useState<File | null>(null);
    const [progress, setProgress] = useState<number>(0);
+   const [loading, setLoading] = useState<boolean>(false);
 
    const handleVideoChange = (event: any) => {
       if (event.target.files && event.target.files.length > 0) {
@@ -105,6 +108,7 @@ const MessageBox: FC = () => {
 
    const handleSubmit = (event: any) => {
       event.preventDefault();
+      setLoading(true);
       let receiverId: any;
       const form = new FormData();
       let type = "message";
@@ -122,7 +126,7 @@ const MessageBox: FC = () => {
       }
 
       if (selectedFile) {
-         const chunkSize = 64 * 1024; // 64KB chunk sizes
+         const chunkSize = 64 * 1024;
          const fileReader = new FileReader();
          let offset = 0;
 
@@ -145,9 +149,12 @@ const MessageBox: FC = () => {
                const chunk = selectedFile.slice(offset, offset + chunkSize);
                fileReader.readAsArrayBuffer(chunk);
             } else {
+               console.log("conv id ", curChat?._id);
+
                socket.emit("video-transfer-complete", {
                   senderId: userId,
                   receiverId,
+                  conversationId: curChat?._id,
                });
                setProgress(100);
                setSelectedFile(null);
@@ -155,6 +162,8 @@ const MessageBox: FC = () => {
          };
 
          sendNextChunk();
+
+         return;
       }
 
       if (curChat?.members[0]._id === userId) {
@@ -177,16 +186,25 @@ const MessageBox: FC = () => {
       form.append("senderId", userId || "");
       form.append("conversationId", curChat?._id);
 
-      if (!form.get("message") && !form.get("image") && !form.get("video")) {
+      if (!form.get("message") && !form.get("image")) {
+         setLoading(false);
          return;
       }
       dispatch(createMessage({ form, type })).then((response) => {
          if (response?.payload?.status === "ok") {
-            dispatch(fetchChats(curChat?._id)).then((response: any) => {
-               setMessages(response?.payload?.data);
+            fetchConversations(userId || "").then((response: any) => {
+               setConversations(response?.data?.conversations);
             });
+            dispatch(fetchChats(curChat?._id))
+               .then((response: any) => {
+                  setMessages(response?.payload?.data);
+               })
+               .catch((err) => {
+                  toast.error("Failed send");
+               });
          }
       });
+      setLoading(false);
    };
 
    const openModal = () => {
@@ -220,6 +238,26 @@ const MessageBox: FC = () => {
       return () => {
          socket.off("video-upload-success");
       };
+   }, [socket]);
+
+   useEffect(() => {
+      socket.on("upload-comepleted", (data) => {
+         fetchConversations(userId || "").then((response: any) => {
+            setConversations(response?.data?.conversations);
+         });
+         dispatch(fetchChats(data?.conversationId)).then((response: any) => {
+            setMessages(response?.payload?.data);
+            setLoading(false);
+         });
+      });
+      setLoading(false);
+   }, [socket]);
+
+   useEffect(() => {
+      socket.on("failed to upload", () => {
+         toast("Failed to upload video");
+      });
+      setLoading(false);
    }, [socket]);
 
    useEffect(() => {
@@ -277,13 +315,13 @@ const MessageBox: FC = () => {
                      </div>
                   </div>
                ))}
-               <div>
+               {/* <div>
                   {videoUrl ? (
                      <ReactPlayer ref={playerRef} url={videoUrl} controls playing width="100%" height="auto" />
                   ) : (
                      <p>No video uploaded yet</p>
                   )}
-               </div>
+               </div> */}
             </div>
 
             {curChat ? (
@@ -301,7 +339,7 @@ const MessageBox: FC = () => {
                      <div className="overflow-y-auto flex-grow">
                         {messages?.map((ob: any, i: number) => (
                            <div key={i + "message"} ref={scrollRef}>
-                              <Chat message={ob} own={ob?.senderId === userId} playerRef={playerRef} videoUrl={videoUrl} />
+                              <Chat message={ob} own={ob?.senderId === userId} playerRef={playerRef} />
                            </div>
                         ))}
                      </div>
@@ -325,16 +363,21 @@ const MessageBox: FC = () => {
                            </label>
                            <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
                         </div>
-                        <div className="flex i  tems-center bg-gray-400 ml-2 h-10 rounded-md ">
+                        <div className="flex i  tems-center bg-gray-400 ml-2 w-20 h-10 rounded-md ">
                            <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
-                              <FontAwesomeIcon icon={faVideo} className="text-blue-500 mr-2" />
-                              Upload Video
+                              <FontAwesomeIcon icon={faVideo} className="text-black size-8 mt-4 ml-2 mr-2" />
                            </label>
                            <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
                         </div>
-                        <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
-                           Send
-                        </button>
+                        {loading ? (
+                           <div className="pl-3">
+                              <LoadingButton />
+                           </div>
+                        ) : (
+                           <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
+                              Send
+                           </button>
+                        )}
                      </div>
                   </div>
                </div>

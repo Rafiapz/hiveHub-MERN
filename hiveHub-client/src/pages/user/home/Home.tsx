@@ -11,11 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
 import { fetchAllposts } from "../../../store/actions/post/postActions";
 import toast from "react-hot-toast";
-import { io } from "socket.io-client";
-import { setSocket } from "../../../store/slices/messages/messagesSlice";
 import ViewStory from "../../../components/story/ViewStory";
 import Carousel from "../../../components/carousel/Carousel";
-// const socket = io("http://localhost:7700");
+import SharePost from "../../../components/share/SharePost";
 
 const Home: FC = () => {
    const [modalIsOpen, setIsOpen] = useState(false);
@@ -24,6 +22,7 @@ const Home: FC = () => {
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const [storyViewing, setStoryViewing] = useState<boolean>(false);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
+   const [sharePostModalIsOpen, setSharePostModalIsOpen] = useState(false);
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -45,6 +44,14 @@ const Home: FC = () => {
 
    const handleStoryView = () => {
       setStoryViewing(false);
+   };
+
+   const openSharePostModal = () => {
+      setSharePostModalIsOpen(true);
+   };
+
+   const closeSharePostModal = () => {
+      setSharePostModalIsOpen(false);
    };
 
    return (
@@ -72,13 +79,14 @@ const Home: FC = () => {
                   <Story setView={setStoryViewing} />
                </div>
                <div className="flex  ml-80 overflow-hidden ">
-                  <Posts openModal={openModal} likes={likes} posts={posts} />
+                  <Posts openModal={openModal} likes={likes} posts={posts} openSharePostModal={openSharePostModal} />
                </div>
                <CreatePostModal />
                <EditPostModal />
                <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
                <Comments />
                <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />
+               <SharePost modalIsOpen={sharePostModalIsOpen} closeModal={closeSharePostModal} />
                <RightSideBar />
             </div>
          )}

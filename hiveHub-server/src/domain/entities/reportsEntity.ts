@@ -4,6 +4,7 @@ export interface ReportsEntity {
     postId: ObjectId;
     userId: ObjectId;
     reason: String;
-    createdAt: Date;
     _id?: ObjectId;
+    status: String;
+
 }

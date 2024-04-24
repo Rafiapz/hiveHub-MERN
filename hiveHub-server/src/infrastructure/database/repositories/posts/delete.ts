@@ -5,7 +5,6 @@ export const deletePost = async (data: { _id: string }) => {
 
     try {
 
-
         const status = await Posts.deleteOne(data)
 
         return status

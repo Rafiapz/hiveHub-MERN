@@ -99,3 +99,11 @@ export const FETCH_COMMENT_LIKES = '/comments/fetch-likes-of-comment'
 export const FETCH_OTHERS_STORY_URL = '/story/fetch-others-story'
 
 export const SEND_VIDEO_URL = '/chats/send-video'
+
+export const FETCH_ALL_REPORTS_URL = '/reports/fetch-all-reports'
+
+export const RESOLVE_REPORT_URL = '/reports/resolve-report'
+
+export const REJECT_REPORT_URL = '/reports/reject-report'
+
+export const REPOST_POST_URL = '/post/repost-post'

@@ -9,13 +9,22 @@ import { IReportsDependencies } from '../../application/interface/reports/IDepen
 export const reportsRoutes = (dependencies: IReportsDependencies) => {
 
     const {
-        reportPost
+        reportPost,
+        fetchAllReports,
+        resolveReport,
+        rejectReport
     } = controllers(dependencies);
 
     const router = Router()
 
 
     router.route('/report-post').post(currentUser, reportPost)
+
+    router.route('/fetch-all-reports').get(currentUser, fetchAllReports)
+
+    router.route('/resolve-report/:id').delete(currentUser, resolveReport)
+
+    router.route('/reject-report/:id').put(currentUser, rejectReport)
 
 
 

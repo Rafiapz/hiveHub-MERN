@@ -9,7 +9,7 @@ export const findByUserId = async (userId: any) => {
             path: 'postId',
             populate: {
                 path: 'userId',
-                model: 'users' // Reference to the User model
+                model: 'users'
             }
         });
 

@@ -8,5 +8,6 @@ export interface IRepositories {
     deletePost: (data: { _id: string }) => Promise<DeleteResult>;
     updatePost: (data: PostEntity) => Promise<PostEntity | null>;
     findUsersPost: (id: any) => any;
+    findOne: (postId: any) => Promise<PostEntity | null>
 
 }

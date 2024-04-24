@@ -9,11 +9,11 @@ import Loading from "../loading/Loading";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCommentModal, handleEditPostModal, handleReportPostId } from "../../store/slices/posts/postSlice";
+import { handleCommentModal, handleEditPostModal, handleReportPostId, setSharePost } from "../../store/slices/posts/postSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "timeago.js";
 
-const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
+const Posts: FC<any> = ({ openModal, posts, likes, openSharePostModal }: any) => {
    const dispatch = useDispatch<AppDispatch>();
    const loading = useSelector((state: RootState) => state.posts.posts.loading);
    const userId = useSelector((state: RootState) => state.user.user.userId);
@@ -96,6 +96,11 @@ const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
 
    const viewOthersProfile = (id: number, email: string) => {
       navigate(`/others-profile?userId=${id}&email=${email}`);
+   };
+
+   const handleSharePost = (post: any) => {
+      dispatch(setSharePost({ data: post }));
+      openSharePostModal();
    };
 
    return (
@@ -210,12 +215,12 @@ const Posts: FC<any> = ({ openModal, posts, likes }: any) => {
                                  />
                                  <p>{item?.comments}</p>
                               </div>
-                              <div>
+                              <div onClick={() => handleSharePost(item)}>
                                  <FontAwesomeIcon
                                     icon={faShare}
                                     className="mr-4 text-yellow-300 size-7 cursor-pointer text-xl hover:text-green-600 transition duration-300"
                                  />
-                                 <p>{0}</p>
+                                 <p>{item?.shares}</p>
                               </div>
                            </div>
 

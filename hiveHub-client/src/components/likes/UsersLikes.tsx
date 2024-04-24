@@ -2,11 +2,10 @@ import React, { FC, useEffect, useState } from "react";
 import Posts from "../post/Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchUsersLikedPosts, fetchUsersPost } from "../../store/actions/post/postActions";
+import { fetchUsersLikedPosts } from "../../store/actions/post/postActions";
 
 const UsersLikes: FC = () => {
    const dispatch = useDispatch<AppDispatch>();
-   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const likes: any = useSelector((state: RootState) => state?.posts?.likedPosts?.likes);
    const posts: any = useSelector((state: RootState) => state?.posts?.likedPosts?.data);
 

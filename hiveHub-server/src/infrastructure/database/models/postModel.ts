@@ -10,13 +10,13 @@ const PostsSchema: Schema = new Schema({
     path: { type: String },
     type: { type: String }
   },
-  createdAt: { type: Date },
   likes: { type: Number },
   comments: { type: Number },
   saves: { type: Number },
   shares: { type: Number },
+  isBlocked: { type: Boolean }
 
-});
+}, { timestamps: true });
 
 export const Posts = mongoose.model<PostEntity>('Posts', PostsSchema);
 

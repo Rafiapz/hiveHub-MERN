@@ -16,10 +16,10 @@ export const reportPostController = (dependencies: IReportsDependencies) => {
             const userId = (user as any)?.id;
 
             const data: ReportsEntity = {
-                createdAt: new Date(),
                 postId: req?.body?.postId,
                 userId: userId,
                 reason: req?.body?.reason,
+                status: 'Pending'
             }
 
 

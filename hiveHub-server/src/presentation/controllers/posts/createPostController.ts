@@ -22,13 +22,11 @@ export const createPostController = (dependencies: IPostDependencies) => {
                     console.log(req.params);
 
                     const data: PostEntity = {
-                        createdAt: new Date(),
                         userId: decoded.id,
                         media: mediaType ? { type: mediaType, path: path } : undefined,
                         content: req?.body?.content,
                         likes: 0,
                         comments: 0
-
                     }
 
                     const post = await createPostUseCase(dependencies).execute(data)

@@ -5,7 +5,7 @@ import { StoryEntity } from '../../../domain/entities/storyEntity';
 
 const StorySchema: Schema = new Schema({
     userId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-    media: { type: String },
+    media: [{ type: String, }],
     description: { type: String },
 }, { timestamps: true });
 

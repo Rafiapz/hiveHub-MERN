@@ -5,9 +5,20 @@ export const createStory = async (data: StoryEntity) => {
 
     try {
 
-        const story = await Story.create(data)
+        const exising = await Story.findOne({ userId: data?.userId })
 
-        return story
+        if (!exising) {
+            const story = await Story.create(data)
+
+            return story
+        } else {
+
+
+        }
+
+
+        return null
+
 
     } catch (error: any) {
         throw new Error(error)

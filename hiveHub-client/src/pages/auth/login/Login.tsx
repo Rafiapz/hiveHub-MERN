@@ -18,8 +18,8 @@ function Login() {
    const handleSubmit = (data: IUserLogin): void => {
       dispatch(loginAction(data)).then((res: any) => {
          if (res.payload.status == "ok") {
-            navigate("/");
-            toast("You have logged in successfully", { style: { backgroundColor: "green", color: "white" } });
+            if (res?.payload?.userData?.role === "admin") navigate("/admin");
+            else navigate("/");
          } else {
             toast(res.payload.message, { style: { backgroundColor: "red", color: "white" } });
          }

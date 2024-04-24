@@ -1,5 +1,5 @@
 import { ICreateLikeUseCase } from "../../../domain/useCase/likes";
-import { ICreatePostUseCase } from "../../../domain/useCase/posts";
+import { ICreatePostUseCase, IFindOneUseCase } from "../../../domain/useCase/posts";
 import { IDeletePostUseCase } from "../../../domain/useCase/posts";
 import { IFindAllPostsUseCase } from "../../../domain/useCase/posts";
 import { IUPdatePostUseCase } from "../../../domain/useCase/posts";
@@ -18,5 +18,5 @@ export interface IUseCases {
     deletePostUseCase: (dependencies: any) => IDeletePostUseCase;
     updatePostUseCase: (dependencies: any) => IUPdatePostUseCase;
     findUsersPostUseCase: (dependencies: any) => IFindUsersPostUseCase;
-
+    findOneUseCase: (dependencies: any) => IFindOneUseCase;
 }

@@ -4,7 +4,11 @@ import {
     DELETE_REPLY_COMMENT_URL,
     FETCH_CONVERSATIONS_URL,
     LIKE_COMMENT_URL,
+    REJECT_REPORT_URL,
     REPLY_COMMENT_URL,
+    REPORT_POST_URL,
+    REPOST_POST_URL,
+    RESOLVE_REPORT_URL,
     SEARCH_USER_URL,
     SEND_EMAIL_FOR_RESET_PASSWORD_URL,
     SEND_VIDEO_URL,
@@ -56,5 +60,17 @@ export const likeComment = async (form: any) => {
 
 export const sendVideo = async (data: any) => {
     return apiClient.post(SEND_VIDEO_URL + '/video', data, jsonConfig)
+}
+
+export const resolveReport = async ({ reportId, postId }: any) => {
+    return await apiClient.delete(`${RESOLVE_REPORT_URL}/${reportId}?postId=${postId}`)
+}
+
+export const rejectReport = async (reportId: any) => {
+    return await apiClient.put(`${REJECT_REPORT_URL}/${reportId}`)
+}
+
+export const repostPost = async (form: any) => {
+    return await apiClient.post(REPOST_POST_URL, form, jsonConfig)
 }
 

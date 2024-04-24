@@ -46,6 +46,9 @@ const initialState = {
         data: null,
         current: null,
         myStories: null
+    },
+    sharePost: {
+        data: null
     }
 }
 
@@ -94,6 +97,11 @@ const postSlice = createSlice({
         },
         setCurrentStory: (state, action) => {
             state.stories.current = action?.payload?.data
+        },
+        setSharePost: (state, action) => {
+            console.log(action?.payload);
+
+            state.sharePost.data = action?.payload?.data
         }
 
 
@@ -173,7 +181,8 @@ export const {
     handleConnectionRequest,
     handleCleanUpPost,
     handleReportPostId,
-    setCurrentStory
+    setCurrentStory,
+    setSharePost
 } = postSlice.actions;
 
 export default postSlice.reducer;    

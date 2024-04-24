@@ -15,7 +15,7 @@ export const createStoryController = (dependencies: IStoryDependencies) => {
 
             const data: StoryEntity = {
                 userId: req?.body?.userId,
-                media: path,
+                media: [path],
                 description: req?.body?.description
             }
 

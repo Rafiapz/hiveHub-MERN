@@ -107,3 +107,5 @@ export const RESOLVE_REPORT_URL = '/reports/resolve-report'
 export const REJECT_REPORT_URL = '/reports/reject-report'
 
 export const REPOST_POST_URL = '/post/repost-post'
+
+export const STORY_SEEN_URL = '/story/story-seen'

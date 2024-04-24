@@ -13,7 +13,8 @@ export const storyRoutes = (dependencies: IStoryDependencies) => {
         createStory,
         findAllStories,
         deleteStory,
-        findStoryByid
+        findStoryByid,
+        storySeen
     } = controllers(dependencies);
 
     const router = Router()
@@ -25,6 +26,8 @@ export const storyRoutes = (dependencies: IStoryDependencies) => {
     router.route('/delete-story/:id').delete(currentUser, deleteStory)
 
     router.route('/fetch-others-story/:userId').get(currentUser, findStoryByid)
+
+    router.route('/story-seen').put(currentUser, storySeen)
 
 
 

@@ -6,5 +6,6 @@ export interface StoryEntity {
     userId: ObjectId;
     media: String[] | null;
     description?: String | null;
+    seenBy?: ObjectId[] | null
 
 }

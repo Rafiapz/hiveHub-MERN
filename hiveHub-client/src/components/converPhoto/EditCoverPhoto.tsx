@@ -33,7 +33,7 @@ const EditCoverPhoto: FC = () => {
                </div>
             </div>
             <div className="flex justify-between items-center ml-36 absolute mb-16 ">
-               <h1 className="text-xl font-bold">{userData?.fullName}</h1>
+               <h1 className="text-xl font-bold ml-8">{userData?.fullName}</h1>
             </div>
          </div>
       </div>

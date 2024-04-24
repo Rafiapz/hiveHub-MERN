@@ -13,11 +13,10 @@ export const createStory = async (data: StoryEntity) => {
             return story
         } else {
 
+            const updated = await Story.findOneAndUpdate({ userId: exising.userId }, { $push: { media: data.media } }, { new: true })
 
+            return updated
         }
-
-
-        return null
 
 
     } catch (error: any) {

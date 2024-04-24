@@ -148,7 +148,6 @@ export const changePassword = createAsyncThunk("/auth/change-password", async (f
 export const fetchAllUsers = createAsyncThunk("/auth/find-all-users", async () => {
     try {
         const response = await apiClient.get(FETCH_ALL_USERS);
-        console.log(response.data);
 
         return response.data;
     } catch (error: any) {

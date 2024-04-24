@@ -45,7 +45,9 @@ const initialState = {
     stories: {
         data: null,
         current: null,
-        myStories: null
+        myStories: null,
+        index: null,
+        seenBy: []
     },
     sharePost: {
         data: null
@@ -97,10 +99,10 @@ const postSlice = createSlice({
         },
         setCurrentStory: (state, action) => {
             state.stories.current = action?.payload?.data
+            state.stories.index = action?.payload?.index
+
         },
         setSharePost: (state, action) => {
-            console.log(action?.payload);
-
             state.sharePost.data = action?.payload?.data
         }
 

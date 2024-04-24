@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, DELETE_STORY_URL, EDIT_COMMENT_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_ALL_REPLIES_URL, FETCH_ALL_STORIES, FETCH_COMMENT_LIKES, FETCH_MY_LIKES_URL, FETCH_OTHERS_STORY_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL, REPORT_POST_URL } from "../../../utils/endPoint"
+import { CREATE_POST_URL, DELETE_COMMENT_URL, DELETE_POST_URL, DELETE_STORY_URL, EDIT_COMMENT_URL, EDIT_POST_URL, FETCH_ALL_COMMENTS_URL, FETCH_ALL_POSTS_URL, FETCH_ALL_REPLIES_URL, FETCH_ALL_STORIES, FETCH_COMMENT_LIKES, FETCH_MY_LIKES_URL, FETCH_OTHERS_STORY_URL, FETCH_USERS_POSTS_URL, LIKE_POST_URL, POST_COMMENT_URL, REPORT_POST_URL, STORY_SEEN_URL } from "../../../utils/endPoint"
 import { jsonConfig, multiPartConfig } from "../../../utils/apiUtils"
 import apiClient from "../../../utils/axios"
 
@@ -15,7 +15,7 @@ export const createPostAction = createAsyncThunk('/post/create', async (form: an
             params = 'video'
 
         const response = await apiClient.post(`${CREATE_POST_URL}/${params}`, form, multiPartConfig)
-        console.log(response);
+
 
         return response.data
     } catch (error: any) {
@@ -45,7 +45,7 @@ export const editPostAction = createAsyncThunk('/post/edit', async ({ formData, 
 
 
         const response = await apiClient.put(`${EDIT_POST_URL}/${params}?postId=${postId}`, formData, multiPartConfig)
-        console.log(response.data)
+
         return response.data
 
 
@@ -61,7 +61,7 @@ export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async (id
     try {
 
         const response = await apiClient.get(`${FETCH_ALL_POSTS_URL}?user=${id}`)
-        console.log(response.data);
+
         return response.data
 
     } catch (error: any) {
@@ -75,7 +75,7 @@ export const deletePostAction = createAsyncThunk('/posts/delete-post', async (id
     try {
 
         const response = await apiClient.delete(`${DELETE_POST_URL}?id=${id}`)
-        console.log(response.data);
+
         return response.data
 
     } catch (error: any) {
@@ -90,7 +90,7 @@ export const likePostAction = createAsyncThunk('/likes/like-post', async (id: nu
     try {
 
         const response = await apiClient.post(`${LIKE_POST_URL}/${id}`)
-        console.log(response);
+
         return response.data
 
     } catch (error: any) {
@@ -105,7 +105,6 @@ export const fetchAllCommentsOfPost = createAsyncThunk('/comments/fetch-all-comm
     try {
 
         const response = await apiClient.get(`${FETCH_ALL_COMMENTS_URL}/${id}`)
-        console.log(response.data);
 
         return response.data
 
@@ -121,7 +120,7 @@ export const postComment = createAsyncThunk('/comments/post-comment', async ({ f
 
 
         const response = await apiClient.post(`${POST_COMMENT_URL}/${postId}`, formData, jsonConfig)
-        console.log(response.data);
+
 
         return response.data
 
@@ -138,7 +137,6 @@ export const deleteComment = createAsyncThunk('/comments/delete-comment', async 
 
         const response = await apiClient.delete(`${DELETE_COMMENT_URL}/${commentId}`)
 
-        console.log(response.data);
         return response.data
 
 
@@ -231,6 +229,7 @@ export const fetchAllStories = createAsyncThunk('/story/fetch-all-stories', asyn
     try {
 
         const response = await apiClient.get(FETCH_ALL_STORIES + '/' + userId)
+        console.log(response?.data);
 
         return response.data
 
@@ -265,5 +264,17 @@ export const fetchOthersStory = createAsyncThunk('/story/fetch-others-story', as
     } catch (error: any) {
         throw new Error(error);
 
+    }
+})
+
+export const storySeen = createAsyncThunk('/story/story-seen', async (form: any) => {
+
+    try {
+
+        const response = await apiClient.put(STORY_SEEN_URL, form, jsonConfig)
+
+        return response.data
+    } catch (error: any) {
+        throw new Error(error)
     }
 })

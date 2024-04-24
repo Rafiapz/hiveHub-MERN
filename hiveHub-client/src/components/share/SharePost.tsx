@@ -10,8 +10,6 @@ const SharePost: FC<any> = ({ modalIsOpen, closeModal }) => {
    const post: any = useSelector((state: RootState) => state?.posts?.sharePost?.data);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
 
-   console.log("postt", post);
-
    const dispatch = useDispatch<AppDispatch>();
 
    const handleRepost = async () => {

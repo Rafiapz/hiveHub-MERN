@@ -3,6 +3,7 @@ import { createStoryController } from "./createStory";
 import { deleteStoryController } from "./delteStory";
 import { findAllStoriesController } from "./findAllStories";
 import { findStoryByIdController } from "./findStoryById";
+import { storySeenController } from "./storySeen";
 
 export const controllers = (dependencies: IStoryDependencies) => {
 
@@ -10,6 +11,7 @@ export const controllers = (dependencies: IStoryDependencies) => {
         createStory: createStoryController(dependencies),
         findAllStories: findAllStoriesController(dependencies),
         deleteStory: deleteStoryController(dependencies),
-        findStoryByid: findStoryByIdController(dependencies)
+        findStoryByid: findStoryByIdController(dependencies),
+        storySeen: storySeenController(dependencies)
     }
 }

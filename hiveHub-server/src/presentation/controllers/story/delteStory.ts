@@ -9,9 +9,15 @@ export const deleteStoryController = (dependencies: IStoryDependencies) => {
 
         try {
 
-            const id = req?.params?.id
+            const storyId = req?.body?.storyId
 
-            const result = await deleteStoryUseCase(dependencies).execute(id)
+            const image = req?.body?.image
+            const data = {
+                storyId,
+                image
+            }
+
+            const result = await deleteStoryUseCase(dependencies).execute(data)
 
             res.status(200).json({ status: 'ok' })
 

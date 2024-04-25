@@ -23,7 +23,7 @@ export const storyRoutes = (dependencies: IStoryDependencies) => {
 
     router.route('/fetch-all-stories/:userId').get(currentUser, findAllStories)
 
-    router.route('/delete-story/:id').delete(currentUser, deleteStory)
+    router.route('/delete-story').put(currentUser, deleteStory)
 
     router.route('/fetch-others-story/:userId').get(currentUser, findStoryByid)
 

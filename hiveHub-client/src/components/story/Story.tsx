@@ -30,8 +30,6 @@ const Story: FC<any> = ({ setView }: any) => {
          let myStoryIndex;
 
          stories?.forEach((ob: any, i: number) => {
-            console.log(ob?._id, "==", myStoryId);
-
             if (ob?._id === myStoryId) {
                myStoryIndex = i;
             }
@@ -59,23 +57,19 @@ const Story: FC<any> = ({ setView }: any) => {
    return (
       <div className="flex items-center justify-center p-4 bg-gray-50 w-2/3 ml-10 ">
          <li className="flex flex-col items-center space-y-2">
-            <div
-               className={`bg-gradient-to-tr rounded-full p-1 ${
-                  myStories?.[0]?.seenBy?.some((ob: any) => ob === userId) ? "" : "from-yellow-500 to-pink-600"
-               }`}
-            >
-               <a className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300" href="#">
-                  {myStories?.length <= 0 ? (
+            <div className={`bg-gradient-to-tr rounded-full p-1 relative ${myStories?.[0]?.seenBy?.some((ob: any) => ob === userId) ? "" : ""}`}>
+               <div className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300">
+                  {myStories?.length <= 0 || myStories?.[0]?.media.length <= 0 ? (
                      <img className="h-24 w-24 rounded-full" src="https://i.ibb.co/yhh0Ljy/profile.jpg" alt="image" />
                   ) : (
                      <img
                         className="h-24 w-24 rounded-full"
                         src={myStories?.[0]?.media[0]}
-                        alt="image"
+                        alt="https://i.ibb.co/yhh0Ljy/profile.jp"
                         onClick={() => handleCurrentStory(myStories?.[0], 0, myStories?.[0]?._id)}
                      />
                   )}
-               </a>
+               </div>
 
                <button
                   onClick={() => setModalIsOpen(true)}
@@ -97,9 +91,9 @@ const Story: FC<any> = ({ setView }: any) => {
                            story?.seenBy?.some((ob: any) => ob === userId) ? "" : "from-yellow-500 to-pink-600"
                         }`}
                      >
-                        <a className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300" href="#">
+                        <div className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300">
                            <img className="h-24 w-24 rounded-full" src={story?.media[0]} alt="image" />
-                        </a>
+                        </div>
                      </div>
                      <p>{story?.userId?.fullName}</p>
                   </li>

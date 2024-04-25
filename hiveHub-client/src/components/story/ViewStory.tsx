@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import Modal from "react-modal";
-import { fetchAllStories, storySeen } from "../../store/actions/post/postActions";
+import { deleteStory, fetchAllStories, storySeen } from "../../store/actions/post/postActions";
+import toast from "react-hot-toast";
 
 const ViewStory: React.FC<{ modalIsOpen: boolean; closeModal: () => void }> = ({ modalIsOpen, closeModal }) => {
    const stories: any = useSelector((state: RootState) => state?.posts?.stories?.data);
@@ -60,6 +61,22 @@ const ViewStory: React.FC<{ modalIsOpen: boolean; closeModal: () => void }> = ({
       });
    };
 
+   const handleDeleteStory = (image: any) => {
+      const form = new FormData();
+
+      form.append("storyId", currentStory?._id);
+      form.append("image", image);
+
+      dispatch(deleteStory(form))
+         .then(() => {
+            toast.success("Story deleted");
+            dispatch(fetchAllStories(userId));
+         })
+         .catch(() => {
+            toast.error("Failed to delete story");
+         });
+   };
+
    return (
       <Modal
          appElement={document.getElementById("root") as HTMLElement}
@@ -99,25 +116,36 @@ const ViewStory: React.FC<{ modalIsOpen: boolean; closeModal: () => void }> = ({
                         alt={`${currentStory?.userId?.fullName}'s story`}
                         className="w-full h-96 object-cover"
                      />
-                     <div className="absolute inset-0 flex items-center justify-between px-4">
-                        <button
-                           className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full"
-                           onClick={handlePrevImage}
-                           disabled={!currentStory?.media}
-                        >
-                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                           </svg>
-                        </button>
-                        <button
-                           className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full"
-                           onClick={handleNextImage}
-                           disabled={!currentStory?.media}
-                        >
-                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                           </svg>
-                        </button>
+                     <div className="absolute inset-0">
+                        {currentStory?.userId?._id === userId && (
+                           <button
+                              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded absolute top-2 right-2"
+                              onClick={() => handleDeleteStory(currentStory?.media[currentImageIndex])}
+                           >
+                              Delete
+                           </button>
+                        )}
+
+                        <div className="flex items-center justify-between px-4 absolute bottom-0 left-0 right-0">
+                           <button
+                              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full"
+                              onClick={handlePrevImage}
+                              disabled={!currentStory?.media}
+                           >
+                              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                              </svg>
+                           </button>
+                           <button
+                              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full"
+                              onClick={handleNextImage}
+                              disabled={!currentStory?.media}
+                           >
+                              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                           </button>
+                        </div>
                      </div>
                   </div>
                </div>

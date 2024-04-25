@@ -239,11 +239,11 @@ export const fetchAllStories = createAsyncThunk('/story/fetch-all-stories', asyn
     }
 })
 
-export const deleteStory = createAsyncThunk('/story/delete-story', async (id: any) => {
+export const deleteStory = createAsyncThunk('/story/delete-story', async (form: any) => {
 
     try {
 
-        const response = await apiClient.delete(DELETE_STORY_URL + '/' + id)
+        const response = await apiClient.put(DELETE_STORY_URL, form, jsonConfig)
 
         return response.data
 

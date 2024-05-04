@@ -26,29 +26,25 @@ const Users: FC = () => {
    };
 
    const handleClick = (id: number, email: string) => {
+      console.log("emai", id, email);
+
       navigate(`/others-profile?userId=${id}&email=${email}`);
    };
 
    return (
-      <div className="flex flex-wrap justify-center  overflow-y-auto">
+      <div className="flex flex-wrap justify-center overflow-y-auto">
          {users?.map((user: any) => (
-            <div key={user?._id} className="user-card bg-white rounded-lg w-72 shadow-lg p-4 m-4">
-               <div className="flex items-center mb-2">
-                  <div className="profile-photo mr-4 hover:cursor-pointer">
-                     <img
-                        src={user?.profilePhoto}
-                        alt="Profile"
-                        className="w-20 h-16 rounded-full"
-                        onClick={() => handleClick(user?._id, user?.email)}
-                     />
+            <div key={user?._id} className="user-card bg-white rounded-lg shadow-md p-6 m-4 w-72 hover:shadow-lg transition-shadow duration-300">
+               <div className="flex items-center mb-4">
+                  <div className="profile-photo mr-4 hover:cursor-pointer" onClick={() => handleClick(user?._id, user?.email)}>
+                     <img src={user?.profilePhoto} alt="Profile" className="min-w-20 max-w-20 h-20 rounded-full object-cover" />
                   </div>
                   <div className="user-name text-lg font-semibold hover:cursor-pointer">
                      <div onClick={() => handleClick(user?._id, user?.email)}>{user?.fullName}</div>
-
-                     <div>
+                     <div className="mt-2">
                         {isFollowing(user?._id) ? (
-                           <button className="px-2 py-1 rounded-md text-blue-300 bg-white hover:bg-blue-700 focus:outline-none border border-blue-700">
-                              message
+                           <button className="px-4 py-2 w-28 rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none transition-colors duration-300">
+                              Message
                            </button>
                         ) : (
                            <ConnectButton id={user?._id} />

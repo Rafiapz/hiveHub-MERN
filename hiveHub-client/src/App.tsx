@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Signup from "./pages/auth/signup/Signup";
-import Layout from "./pages/layout/Layout";
 import Home from "./pages/user/home/Home";
 import Login from "./pages/auth/login/Login";
 import Verification from "./pages/auth/verification/Verification";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store/store";
 import { fetchuser } from "./store/actions/auth/userActions";
@@ -18,7 +17,6 @@ import UserPosts from "./components/activity/UsersPosts";
 import Following from "./components/networks/Following";
 import Followers from "./components/networks/Followers";
 import OthersProfile from "./pages/user/othersProfile/OthersProfile";
-import OthersPost from "./components/OthersPost/OthersPost";
 import OthersProfilePosts from "./components/othersProfilePost/OthersProfilePosts";
 import UsersLikes from "./components/likes/UsersLikes";
 import Messages from "./pages/message/Messages";
@@ -52,6 +50,8 @@ function App() {
                   <Route path="/others-profile" element={<Login />} />
                   <Route path="/dashboard" element={<Login />} />
                   <Route path="/messages" element={<Login />} />
+                  <Route path="/admin" element={<Login />} />
+                  <Route path="/admin/reports" element={<Login />} />
                </Routes>
             </>
          ) : (
@@ -66,6 +66,7 @@ function App() {
                            <Route path="/admin/">
                               <Route index element={<Dashboard />} />
                               <Route path="reports" element={<Reports />} />
+                              <Route path="posts" element={<Home />} />
                            </Route>
                         </Routes>
                      )}
@@ -77,7 +78,6 @@ function App() {
                            <Route path="/profile/following" element={<Following />} />
                            <Route path="/profile/followers" element={<Followers />} />
                            <Route path="/profile/likes" element={<UsersLikes />} />
-                           <Route path="/profile/reports" element={<Followers />} />
                         </Route>
                         <Route path="/edit-profile" element={<EditProfile />} />
                         <Route path="/others-profile" element={<OthersProfile />}>

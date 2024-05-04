@@ -26,7 +26,8 @@ export const createPostController = (dependencies: IPostDependencies) => {
                         media: mediaType ? { type: mediaType, path: path } : undefined,
                         content: req?.body?.content,
                         likes: 0,
-                        comments: 0
+                        comments: 0,
+                        shares: 0
                     }
 
                     const post = await createPostUseCase(dependencies).execute(data)

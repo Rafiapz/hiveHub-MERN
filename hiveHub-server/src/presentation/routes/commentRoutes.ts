@@ -21,7 +21,7 @@ export const commentsRoutes = (dependencies: ICommentsDependencies) => {
     const router = Router()
 
 
-    router.route('/fetch-all-comments/:postId').get(fetchAllComments)
+    router.route('/fetch-all-comments/:postId').get(currentUser, fetchAllComments)
 
     router.route('/post-comment/:postId').post(currentUser, createComment)
 

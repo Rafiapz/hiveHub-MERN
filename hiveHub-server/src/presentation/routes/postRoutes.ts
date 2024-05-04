@@ -20,15 +20,15 @@ export const postRoutes = (dependencies: IPostDependencies) => {
 
   const router = Router()
 
-  router.route('/create-post/:type').post(uploadSingleFile, createPost)
+  router.route('/create-post/:type').post(currentUser, uploadSingleFile, createPost)
 
   router.route('/fetch-all-posts').get(currentUser, fetchAllPosts)
 
-  router.route('/delete-post').delete(deletePost)
+  router.route('/delete-post').delete(currentUser, deletePost)
 
-  router.route('/edit-post/:type').put(uploadSingleFile, editPost)
+  router.route('/edit-post/:type').put(currentUser, uploadSingleFile, editPost)
 
-  router.route('/fetch-users-post/:id').get(findUsersPost)
+  router.route('/fetch-users-post/:id').get(currentUser, findUsersPost)
 
   router.route('/repost-post').post(currentUser, repost)
 

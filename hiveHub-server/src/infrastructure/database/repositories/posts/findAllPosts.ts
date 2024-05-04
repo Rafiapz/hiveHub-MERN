@@ -5,8 +5,8 @@ export const findAllPosts = async (data: any) => {
 
     try {
 
-        const posts = await Posts.find({}).sort({ createdAt: -1 }).populate('userId')
-        const likes = await Likes.find({ userId: data })
+        const posts = await Posts.find({}).sort({ createdAt: -1 }).skip(data?.skip).limit(data?.limit).populate('userId')
+        const likes = await Likes.find({ userId: data?.userId })
 
         return { posts, likes }
 

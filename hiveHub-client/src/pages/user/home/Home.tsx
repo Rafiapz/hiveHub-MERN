@@ -12,28 +12,16 @@ import { AppDispatch, RootState } from "../../../store/store";
 import { fetchAllposts } from "../../../store/actions/post/postActions";
 import toast from "react-hot-toast";
 import ViewStory from "../../../components/story/ViewStory";
-import Carousel from "../../../components/carousel/Carousel";
 import SharePost from "../../../components/share/SharePost";
 
 const Home: FC = () => {
    const [modalIsOpen, setIsOpen] = useState(false);
-   const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
-   const posts: any = useSelector((state: RootState) => state.posts.posts.data);
-   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
+
    const [storyViewing, setStoryViewing] = useState<boolean>(false);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
    const [sharePostModalIsOpen, setSharePostModalIsOpen] = useState(false);
 
    const dispatch = useDispatch<AppDispatch>();
-
-   useEffect(() => {
-      dispatch(fetchAllposts()).then((data) => {
-         if (data?.payload?.status !== "ok")
-            toast(data?.payload?.message, {
-               style: { backgroundColor: "#ff6347", color: "#eeeeee" },
-            });
-      });
-   }, []);
 
    const openModal = () => {
       setIsOpen(true);
@@ -59,18 +47,15 @@ const Home: FC = () => {
          {userData?.role === "admin" ? (
             <div className="bg-gray-100 ">
                <Menu />
-               {/* <div className="flex  ml-80 overflow-hidden">
-               <Story setView={setStoryViewing} />
-            </div> */}
-               {/* <div className="flex  ml-80 overflow-hidden ">
-               <Posts openModal={openModal} likes={likes} posts={posts} />
-            </div> */}
-               {/* <CreatePostModal />
-            <EditPostModal /> */}
-               {/* <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
-            <Comments /> */}
-               {/* <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} /> */}
-               {/* <RightSideBar /> */}
+               <div className="flex  ml-80 overflow-hidden ">
+                  <Posts openModal={openModal} />
+               </div>
+               <CreatePostModal />
+               <EditPostModal />
+               <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
+               <Comments />
+               <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />
+               <RightSideBar />
             </div>
          ) : (
             <div className="bg-gray-100 ">
@@ -79,10 +64,9 @@ const Home: FC = () => {
                   <Story setView={setStoryViewing} />
                </div>
                <div className="flex  ml-80 overflow-hidden ">
-                  <Posts openModal={openModal} likes={likes} posts={posts} openSharePostModal={openSharePostModal} />
+                  <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </div>
                <CreatePostModal />
-               <EditPostModal />
                <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
                <Comments />
                <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />

@@ -14,11 +14,11 @@ export const adminRoutes = (dependencies: IAdminDependencies) => {
 
     const router = Router()
 
-    router.route('/find-all-users/:id').get(findAllUsers)
+    router.route('/find-all-users/:id').get(currentUser, findAllUsers)
 
-    router.route('/block-unblock-user').put(blockUnblockUser)
+    router.route('/block-unblock-user').put(currentUser, blockUnblockUser)
 
-    router.route('/get-online-users').get(getOnlineUsersController)
+    router.route('/get-online-users').get(currentUser, getOnlineUsersController)
 
 
 

@@ -58,13 +58,6 @@ function Profile() {
             >
                Likes
             </Link>
-            <Link
-               onClick={() => handleClick("reports")}
-               to={"/profile/reports"}
-               className={`px-2 py-1  text-xl rounded-md ${classs.reports} text-black  focus:outline-none `}
-            >
-               Reports
-            </Link>
          </div>
 
          <Outlet />

@@ -10,26 +10,27 @@ export const fetchAllposts = (dependencies: IPostDependencies) => {
 
         try {
 
-
             const user = req?.user
             const userId = (user as any)?.id;
+            const pageSize = 1
+            const pageNumber: any = req?.query?.page
 
+            const skip = (pageNumber - 1) * pageSize
+            const limit = pageSize;
 
-            const { posts, likes } = await findAllPostsUseCase(dependencies).execute(userId)
-
-            if (posts.length <= 0) {
-                throw new Error('No posts found')
-            } else {
-
-
-                res.json({ status: 'ok', message: 'success', data: { posts, likes } }).status(200)
+            const data = {
+                userId,
+                skip,
+                limit
             }
 
+            const { posts, likes } = await findAllPostsUseCase(dependencies).execute(data)
+
+            res.status(200).json({ status: 'ok', message: 'success', data: { posts, likes } })
+
+
         } catch (error: any) {
-            console.log(error.message);
-
-            res.json({ status: 'failed', message: error.message })
-
+            res.status(error?.status || 500).json({ status: 'failed', message: error.message })
         }
     }
 }

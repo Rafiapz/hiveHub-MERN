@@ -9,17 +9,34 @@ import Loading from "../loading/Loading";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCommentModal, handleEditPostModal, handleReportPostId, setSharePost } from "../../store/slices/posts/postSlice";
+import { handleCommentModal, handleEditPostModal, handleFetchMore, handleReportPostId, setSharePost } from "../../store/slices/posts/postSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "timeago.js";
+import InfiniteScroll from "react-infinite-scroll-component";
+import EditPostModal from "../modal/EditPostModal";
 
-const Posts: FC<any> = ({ openModal, posts, likes, openSharePostModal }: any) => {
+const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const dispatch = useDispatch<AppDispatch>();
-   const loading = useSelector((state: RootState) => state.posts.posts.loading);
    const userId = useSelector((state: RootState) => state.user.user.userId);
    const [curPostId, setCurPostId] = useState<number | null>();
+   const [hasMore, setHasMore] = useState<boolean>(true);
+   const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
+   const posts: any = useSelector((state: RootState) => state.posts.posts.data);
+   const [page, setPage] = useState<number>(1);
+   const [items, setItems] = useState<any>(posts);
 
    const navigate = useNavigate();
+
+   useEffect(() => {
+      dispatch(fetchAllposts({ page })).then((response) => {
+         if (response?.payload?.status !== "ok") {
+            toast(response?.payload?.message, {
+               style: { backgroundColor: "#ff6347", color: "#eeeeee" },
+            });
+         }
+         setItems(response.payload?.data?.posts);
+      });
+   }, []);
 
    const [showOptions, setShowOptions] = useState<{
       status: boolean;
@@ -60,7 +77,12 @@ const Posts: FC<any> = ({ openModal, posts, likes, openSharePostModal }: any) =>
             if (pathname === "/profile") {
                dispatch(fetchUsersPost(userId));
             } else {
-               dispatch(fetchAllposts());
+               setItems((prev: any) => {
+                  const newItems = prev.filter((item: any) => item._id != id);
+                  console.log("length", newItems.length);
+
+                  return newItems;
+               });
             }
          } else {
             toast(response?.payload?.message, {
@@ -68,16 +90,26 @@ const Posts: FC<any> = ({ openModal, posts, likes, openSharePostModal }: any) =>
             });
          }
       });
+      dispatch(fetchAllposts({ page }));
    };
 
    const handleLikePost = (id: number) => {
-      dispatch(likePostAction(id)).then(() => {
+      dispatch(likePostAction(id)).then((response) => {
          if (pathname === "/profile") {
             dispatch(fetchUsersPost(userId));
          } else {
-            {
-               dispatch(fetchAllposts());
-            }
+            const post = response?.payload?.post;
+            dispatch(fetchAllposts({ page })).then(() => {
+               setItems((prev: any) => {
+                  const newItems = prev.map((item: any) => {
+                     if (item._id === id) {
+                        return { ...item, likes: post.likes };
+                     }
+                     return item;
+                  });
+                  return newItems;
+               });
+            });
          }
       });
    };
@@ -103,88 +135,113 @@ const Posts: FC<any> = ({ openModal, posts, likes, openSharePostModal }: any) =>
       openSharePostModal();
    };
 
+   const fetchMore = () => {
+      dispatch(fetchAllposts({ page: page + 1 }))
+         .then((response: any) => {
+            setPage(page + 1);
+            if (response?.payload?.data?.posts?.length >= 1) {
+               setItems((prev: any) => [...prev, ...response.payload?.data?.posts]);
+            } else {
+               setPage(1);
+               dispatch(fetchAllposts({ page: 1 })).then((res) => {
+                  setItems((prev: any) => [...prev, ...res.payload?.data?.posts]);
+               });
+            }
+         })
+         .catch(() => {
+            toast.error("error");
+         });
+   };
+
    return (
       <>
-         {loading ? (
-            <Loading />
-         ) : (
-            <div className="min w-full">
-               {posts?.map((item: any, i: number) => {
+         <div className="min w-full">
+            <InfiniteScroll
+               dataLength={items.length}
+               next={() => fetchMore()}
+               hasMore={hasMore}
+               loader={
+                  <div className="bg-gray-50 w-2/3 ml-10 p-8 h-auto shadow-lg mx-auto mt-2 " key={46597}>
+                     <Loading />
+                  </div>
+               }
+            >
+               {items?.map((item: any, i: number) => {
                   return (
                      <div
-                        key={item?._id}
+                        key={item?._id + i}
                         className="bg-gray-50 w-2/3 ml-10 p-8 h-auto shadow-lg mx-auto mt-2"
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
-                        <div className="flex items-center justify-between mb-4 ">
-                           <div
-                              className="flex items-center hover:cursor-pointer"
-                              onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}
-                           >
-                              <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full  h-8 w-10 mr-2" />
-                              <p className="font-bold">{item?.userId.fullName}</p>
-                              <div className="">
-                                 <p className="text-sm ml-10 font-bold  text-gray-500">{format(item?.createdAt)}</p>
-                              </div>
+                        <div className="flex items-center hover:cursor-pointer">
+                           <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full  h-8 w-10 mr-2" />
+                           <p className="font-bold min-w-30 max-w-30" onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}>
+                              {item?.userId?.fullName}
+                           </p>
+                           <div className="">
+                              <p className="text-sm ml-10 font-bold  text-gray-500">{format(item?.createdAt)}</p>
                            </div>
+                           <div className="min-w-80"></div>
 
-                           <div className="flex">
-                              {showOptions?.status == true && showOptions?.index === i && (
-                                 <div className="z-10  w-28 h-22 bg-blue-300  border border-gray-300 shadow-lg rounded-md">
-                                    <ul>
-                                       {userId === item?.userId?._id && (
-                                          <>
-                                             <li
-                                                onClick={() =>
-                                                   dispatch(
-                                                      handleEditPostModal({
-                                                         status: true,
-                                                         content: item?.content,
-                                                         media: {
-                                                            type: item?.media?.type,
-                                                            url: item?.media?.path,
-                                                         },
-                                                         _id: item?._id,
-                                                      })
-                                                   )
-                                                }
-                                                className="p-1 hover:bg-blue-500"
-                                             >
-                                                <button>Edit</button>
-                                             </li>
-                                             <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-blue-500">
-                                                <button>Delete</button>
-                                             </li>
-                                          </>
-                                       )}
-                                       {userId !== item?.userId?._id && (
+                           {showOptions?.status == true && showOptions?.index === i && (
+                              <div
+                                 style={{ marginLeft: "620px" }}
+                                 className="z-10 absolute mt-1  w-28 h-22 bg-gray-200  border border-gray-300 shadow-lg rounded-md"
+                              >
+                                 <ul className="">
+                                    {userId === item?.userId?._id && (
+                                       <>
                                           <li
-                                             className="p-1 hover:bg-blue-500"
-                                             onClick={() => {
-                                                dispatch(handleReportPostId({ postId: item?._id }));
-                                                openModal();
-                                             }}
+                                             onClick={() =>
+                                                dispatch(
+                                                   handleEditPostModal({
+                                                      status: true,
+                                                      content: item?.content,
+                                                      media: {
+                                                         type: item?.media?.type,
+                                                         url: item?.media?.path,
+                                                      },
+                                                      _id: item?._id,
+                                                   })
+                                                )
+                                             }
+                                             className="p-1 hover:bg-white"
                                           >
-                                             <button>Report</button>
+                                             <button>Edit</button>
                                           </li>
-                                       )}
-                                    </ul>
-                                 </div>
-                              )}
-                              <div className="">
-                                 <div
-                                    onClick={(e) => {
-                                       e.stopPropagation(), handleOptionsClick(i);
-                                    }}
-                                    className=" flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
-                                 >
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                 </div>
+                                          <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-white">
+                                             <button>Delete</button>
+                                          </li>
+                                       </>
+                                    )}
+                                    {userId !== item?.userId?._id && (
+                                       <li
+                                          className="p-1  hover:bg-white"
+                                          onClick={() => {
+                                             dispatch(handleReportPostId({ postId: item?._id }));
+                                             openModal();
+                                          }}
+                                       >
+                                          <button>Report</button>
+                                       </li>
+                                    )}
+                                 </ul>
+                              </div>
+                           )}
+                           <div style={{ marginLeft: "740px" }} className="rounded-lg  absolute ">
+                              <div
+                                 onClick={(e) => {
+                                    e.stopPropagation(), handleOptionsClick(i);
+                                 }}
+                                 className=" flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
+                              >
+                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                               </div>
                            </div>
                         </div>
+
                         <p className="p-4 ">{item?.content}</p>
 
                         {item?.media?.type === "image" && <img src={`${item?.media?.path}`} alt="Posted" className="mb-4 rounded-lg w-full" />}
@@ -231,8 +288,9 @@ const Posts: FC<any> = ({ openModal, posts, likes, openSharePostModal }: any) =>
                      </div>
                   );
                })}
-            </div>
-         )}
+            </InfiniteScroll>
+         </div>
+         <EditPostModal items={items} setItems={setItems} />
          <ConfirmationModal curId={curPostId} handleDelete={handleDelete} />
       </>
    );

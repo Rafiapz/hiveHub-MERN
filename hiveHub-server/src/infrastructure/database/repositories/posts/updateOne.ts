@@ -6,7 +6,7 @@ export const updatePost = async (data: PostEntity) => {
     try {
 
 
-        const updatedPost = await Posts.findOneAndUpdate({ _id: data._id }, { $set: data }, { new: true })
+        const updatedPost = await Posts.findOneAndUpdate({ _id: data._id }, { $set: data }, { new: true }).populate('userId')
 
 
         return updatedPost

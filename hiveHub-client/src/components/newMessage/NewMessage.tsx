@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import Users from "../users/Users";
 import { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { createConversation } from "../../store/actions/message/messageActions";
+import { searchUser } from "../../service/api";
 
 const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleSelectConversation, conversations }: any) => {
-   const users: any = useSelector((state: RootState) => state?.user?.allUsers?.data);
+   const allUsers: any = useSelector((state: RootState) => state?.user?.allUsers?.data);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
+   const [suggestions, setSuggestions] = useState<any>([]);
+
+   useEffect(() => {
+      setSuggestions(allUsers);
+
+      return () => {
+         setSuggestions(allUsers);
+      };
+   }, []);
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -46,32 +55,78 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
       });
    };
 
+   const handleCloseModal = () => {
+      setSuggestions(allUsers);
+      closeModal();
+   };
+
+   const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event?.target?.value === "") {
+         return;
+      }
+      const searchQuery = event.target.value;
+
+      const newSuggestions = await searchUser(searchQuery);
+
+      setSuggestions(newSuggestions?.data);
+   };
+
    return (
-      <div>
-         <Modal
-            appElement={document.getElementById("root") as HTMLElement}
-            overlayClassName="modal-bg-overlay"
-            className="bg-white w-96 py-4 overflow-auto h-96 shadow-xl rounded-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Report Post Modal"
-         >
-            <div className="flex flex-wrap justify-center  overflow-y-auto">
-               {users?.map((user: any) => (
-                  <div key={user?._id} className="user-card bg-white rounded-lg w-72 shadow-lg p-4 m-4">
-                     <div className="flex items-center mb-2">
-                        <div className="profile-photo mr-4 hover:cursor-pointer">
-                           <img src={user?.profilePhoto} alt="Profile" className="w-20 h-16 rounded-full" onClick={() => handleClick(user?._id)} />
-                        </div>
-                        <div className="user-name text-lg font-semibold hover:cursor-pointer">
-                           <div onClick={() => handleClick(user?._id)}>{user?.fullName}</div>
+      <Modal
+         appElement={document.getElementById("root") as HTMLElement}
+         overlayClassName="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+         className="modal-content bg-white rounded-lg shadow-xl w-1/3 h-2/3 max-h-screen"
+         isOpen={modalIsOpen}
+         onRequestClose={closeModal}
+         contentLabel="Report Post Modal"
+      >
+         <div className="p-6 flex flex-col h-full">
+            <div className="mb-4">
+               <div className="flex items-center justify-between border-b pb-4">
+                  <h2 className="text-xl font-semibold ml-40 text-gray-800">New Message</h2>
+                  <button className="text-gray-600 hover:text-gray-800 focus:outline-none" onClick={handleCloseModal}>
+                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                     </svg>
+                  </button>
+               </div>
+               <div className="flex items-center mb-2 mt-2">
+                  <label htmlFor="search" className="text-gray-700 font-semibold mr-2">
+                     To:
+                  </label>
+                  <div className="relative flex-grow">
+                     <input
+                        type="text"
+                        id="search"
+                        className="border border-gray-300 rounded-lg py-2 px-4 pr-10 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Search..."
+                        onChange={handleInputChange}
+                     />
+                  </div>
+               </div>
+            </div>
+            <div className="flex-grow overflow-y-auto">
+               <div className="flex flex-wrap">
+                  {suggestions?.map((user: any) => (
+                     <div
+                        key={user?._id}
+                        className="user-card bg-white rounded-lg w-full shadow-md p-3 m-4 h-20 hover:shadow-lg transition-shadow duration-300"
+                     >
+                        <div className="flex items-center mb-4">
+                           <div className="profile-photo mr-4 hover:cursor-pointer" onClick={() => handleClick(user?._id)}>
+                              <img src={user?.profilePhoto} alt="Profile" className="w-16 h-16 rounded-full object-cover" />
+                           </div>
+                           <div className="user-name hover:cursor-pointer" onClick={() => handleClick(user?._id)}>
+                              <h1 className="text-lg font-semibold">{user?.fullName}</h1>
+                              <h5>{user?.email}</h5>
+                           </div>
                         </div>
                      </div>
-                  </div>
-               ))}
+                  ))}
+               </div>
             </div>
-         </Modal>
-      </div>
+         </div>
+      </Modal>
    );
 };
 

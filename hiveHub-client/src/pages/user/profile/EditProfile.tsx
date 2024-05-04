@@ -14,7 +14,6 @@ const EditProfile: FC = () => {
          <EditCoverPhoto />
          <EditUserProfile />
          <EditUserPhotosModal />
-
          <RightSideBar />
       </>
    );

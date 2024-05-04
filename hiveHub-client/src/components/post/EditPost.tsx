@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { handleEditPostModal } from "../../store/slices/posts/postSlice";
-import { editPostAction, fetchAllposts } from "../../store/actions/post/postActions";
+import { editPostAction, fetchAllposts, fetchUsersPost } from "../../store/actions/post/postActions";
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
-function EditPost() {
+const EditPost: FC<any> = ({ setItems }) => {
    const [image, setImage] = useState<File | null>(null);
    const [video, setVideo] = useState<File | null>(null);
    const originalContent = useSelector((state: RootState) => state.posts.editPostModal.data.content);
@@ -19,6 +20,7 @@ function EditPost() {
    const [error, setError] = useState<string>("");
    const [thumbnail, setThumbnail] = useState<string | null>("");
    const postId = useSelector((state: RootState) => state.posts.editPostModal.data._id);
+   const userId: any = useSelector((state: RootState) => state.user.user.userId);
 
    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -64,6 +66,8 @@ function EditPost() {
       setContent(e.target.value);
    };
 
+   const { pathname } = useLocation();
+
    const handleSubmit = () => {
       const formData = new FormData();
 
@@ -76,12 +80,26 @@ function EditPost() {
 
       formData.append("content", content);
 
-      dispatch(editPostAction({ formData, postId, type: urlType, originalUrl })).then((response: any) => {
+      dispatch(editPostAction({ formData, postId, type: urlType, originalUrl })).then((response) => {
          if (response.payload.status === "ok") {
             toast(response.payload.message, {
                style: { backgroundColor: "#4caf50", color: "white" },
             });
-            dispatch(fetchAllposts());
+            if (pathname === "/profile") {
+               console.log("called prfo");
+
+               dispatch(fetchUsersPost(userId));
+            } else {
+               setItems((prev: any) => {
+                  const newItems = prev.map((item: any) => {
+                     if (item._id === postId) {
+                        return response?.payload?.postData;
+                     }
+                     return item;
+                  });
+                  return newItems;
+               });
+            }
          } else {
             toast(response.payload.message, {
                style: { backgroundColor: "#ff6347", color: "#eeeeee" },
@@ -141,6 +159,6 @@ function EditPost() {
          </div>
       </div>
    );
-}
+};
 
 export default EditPost;

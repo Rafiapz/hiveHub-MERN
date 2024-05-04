@@ -56,11 +56,11 @@ export const editPostAction = createAsyncThunk('/post/edit', async ({ formData, 
     }
 })
 
-export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async (id?: number) => {
+export const fetchAllposts = createAsyncThunk('/post/fetch-all-posts', async ({ id, page, size }: any) => {
 
     try {
 
-        const response = await apiClient.get(`${FETCH_ALL_POSTS_URL}?user=${id}`)
+        const response = await apiClient.get(`${FETCH_ALL_POSTS_URL}?user=${id}&page=${page}&size=$${size}`)
 
         return response.data
 

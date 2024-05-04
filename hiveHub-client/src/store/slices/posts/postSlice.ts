@@ -8,7 +8,7 @@ const initialState = {
 
     posts: {
         loading: false,
-        data: null,
+        data: [],
         likes: null,
         error: null
     },
@@ -51,6 +51,10 @@ const initialState = {
     },
     sharePost: {
         data: null
+    },
+    ownPost: {
+        data: [],
+        likes: null
     }
 }
 
@@ -92,7 +96,7 @@ const postSlice = createSlice({
             state.posts.data = action?.payload?.data
         },
         handleCleanUpPost: (state) => {
-            state.posts.data = null
+            state.posts.data = []
         },
         handleReportPostId: (state, action) => {
             state.report.postId = action?.payload?.postId
@@ -104,6 +108,14 @@ const postSlice = createSlice({
         },
         setSharePost: (state, action) => {
             state.sharePost.data = action?.payload?.data
+        },
+        handleFetchMore: (state, action) => {
+            state.posts.data = action?.payload?.data
+        },
+        updatePost: (state, action) => {
+            console.log(action.payload.data);
+
+            state.posts.data = action?.payload?.data
         }
 
 
@@ -140,8 +152,8 @@ const postSlice = createSlice({
             .addCase(fetchUsersPost.fulfilled, (state, action) => {
                 if (action.payload.status === 'ok') {
                     state.posts.loading = false;
-                    state.posts.data = action?.payload?.data?.posts
-                    state.posts.likes = action?.payload?.data?.likes
+                    state.ownPost.data = action?.payload?.data?.posts
+                    state.ownPost.likes = action?.payload?.data?.likes
                 }
             })
             .addCase(fetchUsersLikedPosts.fulfilled, (state, action) => {
@@ -184,7 +196,9 @@ export const {
     handleCleanUpPost,
     handleReportPostId,
     setCurrentStory,
-    setSharePost
+    setSharePost,
+    handleFetchMore,
+    updatePost
 } = postSlice.actions;
 
 export default postSlice.reducer;    

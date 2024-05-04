@@ -42,8 +42,6 @@ const UsersTable: FC = () => {
       });
    };
 
-   console.log(online);
-
    return (
       <div className="relative w-4/6 overflow-x-auto shadow-md sm:rounded-lg">
          <h1 className="text-3xl font-bold text-gray-900">Users</h1>

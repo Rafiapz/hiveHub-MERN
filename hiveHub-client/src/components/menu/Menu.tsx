@@ -1,5 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faBell, faEnvelope, faBookmark, faUsers, faUser, faPlus, faChartLine, faFileAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+   faHome,
+   faBell,
+   faEnvelope,
+   faBookmark,
+   faUsers,
+   faUser,
+   faPlus,
+   faChartLine,
+   faFileAlt,
+   faNewspaper,
+} from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { handleCreatePostModal } from "../../store/slices/posts/postSlice";
 import { Link } from "react-router-dom";
@@ -36,6 +47,10 @@ function Menu() {
                         <FontAwesomeIcon icon={faFileAlt} className="mr-2 text-gray-700" />
                         View Reports
                      </Link>
+                     <Link to="/admin/posts" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
+                        <FontAwesomeIcon icon={faNewspaper} className="mr-2 text-gray-700" />
+                        Posts
+                     </Link>
 
                      <a href="#" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                         <FontAwesomeIcon icon={faBell} className="mr-2 text-gray-700" />
@@ -47,10 +62,10 @@ function Menu() {
                         Messages
                      </Link>
 
-                     <a href="#" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
+                     {/* <a href="#" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                         <FontAwesomeIcon icon={faBookmark} className="mr-2 text-gray-700" />
                         Bookmarks
-                     </a>
+                     </a> */}
 
                      <Link to="/profile" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
                         <FontAwesomeIcon icon={faUser} className="mr-2 text-gray-700" />
@@ -119,10 +134,3 @@ function Menu() {
 }
 
 export default Menu;
-
-// {role === "admin" && (
-//    <Link to="/dashboard" className="flex items-center hover:bg-gray-100 p-2 rounded-md">
-//       <FontAwesomeIcon icon={faChartLine} className="mr-2 text-gray-700" />
-//       Dashboard
-//    </Link>
-// )}

@@ -21,7 +21,7 @@ export const networksRoutes = (dependencies: INetworkDependencies) => {
 
     router.route('/unfollow/:id').delete(currentUser, unfollow)
 
-    router.route('/search-user').get(searchUser)
+    router.route('/search-user').get(currentUser, searchUser)
 
 
 

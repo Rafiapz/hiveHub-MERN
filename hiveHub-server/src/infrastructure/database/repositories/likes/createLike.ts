@@ -16,15 +16,15 @@ export const createLike = async (data: LikesEntity): Promise<any> => {
 
                 throw new Error('Failed to unlike post')
             }
-            await Posts.updateOne({ _id: data.postId }, { $inc: { likes: -1 } })
+            const post = await Posts.findOneAndUpdate({ _id: data.postId }, { $inc: { likes: -1 } }, { new: true })
 
-            return null
+            return { post }
 
         } else {
             const newLike = await Likes.create(data)
 
 
-            await Posts.findOneAndUpdate({ _id: newLike.postId }, { $inc: { likes: 1 } }, { new: true }).populate('userId')
+            const post = await Posts.findOneAndUpdate({ _id: newLike.postId }, { $inc: { likes: 1 } }, { new: true }).populate('userId')
 
             const posts = await Posts.find({})
 
@@ -32,7 +32,7 @@ export const createLike = async (data: LikesEntity): Promise<any> => {
 
 
 
-            return { posts, allLikes }
+            return { posts, allLikes, post }
         }
 
 

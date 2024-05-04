@@ -62,9 +62,9 @@ const userSlice = createSlice({
 
                 if (action.payload.status === 'ok') {
                     state.user.auth.isAuth = true
-                    state.user.auth.role = action.payload.userData.role
-                    state.user.data = action.payload.userData
-                    state.user.userId = action.payload.userData?._id
+                    state.user.auth.role = action.payload?.userData?.role
+                    state.user.data = action?.payload?.userData
+                    state.user.userId = action?.payload?.userData?._id
                 }
             })
             .addCase(fetchuser.rejected, (state) => {

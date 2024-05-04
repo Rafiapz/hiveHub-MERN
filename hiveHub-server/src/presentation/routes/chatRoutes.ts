@@ -15,15 +15,15 @@ export const chatRoutes = (dependencies: IChatsDependencies) => {
 
     const router = Router()
 
-    router.route('/create-conversation').post(createConvesation)
+    router.route('/create-conversation').post(currentUser, createConvesation)
 
-    router.route('/fetch-conversations/:userId').get(fetchConversations)
+    router.route('/fetch-conversations/:userId').get(currentUser, fetchConversations)
 
-    router.route('/create-message/:type').post(uploadSingleFile, createChat)
+    router.route('/create-message/:type').post(currentUser, uploadSingleFile, createChat)
 
-    router.route('/fetch-messages/:id').get(fetchChats)
+    router.route('/fetch-messages/:id').get(currentUser, fetchChats)
 
-    router.route('/send-video/:type').post(createChat)
+    router.route('/send-video/:type').post(currentUser, createChat)
 
 
 

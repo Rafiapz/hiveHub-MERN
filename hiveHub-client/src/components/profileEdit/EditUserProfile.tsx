@@ -19,6 +19,7 @@ function EditUserProfile() {
    const [timer, setTimer] = useState<number>(initialTimeValue);
    const [emailForm, setEmailForm] = useState<any>({});
    const [change, setChange] = useState<boolean>(true);
+   const [otpError, setOtpError] = useState("");
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -113,21 +114,24 @@ function EditUserProfile() {
 
    const handleOtpSubmit = async () => {
       if (timer <= 0) {
-         setError("Your OTP has timed out. Please request a new one.");
+         setOtpError("Your OTP has timed out. Please request a new one.");
          return;
       } else if (otp.length < 4) {
-         setError("Invalid OTP length. Please enter a 4-digit code.");
+         setOtpError("Invalid OTP length. Please enter a 4-digit code.");
          return;
       }
+      setOtpError("");
       try {
          const response = await verifyEmailUpdateOtp({ otp, oldEmail: userData?.email, newEmail: emailForm?.email });
          if (response.data.status === "ok") {
             toast.success(response?.data?.message);
             dispatch(fetchuser());
+            setTimer(0);
+            setEmailEditing(false);
+            setOtp("");
          } else {
             toast.error(response?.data?.message);
          }
-         setTimer(120);
       } catch (error: any) {
          toast.error(error?.response?.data?.message || "An error occured");
       }
@@ -202,7 +206,7 @@ function EditUserProfile() {
                               Verify
                            </button>
                         </div>
-                        <span className="text-red-700">{error}</span>
+                        <span className="text-red-700">{otpError}</span>
                         <div className="flex items-center mt-4 mr-32">
                            <EditEmailCountdown email={emailForm?.email} timer={timer} setTimer={setTimer} resendOtp={resendOtp} />
                         </div>

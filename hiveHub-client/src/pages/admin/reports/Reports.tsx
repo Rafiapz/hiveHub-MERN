@@ -50,8 +50,6 @@ const Reports: FC = () => {
       setCurReport(current[0]);
    };
 
-   console.log(reports);
-
    return (
       <>
          <Menu />

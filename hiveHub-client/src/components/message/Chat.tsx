@@ -1,8 +1,25 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import ReactPlayer from "react-player";
 import { format } from "timeago.js";
+import ViewModal from "../modal/ViewModal";
 
 const Chat: FC<any> = ({ message, own, playerRef }) => {
+   const [modalIsOpen, setModalIsOpen] = useState(false);
+   const [item, setItem] = useState<any>({});
+
+   const openModal = (image: any) => {
+      setItem(() => {
+         return {
+            media: image,
+         };
+      });
+      setModalIsOpen(true);
+   };
+
+   const closeModal = () => {
+      setModalIsOpen(false);
+   };
+
    return (
       <div className={`flex ${own ? "flex-row-reverse" : "flex-row"} items-start`}>
          <div className={`flex flex-col ${own ? "items-end" : "items-start"}`}>
@@ -13,7 +30,7 @@ const Chat: FC<any> = ({ message, own, playerRef }) => {
                </>
             )}
             {message?.image && (
-               <div className={`${own ? "mr-2" : "ml-2"}`}>
+               <div className={`${own ? "mr-2" : "ml-2"}`} onClick={() => openModal(message?.image)}>
                   <img src={message?.image} className="max-h-32" alt="" />
                   <div className="text-xs text-gray-500 mt-1">{format(message?.createdAt)}</div>
                </div>
@@ -25,6 +42,7 @@ const Chat: FC<any> = ({ message, own, playerRef }) => {
                <div className={`text-xs text-gray-500 mt-1 ${own ? "text-right" : "text-left"}`}>{format(message?.createdAt)}</div>
             </div>
          )}
+         <ViewModal modalIsOpen={modalIsOpen} closeModal={closeModal} item={item} />
       </div>
    );
 };

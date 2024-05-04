@@ -45,7 +45,7 @@ const getUser = (userId: any) => {
 
     for (let i = 0; i < users.length; i++) {
 
-        if (users[i].userId === userId) {
+        if (users[i].userId == userId) {
             return users[i]
         }
     }
@@ -129,7 +129,7 @@ export const initializeSocketIO = (server: Server) => {
                 });
             });
 
-            socket.on('sendMessage', ({ senderId, receiverId, message }) => {
+            socket.on('sendMessage', ({ senderId, receiverId, message }: any) => {
                 const user = getUser(receiverId);
 
                 if (user) {
@@ -137,22 +137,27 @@ export const initializeSocketIO = (server: Server) => {
                         senderId,
                         message,
                     });
+                } else {
+                    // console.log('user not found , message', receiverId);
 
                 }
             });
 
-            socket.on('image', (data) => {
+            socket.on('image', (data: any) => {
+                console.log('image called');
 
                 const user = getUser(data?.receiverId);
 
                 if (user) {
-                    io.to(user.socketId).emit('image', data);
+                    io.to(user.socketId).emit('image', { data: data?.data, senderId: data?.senderId });
+                } else {
+                    // console.log('user not found');
+
                 }
 
             });
             socket.on('video', (data) => {
 
-                console.log('viedo called', data);
                 const user = getUser(data?.receiverId);
 
                 if (user) {
@@ -162,6 +167,7 @@ export const initializeSocketIO = (server: Server) => {
             });
 
             socket.on("disconnect", () => {
+
                 removeUser(socket.id);
                 io.emit("getUsers", users);
             });

@@ -14,8 +14,6 @@ export const findUsersPostController = (dependencies: IPostDependencies) => {
             const { posts, likes } = await findUsersPostUseCase(dependencies).execute(id)
 
             if (posts) {
-
-
                 res.status(200).json({ status: 'ok', data: { posts, likes }, message: 'success' })
             } else {
                 throw new Error('Unable to fetch posts')

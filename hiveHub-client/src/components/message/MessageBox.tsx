@@ -13,6 +13,7 @@ import EmojiPicker from "emoji-picker-react";
 import ReactPlayer from "react-player";
 import LoadingButton from "../loading/LoadingButton";
 import toast from "react-hot-toast";
+import AudioRecorderComponent from "../audioRecorder/AudioRecorder";
 
 const socket = io("http://localhost:7700");
 
@@ -30,7 +31,6 @@ const MessageBox: FC = () => {
    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
    const [emojiOn, setEmojiOn] = useState(false);
    const [image, setImage] = useState<any>(null);
-   const [receivedImage, setReceivedImage] = useState<any>(null);
    const [video, setVideo] = useState<any>(null);
    const [selectedFile, setSelectedFile] = useState<File | null>(null);
    const [progress, setProgress] = useState<number>(0);
@@ -44,14 +44,17 @@ const MessageBox: FC = () => {
 
    useEffect(() => {
       socket.on("image", (data) => {
-         setReceivedImage(data?.data);
+         console.log(data);
+
          setArrivalMessage({
-            message: data?.message,
             createdAt: Date.now(),
             senderId: data?.senderId,
             image: data?.data,
          });
       });
+      return () => {
+         socket.off("image");
+      };
    }, [socket]);
 
    const onEmojiClick = (event: any, emojiObject: any) => {
@@ -75,6 +78,9 @@ const MessageBox: FC = () => {
             senderId: data?.senderId,
          });
       });
+      return () => {
+         socket.off("recieveMessage");
+      };
    }, [socket]);
 
    useEffect(() => {
@@ -149,8 +155,6 @@ const MessageBox: FC = () => {
                const chunk = selectedFile.slice(offset, offset + chunkSize);
                fileReader.readAsArrayBuffer(chunk);
             } else {
-               console.log("conv id ", curChat?._id);
-
                socket.emit("video-transfer-complete", {
                   senderId: userId,
                   receiverId,
@@ -251,6 +255,10 @@ const MessageBox: FC = () => {
          });
       });
       setLoading(false);
+
+      return () => {
+         socket.off("upload-comepleted");
+      };
    }, [socket]);
 
    useEffect(() => {
@@ -258,6 +266,9 @@ const MessageBox: FC = () => {
          toast("Failed to upload video");
       });
       setLoading(false);
+      return () => {
+         socket.off("failed to upload");
+      };
    }, [socket]);
 
    useEffect(() => {
@@ -265,8 +276,6 @@ const MessageBox: FC = () => {
          playerRef.current.seekTo(0);
       }
    }, [videoUrl]);
-
-   console.log(videoUrl);
 
    return (
       <div className="bg-white ml-0  w-full sm:w-3/5 sm:ml-72 h-96 flex flex-col">
@@ -315,13 +324,6 @@ const MessageBox: FC = () => {
                      </div>
                   </div>
                ))}
-               {/* <div>
-                  {videoUrl ? (
-                     <ReactPlayer ref={playerRef} url={videoUrl} controls playing width="100%" height="auto" />
-                  ) : (
-                     <p>No video uploaded yet</p>
-                  )}
-               </div> */}
             </div>
 
             {curChat ? (
@@ -353,6 +355,7 @@ const MessageBox: FC = () => {
                            value={message}
                            onChange={(e) => setMessage(e.target.value)}
                         />
+                        <AudioRecorderComponent />
 
                         <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2">
                            😊

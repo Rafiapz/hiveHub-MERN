@@ -27,21 +27,19 @@ function ConnectButton({ id }: any) {
    };
 
    return (
-      <>
-         <div className="">
-            <div className="flex items-center font-medium">
-               <button
-                  onClick={() => handleConnect(id)}
-                  className="flex items-center bg-pink-200 text-black py-1 px-2 rounded-md hover:bg-pink-400 hover:text-black transition duration-300"
-               >
-                  <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                  <div>Follow</div>
-               </button>
-            </div>
+      <div className="flex justify-center">
+         <div className="flex items-center font-medium">
+            <button
+               onClick={() => handleConnect(id)}
+               className="flex items-center bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 transition-colors duration-300"
+            >
+               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+               </svg>
+               <span>Follow</span>
+            </button>
          </div>
-      </>
+      </div>
    );
 }
 

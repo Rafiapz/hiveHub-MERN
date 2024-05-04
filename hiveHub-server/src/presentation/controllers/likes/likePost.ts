@@ -22,24 +22,22 @@ export const likePostController = (dependencies: ILikesDependencies) => {
 
             const likeData: LikesEntity = { postId: postId, userId: userId }
 
-            const { posts, likes } = await likePostUseCase(dependencies).execute(likeData)
+            const { posts, likes, post } = await likePostUseCase(dependencies).execute(likeData)
 
 
 
-            if (posts) {
-                const like = posts
+            if (post) {
 
-                if (like === 'deleted')
-                    res.json({ status: 'ok', message: 'Succesfully disliked post' }).status(200)
-                else
-                    res.json({ status: 'ok', message: "Successfully liked the post", data: { posts, likes } }).status(200)
+                res.status(200).json({ status: 'ok', message: 'Succesfully disliked post', post })
+
+
             } else {
                 throw new Error('Unable to like the post')
             }
 
 
         } catch (error: any) {
-            res.json({ status: 'Failed', message: error.message }).status(400)
+            res.status(error?.status || 500).json({ status: 'Failed', message: error.message })
         }
 
     }

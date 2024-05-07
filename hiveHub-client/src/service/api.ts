@@ -1,9 +1,12 @@
 import { jsonConfig, multiPartConfig } from "../utils/apiUtils";
 import apiClient from "../utils/axios";
 import {
+    DELETE_NOTIFICATION_URL,
     DELETE_REPLY_COMMENT_URL,
     FETCH_CONVERSATIONS_URL,
+    FETCH_NOTIFICATIONS_URL,
     LIKE_COMMENT_URL,
+    PREMIUM_ORDER_URL,
     REJECT_REPORT_URL,
     REPLY_COMMENT_URL,
     REPORT_POST_URL,
@@ -74,3 +77,14 @@ export const repostPost = async (form: any) => {
     return await apiClient.post(REPOST_POST_URL, form, jsonConfig)
 }
 
+export const fetchNotifications = async (id: any, page: number) => {
+    return await apiClient.get(`${FETCH_NOTIFICATIONS_URL}/${id}?page=${page}`)
+}
+
+export const deleteNotification = async (id: any) => {
+    return await apiClient.delete(`${DELETE_NOTIFICATION_URL}?id=${id}`)
+}
+
+export const premiumOrder = async (form: any) => {
+    return await apiClient.post(PREMIUM_ORDER_URL, form, jsonConfig)
+}

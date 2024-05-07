@@ -95,8 +95,6 @@ export const likePostAction = createAsyncThunk('/likes/like-post', async (id: nu
 
     } catch (error: any) {
         console.log(error.message);
-
-
     }
 })
 

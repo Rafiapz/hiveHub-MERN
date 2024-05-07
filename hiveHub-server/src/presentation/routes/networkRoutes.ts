@@ -2,12 +2,13 @@ import { Router } from 'express'
 import { controllers } from '../controllers/networks/'
 import { currentUser } from '../middlewares/currentUser'
 import { INetworkDependencies } from '../../application/interface/network/IDependencies'
+import { INotificationsDependencies } from '../../application/interface/notifications/IDependencies'
 
 
 
-export const networksRoutes = (dependencies: INetworkDependencies) => {
+export const networksRoutes = (dependencies: INetworkDependencies, notificationDependencies: INotificationsDependencies) => {
 
-    const { connectionRequest, fetchAllNetworks, fetchFollowing, fetchFollowers, unfollow, searchUser } = controllers(dependencies)
+    const { connectionRequest, fetchAllNetworks, fetchFollowing, fetchFollowers, unfollow, searchUser } = controllers(dependencies, notificationDependencies)
 
     const router = Router()
 

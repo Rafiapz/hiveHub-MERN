@@ -2,8 +2,9 @@ import { Router } from 'express'
 import { controllers } from '../controllers/comments'
 import { currentUser } from '../middlewares/currentUser'
 import { ICommentsDependencies } from '../../application/interface/comments/IDependencies'
+import { INotificationsDependencies } from '../../application/interface/notifications/IDependencies'
 
-export const commentsRoutes = (dependencies: ICommentsDependencies) => {
+export const commentsRoutes = (dependencies: ICommentsDependencies, notificationsDependencies: INotificationsDependencies) => {
 
     const {
 
@@ -16,7 +17,7 @@ export const commentsRoutes = (dependencies: ICommentsDependencies) => {
         deleteReplyComment,
         likeComment,
         fetchCommentLikes
-    } = controllers(dependencies);
+    } = controllers(dependencies, notificationsDependencies);
 
     const router = Router()
 

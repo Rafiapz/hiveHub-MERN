@@ -23,6 +23,8 @@ import Messages from "./pages/message/Messages";
 import Dashboard from "./pages/admin/dashboard/Dashboard";
 import BlockedUser from "./components/blockedUser/BlockedUser";
 import Reports from "./pages/admin/reports/Reports";
+import Notifications from "./pages/user/notifications/Notifications";
+import Premium from "./pages/user/premium/Premium";
 
 function App() {
    const auth = useSelector((state: RootState) => state?.user?.user?.auth?.isAuth);
@@ -73,6 +75,8 @@ function App() {
                      <Routes>
                         <Route path="/" element={userData?.role === "admin" ? <Navigate to={"/admin"} /> : <Home />} />
                         <Route path="/messages" element={<Messages />} />
+                        <Route path="/notifications" element={<Notifications />} />
+                        <Route path="/premium" element={<Premium />} />
                         <Route path="/profile" element={<Profile />}>
                            <Route index element={<UserPosts />} />
                            <Route path="/profile/following" element={<Following />} />

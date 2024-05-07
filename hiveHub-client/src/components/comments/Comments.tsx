@@ -54,7 +54,7 @@ const Comments: FC = () => {
       dispatch(postComment({ formData, postId })).then((response) => {
          if (response.payload.status === "ok") {
             dispatch(fetchAllCommentsOfPost(postId));
-            dispatch(fetchAllposts()).then(() => {
+            dispatch(fetchAllposts({})).then(() => {
                document.body.style.overflow = "hidden";
             });
          }
@@ -184,7 +184,7 @@ const Comments: FC = () => {
       <div className="fixed inset-0 z-50   flex items-center justify-center ">
          <div className="fixed inset-0 bg-gray-900 opacity-50"></div>
          <div className="bg-white p-8 rounded-lg z-50 w-1/3  relative">
-            <button className="absolute top-0 right-0 m-1 text-gray-500 focus:outline-none" onClick={() => handleCloseModal()}>
+            <button className="absolute top-0 right-0 m-1 text-gray-500 w-20 h-10 focus:outline-none" onClick={() => handleCloseModal()}>
                <i className="fa-regular fa-circle-xmark fa-2x "></i>
             </button>
             <div className="max-w-sm mx-auto mb-4">

@@ -157,7 +157,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
       <>
          <div className="min w-full">
             <InfiniteScroll
-               dataLength={items.length}
+               dataLength={items?.length}
                next={() => fetchMore()}
                hasMore={hasMore}
                loader={
@@ -170,25 +170,35 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                   return (
                      <div
                         key={item?._id + i}
-                        className="bg-gray-50 w-2/3 ml-10 p-8 h-auto shadow-lg mx-auto mt-2"
+                        className="bg-white w-2/3 ml-10 p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 relative"
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
-                        <div className="flex items-center hover:cursor-pointer">
-                           <img src={item?.userId?.profilePhoto} alt="User" className="rounded-full  h-8 w-10 mr-2" />
-                           <p className="font-bold min-w-30 max-w-30" onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}>
-                              {item?.userId?.fullName}
-                           </p>
-                           <div className="">
-                              <p className="text-sm ml-10 font-bold  text-gray-500">{format(item?.createdAt)}</p>
+                        <div className="absolute top-2 right-2">
+                           <div
+                              onClick={(e) => {
+                                 e.stopPropagation(), handleOptionsClick(i);
+                              }}
+                              className="flex  gap-1  items-center justify-center w-14 h-6 rounded-full hover:bg-gray-200 cursor-pointer"
+                           >
+                              <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+                              <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+                              <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
                            </div>
-                           <div className="min-w-80"></div>
+                        </div>
 
-                           {showOptions?.status == true && showOptions?.index === i && (
-                              <div
-                                 style={{ marginLeft: "620px" }}
-                                 className="z-10 absolute mt-1  w-28 h-22 bg-gray-200  border border-gray-300 shadow-lg rounded-md"
-                              >
-                                 <ul className="">
+                        <div className="flex items-center hover:cursor-pointer">
+                           <div className="w-10 h-10 rounded-full overflow-hidden mr-4">
+                              <img src={item?.userId?.profilePhoto} alt="User" className="w-full h-full object-cover" />
+                           </div>
+                           <div className="flex-grow">
+                              <p className="font-bold text-gray-800" onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}>
+                                 {item?.userId?.fullName}
+                              </p>
+                              <p className="text-sm text-gray-500">{format(item?.createdAt)}</p>
+                           </div>
+                           {showOptions?.status && showOptions?.index === i && (
+                              <div className="absolute right-16 mt-1 z-10 w-28 bg-white border border-gray-400 shadow-lg rounded-md">
+                                 <ul className="py-1">
                                     {userId === item?.userId?._id && (
                                        <>
                                           <li
@@ -205,51 +215,39 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                                                    })
                                                 )
                                              }
-                                             className="p-1 hover:bg-white"
+                                             className="p-2 hover:bg-gray-100 cursor-pointer"
                                           >
-                                             <button>Edit</button>
+                                             Edit
                                           </li>
-                                          <li onClick={() => handleDeletePostModal(item?._id)} className="p-1 hover:bg-white">
-                                             <button>Delete</button>
+                                          <li onClick={() => handleDeletePostModal(item?._id)} className="p-2 hover:bg-gray-100 cursor-pointer">
+                                             Delete
                                           </li>
                                        </>
                                     )}
                                     {userId !== item?.userId?._id && (
                                        <li
-                                          className="p-1  hover:bg-white"
+                                          className="p-2 hover:bg-gray-100 cursor-pointer"
                                           onClick={() => {
                                              dispatch(handleReportPostId({ postId: item?._id }));
                                              openModal();
                                           }}
                                        >
-                                          <button>Report</button>
+                                          Report
                                        </li>
                                     )}
                                  </ul>
                               </div>
                            )}
-                           <div style={{ marginLeft: "740px" }} className="rounded-lg  absolute ">
-                              <div
-                                 onClick={(e) => {
-                                    e.stopPropagation(), handleOptionsClick(i);
-                                 }}
-                                 className=" flex flex-col gap-1 hover:bg-gray-200 w-4 h-10 justify-center items-center"
-                              >
-                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                 <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                              </div>
-                           </div>
                         </div>
 
-                        <p className="p-4 ">{item?.content}</p>
+                        <p className="py-4 text-gray-700">{item?.content}</p>
 
                         {item?.media?.type === "image" && <img src={`${item?.media?.path}`} alt="Posted" className="mb-4 rounded-lg w-full" />}
                         {item?.media?.type === "video" && <video controls src={`${item?.media?.path}`}></video>}
 
-                        <div className="flex justify-between items-center">
-                           <div className="flex">
-                              <div>
+                        <div className="flex justify-between items-center mt-4">
+                           <div className="flex items-center">
+                              <div className="flex items-center mr-8 cursor-pointer">
                                  <FontAwesomeIcon
                                     key={item?.id}
                                     onClick={() => {
@@ -258,31 +256,31 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                                     icon={faHeart}
                                     className={`${
                                        setClass(item?._id) ? "text-red-600" : "text-gray-400"
-                                    }  mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
+                                    } mr-2 text-xl hover:text-red-600 transition duration-300`}
                                  />
                                  <p>{item?.likes}</p>
                               </div>
-                              <div>
+                              <div className="flex items-center mr-8 cursor-pointer">
                                  <FontAwesomeIcon
                                     icon={faComment}
-                                    className="mr-4 text-blue-500 size-7 cursor-pointer text-xl hover:text-blue-600 transition duration-300"
+                                    className="mr-2 text-blue-500 text-xl hover:text-blue-600 transition duration-300"
                                     onClick={() => {
                                        handleShowComments(item?._id);
                                     }}
                                  />
                                  <p>{item?.comments}</p>
                               </div>
-                              <div onClick={() => handleSharePost(item)}>
+                              <div className="flex items-center mr-8 cursor-pointer" onClick={() => handleSharePost(item)}>
                                  <FontAwesomeIcon
                                     icon={faShare}
-                                    className="mr-4 text-yellow-300 size-7 cursor-pointer text-xl hover:text-green-600 transition duration-300"
+                                    className="mr-2 text-yellow-300 text-xl hover:text-green-600 transition duration-300"
                                  />
                                  <p>{item?.shares}</p>
                               </div>
                            </div>
 
-                           <div>
-                              <FontAwesomeIcon icon={faBookmark} className="text-gray-500 size-7 cursor-pointer" />
+                           <div className="cursor-pointer">
+                              <FontAwesomeIcon icon={faBookmark} className="text-gray-500 text-xl hover:text-gray-700 transition duration-300" />
                            </div>
                         </div>
                      </div>

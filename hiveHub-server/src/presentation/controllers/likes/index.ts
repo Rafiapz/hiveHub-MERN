@@ -1,13 +1,14 @@
 import { ILikesDependencies } from "../../../application/interface/likes/IDependencies"
+import { INotificationsDependencies } from "../../../application/interface/notifications/IDependencies"
 import { fetchMyLikesController } from "./fetchMyLikes"
 import { likePostController } from "./likePost"
 
 
-export const controllers = (dependencies: ILikesDependencies) => {
+export const controllers = (dependencies: ILikesDependencies, notificationsDependencies: INotificationsDependencies) => {
 
     return {
 
-        likePost: likePostController(dependencies),
+        likePost: likePostController(dependencies, notificationsDependencies),
         fetchMylikes: fetchMyLikesController(dependencies)
 
     }

@@ -43,11 +43,11 @@ const Users: FC = () => {
                      <div onClick={() => handleClick(user?._id, user?.email)}>{user?.fullName}</div>
                      <div className="mt-2">
                         {isFollowing(user?._id) ? (
-                           <button className="px-4 py-2 w-28 rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none transition-colors duration-300">
+                           <button className="px-4 py-2 w-28 rounded-md text-white bg-indigo-500 hover:bg-purple-700 focus:outline-none transition-colors duration-300">
                               Message
                            </button>
                         ) : (
-                           <ConnectButton id={user?._id} />
+                           <ConnectButton id={user?._id} content="Follow" />
                         )}
                      </div>
                   </div>

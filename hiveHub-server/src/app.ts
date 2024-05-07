@@ -1,7 +1,7 @@
 import express, { Application } from 'express'
 import { authRoutes } from './presentation/routes/authRoutes'
 import { postRoutes } from './presentation/routes/postRoutes'
-import { adminDependencies, authDependencies, chatsDependencies, commentsDependencies, likesDependencies, reportsDependencies, storyDependencies } from './_boot/dependencies'
+import { adminDependencies, authDependencies, chatsDependencies, commentsDependencies, likesDependencies, notificationsDependencies, reportsDependencies, storyDependencies } from './_boot/dependencies'
 import { postDependencies } from './_boot/dependencies'
 import { networkDependencies } from './_boot/dependencies'
 import { connect } from './_boot/databse'
@@ -21,6 +21,8 @@ import { initializeSocketIO } from './_boot/socket'
 import { chatRoutes } from './presentation/routes/chatRoutes'
 import { adminRoutes } from './presentation/routes/adminRoutes'
 import { storyRoutes } from './presentation/routes/storyRoutes'
+import { notificationsRoutes } from './presentation/routes/notificationsRoutes'
+import { premiumRoutes } from './presentation/routes/premiumRoutes'
 
 
 configDotenv()
@@ -60,11 +62,11 @@ app.use('/auth', authRoutes(authDependencies))
 
 app.use('/post', postRoutes(postDependencies))
 
-app.use('/networks', networksRoutes(networkDependencies))
+app.use('/networks', networksRoutes(networkDependencies, notificationsDependencies))
 
-app.use('/comments', commentsRoutes(commentsDependencies))
+app.use('/comments', commentsRoutes(commentsDependencies, notificationsDependencies))
 
-app.use('/likes', likesRoutes(likesDependencies))
+app.use('/likes', likesRoutes(likesDependencies, notificationsDependencies))
 
 app.use('/reports', reportsRoutes(reportsDependencies))
 
@@ -73,6 +75,10 @@ app.use('/chats', chatRoutes(chatsDependencies))
 app.use('/admin', adminRoutes(adminDependencies))
 
 app.use('/story', storyRoutes(storyDependencies))
+
+app.use('/notifications', notificationsRoutes(notificationsDependencies))
+
+app.use('/premium', premiumRoutes())
 
 app.use((req: Request, res: Response) => {
     res.json({ message: 'not found' }).status(404)

@@ -3,15 +3,16 @@ import { Router } from 'express'
 import { controllers } from '../controllers/likes'
 import { currentUser } from '../middlewares/currentUser'
 import { ILikesDependencies } from '../../application/interface/likes/IDependencies'
+import { INotificationsDependencies } from '../../application/interface/notifications/IDependencies'
 
 
 
-export const likesRoutes = (dependencies: ILikesDependencies) => {
+export const likesRoutes = (dependencies: ILikesDependencies, notificationsDependencies: INotificationsDependencies) => {
 
     const {
         likePost,
         fetchMylikes
-    } = controllers(dependencies);
+    } = controllers(dependencies, notificationsDependencies);
 
     const router = Router()
 

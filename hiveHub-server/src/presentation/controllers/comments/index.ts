@@ -8,14 +8,15 @@ import { fetchAllRepliesController } from './fetchAllReplies'
 import { deleteReplyCommentController } from './deleteReplyComment'
 import { likeCommentController } from './likeComment'
 import { fetchCommentLikesController } from './fetchCommentLikes'
+import { INotificationsDependencies } from '../../../application/interface/notifications/IDependencies'
 
 
-export const controllers = (dependencies: ICommentsDependencies) => {
+export const controllers = (dependencies: ICommentsDependencies, notificationsDependencies: INotificationsDependencies) => {
 
     return {
 
         fetchAllComments: fetChAllCommentsController(dependencies),
-        createComment: createCommentController(dependencies),
+        createComment: createCommentController(dependencies, notificationsDependencies),
         deleteComment: deleteCommentController(dependencies),
         updateComment: updateCommentController(dependencies),
         createReplyComment: createReplyCommentController(dependencies),

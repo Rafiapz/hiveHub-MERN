@@ -18,7 +18,7 @@ export const createLike = async (data: LikesEntity): Promise<any> => {
             }
             const post = await Posts.findOneAndUpdate({ _id: data.postId }, { $inc: { likes: -1 } }, { new: true })
 
-            return { post }
+            return { post, unlike: true }
 
         } else {
             const newLike = await Likes.create(data)
@@ -32,7 +32,7 @@ export const createLike = async (data: LikesEntity): Promise<any> => {
 
 
 
-            return { posts, allLikes, post }
+            return { posts, allLikes, post, liked: true }
         }
 
 

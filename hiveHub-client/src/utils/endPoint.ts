@@ -109,3 +109,9 @@ export const REJECT_REPORT_URL = '/reports/reject-report'
 export const REPOST_POST_URL = '/post/repost-post'
 
 export const STORY_SEEN_URL = '/story/story-seen'
+
+export const FETCH_NOTIFICATIONS_URL = '/notifications/fetch-notifications'
+
+export const DELETE_NOTIFICATION_URL = '/notifications/delete-notification'
+
+export const PREMIUM_ORDER_URL = '/premium/order'

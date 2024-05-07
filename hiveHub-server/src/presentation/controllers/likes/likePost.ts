@@ -2,11 +2,15 @@ import { Request, Response } from 'express'
 import { LikesEntity } from '../../../domain/entities/likesEntity'
 import mongoose from "mongoose";
 import { ILikesDependencies } from "../../../application/interface/likes/IDependencies";
+import { INotificationsDependencies } from '../../../application/interface/notifications/IDependencies';
+import { NotificationsEntity } from '../../../domain/entities/notificationsEntity';
 
 
-export const likePostController = (dependencies: ILikesDependencies) => {
+export const likePostController = (dependencies: ILikesDependencies, notificationsDependencies: INotificationsDependencies) => {
 
     const { likesUseCases: { likePostUseCase, } } = dependencies
+
+    const { notificationsUseCases: { createNotificationUseCase } } = notificationsDependencies
 
     return async (req: Request, res: Response) => {
 
@@ -22,18 +26,27 @@ export const likePostController = (dependencies: ILikesDependencies) => {
 
             const likeData: LikesEntity = { postId: postId, userId: userId }
 
-            const { posts, likes, post } = await likePostUseCase(dependencies).execute(likeData)
+            const { posts, likes, post, liked, unlike } = await likePostUseCase(dependencies).execute(likeData)
 
+            if (liked && post) {
 
+                const data: NotificationsEntity = {
+                    actionBy: userIdData,
+                    actionOn: post?.userId?._id,
+                    message: 'Liked your post',
+                    read: false,
+                    type: 'like'
 
-            if (post) {
+                }
 
-                res.status(200).json({ status: 'ok', message: 'Succesfully disliked post', post })
+                await createNotificationUseCase(notificationsDependencies).execute(data)
+                res.status(200).json({ status: 'ok', message: 'Succesfully liked post', post })
+            } else if (unlike) {
 
-
-            } else {
-                throw new Error('Unable to like the post')
+                res.status(200).json({ status: 'ok', message: 'Successfully unlike post', post })
             }
+
+
 
 
         } catch (error: any) {

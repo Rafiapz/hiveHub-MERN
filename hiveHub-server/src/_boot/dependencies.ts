@@ -35,6 +35,11 @@ import * as storyUseCases from '../application/useCase/story'
 import * as storyRepositories from '../infrastructure/database/repositories/story'
 
 
+import { INotificationsDependencies } from '../application/interface/notifications/IDependencies'
+import * as notificationsUseCases from '../application/useCase/notifications'
+import * as notificationsRepositories from '../infrastructure/database/repositories/notifications'
+
+
 
 
 export const authDependencies: IDependencies = { repositories, useCases }
@@ -54,3 +59,5 @@ export const chatsDependencies: IChatsDependencies = { chatsRepositories, chatsU
 export const adminDependencies: IAdminDependencies = { adminRepositories, adminUseCases }
 
 export const storyDependencies: IStoryDependencies = { storyRepositories, storyUseCases }
+
+export const notificationsDependencies: INotificationsDependencies = { notificationsRepositories, notificationsUseCases }

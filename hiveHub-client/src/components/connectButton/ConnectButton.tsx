@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { connectionRequestAction, fetchAllNetworks, fetchFollwing } from "../../store/actions/network/networkActions";
 import toast from "react-hot-toast";
 
-function ConnectButton({ id }: any) {
+function ConnectButton({ id, content }: any) {
    const allPosts: any = useSelector((state: RootState) => state?.posts?.posts?.data);
 
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
@@ -31,12 +31,12 @@ function ConnectButton({ id }: any) {
          <div className="flex items-center font-medium">
             <button
                onClick={() => handleConnect(id)}
-               className="flex items-center bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 transition-colors duration-300"
+               className="flex items-center bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition-colors duration-300"
             >
                <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                </svg>
-               <span>Follow</span>
+               <span>{content}</span>
             </button>
          </div>
       </div>

@@ -8,18 +8,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { useSearchParams } from "react-router-dom";
 
-const OthersPost = ({ openModal }: any) => {
+const OthersPost: FC<any> = ({ openModal }) => {
    const dispatch = useDispatch<AppDispatch>();
    const loading = useSelector((state: RootState) => state.posts.posts.loading);
-   const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
-   const posts: any = useSelector((state: RootState) => state.posts.posts.data);
+   const likes: any = useSelector((state: RootState) => state?.posts?.ownPost?.likes);
+   const posts: any = useSelector((state: RootState) => state.posts?.ownPost?.data);
 
    const [showOptions, setShowOptions] = useState<{
       status: boolean;
       index: number;
    }>({ status: false, index: 0 });
 
-   const [searchQuery, setSearchQuery] = useSearchParams();
+   const [searchQuery] = useSearchParams();
 
    const userId = searchQuery.get("userId");
    useEffect(() => {

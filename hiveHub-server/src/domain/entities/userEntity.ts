@@ -21,5 +21,6 @@ export interface UserEntity {
     connections?: connctions[],
     otp?: string,
     createdAt: Date,
-    isBlocked?: boolean
+    isBlocked?: boolean,
+    premium?: boolean
 }

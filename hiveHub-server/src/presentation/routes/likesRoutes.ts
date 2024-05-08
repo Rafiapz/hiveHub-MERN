@@ -11,7 +11,8 @@ export const likesRoutes = (dependencies: ILikesDependencies, notificationsDepen
 
     const {
         likePost,
-        fetchMylikes
+        fetchMylikes,
+        fetchPostLikedUsers
     } = controllers(dependencies, notificationsDependencies);
 
     const router = Router()
@@ -20,6 +21,8 @@ export const likesRoutes = (dependencies: ILikesDependencies, notificationsDepen
     router.route('/like-post/:postId').post(currentUser, likePost)
 
     router.route('/fetch-my-likes').get(currentUser, fetchMylikes)
+
+    router.route('/fetch-post-liked-users').get(currentUser, fetchPostLikedUsers)
 
 
 

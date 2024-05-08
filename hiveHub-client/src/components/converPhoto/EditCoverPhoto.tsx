@@ -22,7 +22,7 @@ const EditCoverPhoto: FC = () => {
                >
                   <FontAwesomeIcon icon={faPen} className="text-blue-500" />
                </div>
-               <div className="profile-photo absolute bottom-0 left-12 top-56 rounded-full w-28 h-24 bg-white z-20">
+               <div className="profile-photo absolute bottom-0 left-12 top-52 rounded-full w-28 h-28 bg-white z-20">
                   <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-full h-full object-cover" />
                   <div
                      onClick={() => dispatch(handleEditUserPhotosModal({ status: true, type: "profilePhoto" }))}
@@ -32,8 +32,22 @@ const EditCoverPhoto: FC = () => {
                   </div>
                </div>
             </div>
-            <div className="flex justify-between items-center ml-36 absolute mb-16 ">
-               <h1 className="text-xl font-bold ml-8">{userData?.fullName}</h1>
+            <div className="flex justify-between items-center absolute mb-16 ">
+               <div className="flex">
+                  {userData?.premium && (
+                     <svg
+                        className="fill-current ml-40 mt-1 text-indigo-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        height="16"
+                     >
+                        <circle cx="8" cy="8" r="8" fill="" />
+                        <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
+                     </svg>
+                  )}
+                  <h1 className="text-xl ml-4 font-bold">{userData?.fullName}</h1>
+               </div>
             </div>
          </div>
       </div>

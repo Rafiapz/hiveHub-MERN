@@ -2,6 +2,9 @@ import { Request, Response } from 'express'
 import Razorpay from 'razorpay'
 import RazorpayOrder from '../../../infrastructure/database/models/razorpayOrderModel';
 import { RazorpayOrderEntity } from '../../../domain/entities/razorpayOrder';
+import crypto from 'crypto'
+import Payments from '../../../infrastructure/database/models/paymentsModel';
+import { User } from '../../../infrastructure/database/models';
 
 export const createOrderController = () => {
 
@@ -38,6 +41,7 @@ export const createOrderController = () => {
                     order_id: response.id,
                     currency: response.currency,
                     amount: response.amount,
+
                 })
             }
 
@@ -46,6 +50,58 @@ export const createOrderController = () => {
             console.log(error);
 
             res.status(400).json({ status: 'failed', message: error?.message })
+        }
+    }
+}
+
+export const validateOrder = () => {
+
+    return async (req: Request, res: Response) => {
+
+        try {
+            const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req?.body
+
+            const sha = crypto.createHmac('sha256', process?.env?.razorpay_key_secret || '')
+
+            sha.update(`${razorpay_order_id}|${razorpay_payment_id}`)
+
+            const digest = sha.digest('hex')
+
+            if (digest !== razorpay_signature) {
+                res.status(400).json({ status: 'failed', message: 'Transaction is not legit!' })
+                return
+            } else {
+                res.status(200).json(
+                    { status: 'ok', message: 'Success', orderId: razorpay_order_id, paymentId: razorpay_payment_id })
+            }
+
+        } catch (error: any) {
+            res.status(error?.status || 500).json({ status: 'failed', message: error?.message })
+        }
+    }
+}
+
+export const paymentSuccess = () => {
+
+    return async (req: Request, res: Response) => {
+
+        try {
+
+            const { orderId, paymentId, userId, amount } = req?.body
+
+
+            const payment = await Payments.create({ orderId, paymentId, userId, amount })
+
+            if (!payment) {
+                throw new Error('Failed to complete transaction')
+            } else {
+
+                await User.findOneAndUpdate({ _id: userId }, { $set: { premium: true } })
+                res.status(200).json({ status: 'ok' })
+            }
+
+        } catch (error: any) {
+            res.status(error?.status || 500).json({ status: 'failed', message: error?.message })
         }
     }
 }

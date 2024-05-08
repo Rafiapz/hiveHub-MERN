@@ -1,11 +1,9 @@
-import React from "react";
 import Menu from "../../../components/menu/Menu";
-import ConverPhoto from "../../../components/converPhoto/CoverPhoto";
 import { Link, Outlet } from "react-router-dom";
 import Comments from "../../../components/comments/Comments";
-import UnfollowModal from "../../../components/modal/UnfollowModal";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import OthersCoverPhoto from "../../../components/OthersCoverPhoto/OthersCoverPhoto";
+import UnfollowModal from "../../../components/modal/UnfollowModal";
 
 function OthersProfile() {
    return (
@@ -17,10 +15,9 @@ function OthersProfile() {
                Posts
             </Link>
          </div>
-
          <Outlet />
          <Comments />
-
+         <UnfollowModal />
          <RightSideBar />
       </>
    );

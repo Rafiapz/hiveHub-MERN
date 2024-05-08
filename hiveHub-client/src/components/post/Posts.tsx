@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "timeago.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EditPostModal from "../modal/EditPostModal";
+import PostLikesModal from "../modal/PostLikesModal";
 
 const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const dispatch = useDispatch<AppDispatch>();
@@ -24,6 +25,8 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const posts: any = useSelector((state: RootState) => state.posts.posts.data);
    const [page, setPage] = useState<number>(1);
    const [items, setItems] = useState<any>(posts);
+   const [likesModal, setLikesModal] = useState<boolean>(false);
+   const [curLikesCount, setCurLikesCount] = useState<number | null>(null);
 
    const navigate = useNavigate();
 
@@ -153,6 +156,10 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
          });
    };
 
+   const closeLikesModal = () => {
+      setLikesModal(false);
+   };
+
    return (
       <>
          <div className="min w-full">
@@ -178,7 +185,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                               onClick={(e) => {
                                  e.stopPropagation(), handleOptionsClick(i);
                               }}
-                              className="flex  gap-1  items-center justify-center w-14 h-6 rounded-full hover:bg-gray-200 cursor-pointer"
+                              className="flex gap-1 items-center justify-center w-14 h-6 rounded-full hover:bg-gray-200 cursor-pointer"
                            >
                               <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
                               <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
@@ -190,11 +197,23 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                            <div className="w-10 h-10 rounded-full overflow-hidden mr-4">
                               <img src={item?.userId?.profilePhoto} alt="User" className="w-full h-full object-cover" />
                            </div>
-                           <div className="flex-grow">
-                              <p className="font-bold text-gray-800" onClick={() => viewOthersProfile(item?.userId?._id, item?.userId?.email)}>
-                                 {item?.userId?.fullName}
-                              </p>
-                              <p className="text-sm text-gray-500">{format(item?.createdAt)}</p>
+                           <div className="flex items-center">
+                              {item?.userId?.premium && (
+                                 <svg
+                                    className="fill-current mr-2 text-indigo-500"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 16 16"
+                                    width="16"
+                                    height="16"
+                                 >
+                                    <circle cx="8" cy="8" r="8" fill="" />
+                                    <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
+                                 </svg>
+                              )}
+                              <div className="flex flex-col">
+                                 <p className="font-bold text-gray-800">{item?.userId?.fullName}</p>
+                                 <p className="text-sm text-gray-500">{format(item?.createdAt)}</p>
+                              </div>
                            </div>
                            {showOptions?.status && showOptions?.index === i && (
                               <div className="absolute right-16 mt-1 z-10 w-28 bg-white border border-gray-400 shadow-lg rounded-md">
@@ -258,7 +277,15 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                                        setClass(item?._id) ? "text-red-600" : "text-gray-400"
                                     } mr-2 text-xl hover:text-red-600 transition duration-300`}
                                  />
-                                 <p>{item?.likes}</p>
+                                 <p
+                                    onClick={() => {
+                                       setCurLikesCount(item?.likes);
+                                       setCurPostId(item?._id);
+                                       setLikesModal(true);
+                                    }}
+                                 >
+                                    {item?.likes}
+                                 </p>
                               </div>
                               <div className="flex items-center mr-8 cursor-pointer">
                                  <FontAwesomeIcon
@@ -287,7 +314,9 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                   );
                })}
             </InfiniteScroll>
+            <PostLikesModal closeLikesModal={closeLikesModal} likesModal={likesModal} postId={curPostId} likes={curLikesCount} />
          </div>
+
          <EditPostModal items={items} setItems={setItems} />
          <ConfirmationModal curId={curPostId} handleDelete={handleDelete} />
       </>

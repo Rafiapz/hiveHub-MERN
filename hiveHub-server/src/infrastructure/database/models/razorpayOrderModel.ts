@@ -3,7 +3,7 @@ import { RazorpayOrderEntity } from '../../../domain/entities/razorpayOrder';
 
 
 const RazorpayOrderSchema: Schema = new Schema({
-    userId: { type: Schema.Types.ObjectId, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
     amount: { type: Number, required: true },
     status: { type: String, required: true },
 });

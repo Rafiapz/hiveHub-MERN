@@ -28,9 +28,22 @@ const CoverPhoto: FC = () => {
                <img src={userData?.coverPhoto} alt="Cover" className="rounded-lg w-full h-full object-cover" />
             </div>
             <div className="flex justify-between profile-info ">
-               <h1 className="text-xl ml-36 font-bold">{userData?.fullName}</h1>
+               <div className="flex">
+                  {userData?.premium && (
+                     <svg
+                        className="fill-current ml-40 mt-1 text-indigo-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        height="16"
+                     >
+                        <circle cx="8" cy="8" r="8" fill="" />
+                        <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
+                     </svg>
+                  )}
+                  <h1 className="text-xl ml-4 font-bold">{userData?.fullName}</h1>
+               </div>
                <div className="profile-actions flex items-center space-x-2">
-                  {" "}
                   <button
                      onClick={handleEditProfile}
                      className="edit-profile-button   text-black font-semibold border border-blue-700 py-2 px-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-pink-100"
@@ -43,7 +56,7 @@ const CoverPhoto: FC = () => {
                </div>
             </div>
             <div className="profile-photo absolute top-48 left-8 ml-4 mb-8">
-               <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-28 h-24" />
+               <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-28 h-28 object-cover" />
             </div>
          </div>
       </div>

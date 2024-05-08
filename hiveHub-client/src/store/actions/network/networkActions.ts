@@ -63,9 +63,9 @@ export const unFollow = createAsyncThunk('/network/unfollow', async (id: number)
 
     try {
 
-        console.log('called unfollow');
 
         const reponse = await apiClient.delete(`${UNFOLLOW_URL}/${id}`)
+        console.log(reponse.data, 'dtaaa');
 
         return reponse.data
 

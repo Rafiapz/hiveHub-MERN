@@ -24,19 +24,26 @@ const UnfollowModal: FC = () => {
    };
 
    const handleUnfollow = () => {
-      dispatch(unFollow(curId)).then((response) => {
-         if (response?.payload?.status === "ok") {
-            toast.success("Successfully unfollowed");
-            dispatch(fetchFollwing());
-            dispatch(fetchAllUsers());
-            dispatch(fetchAllNetworks());
-         }
-         dispatch(handleUnfollowModal({ status: false }));
-      });
+      console.log(curId);
+
+      dispatch(unFollow(curId))
+         .then((response) => {
+            if (response?.payload?.status === "ok") {
+               toast.success("Successfully unfollowed");
+               dispatch(fetchFollwing());
+               dispatch(fetchAllUsers());
+               dispatch(fetchAllNetworks());
+            }
+            dispatch(handleUnfollowModal({ status: false }));
+         })
+         .catch((err) => {
+            console.log(err);
+         });
    };
 
    return (
       <Modal
+         appElement={document.getElementById("root") as HTMLElement}
          isOpen={isOpen}
          onRequestClose={() => {
             handleModal(false);

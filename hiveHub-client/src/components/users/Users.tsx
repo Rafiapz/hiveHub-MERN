@@ -26,8 +26,6 @@ const Users: FC = () => {
    };
 
    const handleClick = (id: number, email: string) => {
-      console.log("emai", id, email);
-
       navigate(`/others-profile?userId=${id}&email=${email}`);
    };
 

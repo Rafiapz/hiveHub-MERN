@@ -1,6 +1,7 @@
 import { ILikesDependencies } from "../../../application/interface/likes/IDependencies"
 import { INotificationsDependencies } from "../../../application/interface/notifications/IDependencies"
 import { fetchMyLikesController } from "./fetchMyLikes"
+import { fetchPostLikedUsersController } from "./fetchPostLikedUsers"
 import { likePostController } from "./likePost"
 
 
@@ -9,7 +10,7 @@ export const controllers = (dependencies: ILikesDependencies, notificationsDepen
     return {
 
         likePost: likePostController(dependencies, notificationsDependencies),
-        fetchMylikes: fetchMyLikesController(dependencies)
-
+        fetchMylikes: fetchMyLikesController(dependencies),
+        fetchPostLikedUsers: fetchPostLikedUsersController(dependencies)
     }
 }

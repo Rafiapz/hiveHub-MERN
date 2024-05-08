@@ -1,10 +1,11 @@
 import React, { FC, useState } from "react";
 import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
-import { premiumOrder } from "../../../service/api";
+import { createPayment, premiumOrder, validateOrder } from "../../../service/api";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import PremiumSuccessModal from "../../../components/modal/PremiumSuccessModal";
 
 // declare global {
 //     interface Window {
@@ -15,6 +16,11 @@ import { RootState } from "../../../store/store";
 const Premium: FC = () => {
    const [isLoading, setIsLoading] = useState(false);
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
+   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
+   const closeModal = () => {
+      setModalIsOpen(false);
+   };
 
    const handleOrder = async () => {
       try {
@@ -34,16 +40,38 @@ const Premium: FC = () => {
             description: "Test Transaction",
             image: "https://example.com/your_logo",
             order_id: response?.data?.order_id,
-            handler: function (response: any) {
-               alert(response.razorpay_payment_id);
-               alert(response.razorpay_order_id);
-               alert(response.razorpay_signature);
+            handler: async (response: any) => {
+               console.log(response, "response");
+
+               const form = new FormData();
+
+               form.append("razorpay_payment_id", response?.razorpay_payment_id);
+               form.append("razorpay_order_id", response?.razorpay_order_id);
+               form.append("razorpay_signature", response?.razorpay_signature);
+
+               validateOrder(form)
+                  .then((res) => {
+                     const form = new FormData();
+                     form.append("paymentId", response?.razorpay_payment_id);
+                     form.append("orderId", response?.razorpay_order_id);
+                     form.append("userId", userId);
+                     form.append("amount", amount);
+
+                     createPayment(form).then((res) => {
+                        if (res?.data?.status === "ok") {
+                           toast.success("Payment Success");
+                           setModalIsOpen(true);
+                        }
+                     });
+                  })
+                  .catch((err) => {
+                     toast.error(err?.message);
+                  });
             },
             prefill: {
-               //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-               name: "Gaurav Kumar", //your customer's name
+               name: "Gaurav Kumar",
                email: "gaurav.kumar@example.com",
-               contact: "9000090000", //Provide the customer's phone number for better conversion rates
+               contact: "9000090000",
             },
             notes: {
                address: "Razorpay Corporate Office",
@@ -130,7 +158,7 @@ const Premium: FC = () => {
                </p>
             </div>
          </div>
-
+         <PremiumSuccessModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
          <RightSideBar />
       </>
    );

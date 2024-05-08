@@ -10,7 +10,7 @@ export const unfollowController = (dependencies: INetworkDependencies) => {
 
         try {
 
-            const id = req?.params.id
+            const id = req?.params?.id
 
             const status = await deleteOneUseCase(dependencies).execute(id)
 
@@ -21,7 +21,7 @@ export const unfollowController = (dependencies: INetworkDependencies) => {
                 if (status.deletedCount === 1) {
                     res.status(200).json({ status: 'ok', message: 'Success' })
                 } else {
-                    throw new Error('Unabl to unfollow')
+                    throw new Error('Unable to unfollow')
                 }
 
             }

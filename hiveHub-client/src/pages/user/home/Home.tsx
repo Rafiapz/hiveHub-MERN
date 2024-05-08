@@ -13,10 +13,10 @@ import { fetchAllposts } from "../../../store/actions/post/postActions";
 import toast from "react-hot-toast";
 import ViewStory from "../../../components/story/ViewStory";
 import SharePost from "../../../components/share/SharePost";
+import PostLikesModal from "../../../components/modal/PostLikesModal";
 
 const Home: FC = () => {
    const [modalIsOpen, setIsOpen] = useState(false);
-
    const [storyViewing, setStoryViewing] = useState<boolean>(false);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
    const [sharePostModalIsOpen, setSharePostModalIsOpen] = useState(false);
@@ -69,6 +69,7 @@ const Home: FC = () => {
                <CreatePostModal />
                <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
                <Comments />
+
                <ViewStory modalIsOpen={storyViewing} closeModal={handleStoryView} />
                <SharePost modalIsOpen={sharePostModalIsOpen} closeModal={closeSharePostModal} />
                <RightSideBar />

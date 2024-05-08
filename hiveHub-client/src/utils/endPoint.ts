@@ -115,3 +115,9 @@ export const FETCH_NOTIFICATIONS_URL = '/notifications/fetch-notifications'
 export const DELETE_NOTIFICATION_URL = '/notifications/delete-notification'
 
 export const PREMIUM_ORDER_URL = '/premium/order'
+
+export const PREMIUM_ORDER_VALIDATE_URL = '/premium/order/validate'
+
+export const PREMIUM_CREATE_PAYMENT_URL = '/premium/create-payment'
+
+export const FETCH_POST_LIKED_USERS_URL = '/likes/fetch-post-liked-users'

@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { createOrderController } from '../controllers/premium/createOrder'
+import { createOrderController, paymentSuccess, validateOrder } from '../controllers/premium/createOrder'
+import { currentUser } from '../middlewares/currentUser'
 
 
 
@@ -9,14 +10,11 @@ export const premiumRoutes = () => {
 
     const router = Router()
 
-    router.route('/order').post(createOrderController())
+    router.route('/order').post(currentUser, createOrderController())
 
+    router.route('/order/validate').post(currentUser, validateOrder())
 
-
-    router.route('/order/validate').post((req, res) => {
-
-    })
-
+    router.route('/create-payment').post(currentUser, paymentSuccess())
 
     return router
 }

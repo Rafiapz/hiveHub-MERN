@@ -5,8 +5,11 @@ import {
     DELETE_REPLY_COMMENT_URL,
     FETCH_CONVERSATIONS_URL,
     FETCH_NOTIFICATIONS_URL,
+    FETCH_POST_LIKED_USERS_URL,
     LIKE_COMMENT_URL,
+    PREMIUM_CREATE_PAYMENT_URL,
     PREMIUM_ORDER_URL,
+    PREMIUM_ORDER_VALIDATE_URL,
     REJECT_REPORT_URL,
     REPLY_COMMENT_URL,
     REPORT_POST_URL,
@@ -87,4 +90,16 @@ export const deleteNotification = async (id: any) => {
 
 export const premiumOrder = async (form: any) => {
     return await apiClient.post(PREMIUM_ORDER_URL, form, jsonConfig)
+}
+
+export const validateOrder = async (form: any) => {
+    return await apiClient.post(PREMIUM_ORDER_VALIDATE_URL, form, jsonConfig)
+}
+
+export const createPayment = async (form: any) => {
+    return await apiClient.post(PREMIUM_CREATE_PAYMENT_URL, form, jsonConfig)
+}
+
+export const fetchPostLikedUsers = async (postId: any,) => {
+    return await apiClient.get(`${FETCH_POST_LIKED_USERS_URL}?postId=${postId}`)
 }

@@ -53,7 +53,8 @@ const Notification: React.FC<any> = () => {
    const handleDelete = async (id: any) => {
       try {
          const response = await deleteNotification(id);
-         fetchData();
+         await fetchData();
+         console.log(notifications);
 
          toast.success("Successfully deleted");
       } catch (error) {
@@ -77,7 +78,7 @@ const Notification: React.FC<any> = () => {
                {Array.from({ length: 1 }, (_, i) => (
                   <div
                      key={i}
-                     className="user-card rounded-lg w-full shadow-md p-6 m-4 hover:shadow-lg transition-shadow duration-300 relative bg-white animate-pulse"
+                     className="user-card rounded-lg w-full shadow-md p-6 m-4 ml-0 hover:shadow-lg transition-shadow duration-300 relative bg-white animate-pulse"
                   >
                      <div className="flex items-center mb-4">
                         <div className="profile-photo mr-4">

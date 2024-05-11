@@ -19,7 +19,8 @@ const userSchema = new Schema({
     otp: { type: String },
     createdAt: { type: Date },
     isBlocked: { type: Boolean },
-    premium: { type: Boolean }
+    premium: { type: Boolean },
+    blockedUsers: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }]
 })
 
 export const User = model<UserEntity>('users', userSchema)

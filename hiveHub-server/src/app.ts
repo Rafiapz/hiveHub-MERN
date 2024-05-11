@@ -6,7 +6,6 @@ import { postDependencies } from './_boot/dependencies'
 import { networkDependencies } from './_boot/dependencies'
 import { connect } from './_boot/databse'
 import cors from 'cors'
-import { configDotenv } from 'dotenv'
 import path from 'path'
 import session = require('express-session')
 import { Request, Response } from 'express'
@@ -23,10 +22,12 @@ import { adminRoutes } from './presentation/routes/adminRoutes'
 import { storyRoutes } from './presentation/routes/storyRoutes'
 import { notificationsRoutes } from './presentation/routes/notificationsRoutes'
 import { premiumRoutes } from './presentation/routes/premiumRoutes'
+import { config } from './_boot/config'
 
 
-configDotenv()
-const PORT = process.env.PORT || 7700
+
+const PORT = config.http.port
+
 const app: Application = express()
 
 const server = http.createServer(app)

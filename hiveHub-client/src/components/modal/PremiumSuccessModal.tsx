@@ -1,7 +1,14 @@
 import React, { FC } from "react";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 const PremiumSuccessModal: FC<any> = ({ modalIsOpen, closeModal }) => {
+   const navigate = useNavigate();
+
+   const handleClose = () => {
+      closeModal();
+      navigate("/");
+   };
    return (
       <Modal
          isOpen={modalIsOpen}
@@ -29,7 +36,7 @@ const PremiumSuccessModal: FC<any> = ({ modalIsOpen, closeModal }) => {
                   <strong>Early Access:</strong> Be among the first to try out new features and updates.
                </li>
             </ul>
-            <button onClick={closeModal} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={handleClose} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                Close
             </button>
          </div>

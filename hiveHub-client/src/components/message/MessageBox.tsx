@@ -284,10 +284,10 @@ const MessageBox: FC = () => {
                <h1 className="text-blue px-4 py-2 text-xl font-bold">New Message</h1>
             </div>
             <div className="flex items-center">
-               <button className="bg-blue-700 text-white px-4 py-2 rounded mr-4">
+               {/* <button className="bg-blue-700 text-white px-4 py-2 rounded mr-4">
                   <FontAwesomeIcon icon={faVideo} className="mr-2" />
                   Video Call
-               </button>
+               </button> */}
                <button onClick={openModal} className="bg-blue-700 text-white px-4 py-2 rounded">
                   <FontAwesomeIcon icon={faComment} className="mr-2" />
                   new Message
@@ -355,7 +355,7 @@ const MessageBox: FC = () => {
                            value={message}
                            onChange={(e) => setMessage(e.target.value)}
                         />
-                        <AudioRecorderComponent />
+                        {/* <AudioRecorderComponent /> */}
 
                         <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2">
                            😊

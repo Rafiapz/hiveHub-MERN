@@ -48,7 +48,7 @@ const Home: FC = () => {
             <div className="bg-gray-100 ">
                <Menu />
                <div className="flex  ml-80 overflow-hidden ">
-                  <Posts openModal={openModal} />
+                  <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </div>
                <CreatePostModal />
                <EditPostModal />

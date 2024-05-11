@@ -101,13 +101,13 @@ function Menu() {
                         Messages
                      </Link>
 
-                     {/* <Link
+                     <Link
                         to="/profile"
                         className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
                      >
                         <FontAwesomeIcon icon={faUserCircle} className="mr-2 text-indigo-500" />
                         My Profile
-                     </Link> */}
+                     </Link>
                   </div>
                   {/* <div className="p-4">
                      <button

@@ -22,8 +22,8 @@ export const signupController = (dependencies: IDependencies) => {
             const otpDetails = generateOtp(data.email)
             const otp = otpDetails?.OTP
             data.otp = otp
-            data.profilePhoto = 'http://localhost:7700/posts/image-1711988553594-785064452'
-            data.coverPhoto = 'http://localhost:7700/posts/image-1711986358685-137759855'
+            data.profilePhoto = 'http://localhost:7700/posts/image-1714821747448-148470998'
+            data.coverPhoto = 'http://localhost:7700/posts/image-1714821741419-488137975'
 
             const user = await createUserUseCase(dependencies).execute(data)
 

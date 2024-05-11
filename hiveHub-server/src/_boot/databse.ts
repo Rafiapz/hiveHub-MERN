@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
+import { config } from "./config";
 
 export const connect = async () => {
   try {
-    const user = process.env.MONGO_USERNAME;
-    const pass = process.env.MONGO_PASSWORD;
-    await mongoose.connect("mongodb://127.0.0.1:27017/hiveHub", {
+    const user = config.mongo.username;
+    const pass = config.mongo.password
+    await mongoose.connect(`${config.mongo.host}/${config.mongo.database}`, {
       auth: {
         username: user,
         password: pass,
       },
       authSource: "admin",
     });
-  
-    console.log(`🍃 Database Established connection with MongoDB`);
+    -
+      console.log(`🍃 Database Established connection with MongoDB`);
 
   } catch (error: any) {
     console.error(`❌ Database Connection failed`);

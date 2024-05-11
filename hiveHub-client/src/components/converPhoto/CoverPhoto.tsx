@@ -41,7 +41,7 @@ const CoverPhoto: FC = () => {
                         <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
                      </svg>
                   )}
-                  <h1 className="text-xl ml-4 font-bold">{userData?.fullName}</h1>
+                  <h1 className={userData?.premium ? "text-xl ml-4 font-bold" : "text-xl ml-40 font-bold"}>{userData?.fullName}</h1>
                </div>
                <div className="profile-actions flex items-center space-x-2">
                   <button

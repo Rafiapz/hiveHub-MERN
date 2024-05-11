@@ -270,7 +270,7 @@ const Comments: FC = () => {
                               }
 
                               <div className="flex items-center">
-                                 <img src={item?.userId?.profilePhoto} alt="" className="w-8 h-8 rounded-full mr-2" />
+                                 <img src={item?.userId?.profilePhoto} alt="" className="w-8 h-8 rounded-full mr-2 object-cover" />
                                  <div>
                                     <p className="font-semibold">{item?.userId?.fullName}</p>
                                     <p className="text-sm text-gray-500">{item?.createAt}</p>

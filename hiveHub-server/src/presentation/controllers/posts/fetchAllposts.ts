@@ -12,7 +12,7 @@ export const fetchAllposts = (dependencies: IPostDependencies) => {
 
             const user = req?.user
             const userId = (user as any)?.id;
-            const pageSize = 1
+            const pageSize = 2
             const pageNumber: any = req?.query?.page
 
             const skip = (pageNumber - 1) * pageSize
@@ -25,6 +25,7 @@ export const fetchAllposts = (dependencies: IPostDependencies) => {
             }
 
             const { posts, likes } = await findAllPostsUseCase(dependencies).execute(data)
+
 
             res.status(200).json({ status: 'ok', message: 'success', data: { posts, likes } })
 

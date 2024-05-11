@@ -12,7 +12,6 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
 
    useEffect(() => {
       setSuggestions(allUsers);
-
       return () => {
          setSuggestions(allUsers);
       };
@@ -31,8 +30,10 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
             return;
          } else {
             flag = "yes";
-            console.log(ob?.members[0]?._id, "=== ", receiverId, "===", ob?.members[1]?._id);
+            // console.log(ob?.members[0]?._id, "=== ", receiverId, "===", ob?.members[1]?._id);
+            console.log(ob?.members);
          }
+         console.log(ob?.members);
       });
 
       if (flag === "return ") {

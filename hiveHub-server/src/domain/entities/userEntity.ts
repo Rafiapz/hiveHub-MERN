@@ -22,5 +22,6 @@ export interface UserEntity {
     otp?: string,
     createdAt: Date,
     isBlocked?: boolean,
-    premium?: boolean
+    premium?: boolean,
+    blockedUsers?: ObjectId[];
 }

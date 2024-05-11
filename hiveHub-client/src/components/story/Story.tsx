@@ -60,10 +60,10 @@ const Story: FC<any> = ({ setView }: any) => {
             <div className={`bg-gradient-to-tr rounded-full p-1 relative ${myStories?.[0]?.seenBy?.some((ob: any) => ob === userId) ? "" : ""}`}>
                <div className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300">
                   {myStories?.length <= 0 || myStories?.[0]?.media.length <= 0 ? (
-                     <img className="h-24 w-24 rounded-full" src="https://i.ibb.co/yhh0Ljy/profile.jpg" alt="image" />
+                     <img className="h-24 w-24 rounded-full " src="https://i.ibb.co/yhh0Ljy/profile.jpg" alt="image" />
                   ) : (
                      <img
-                        className="h-24 w-24 rounded-full"
+                        className="h-24 w-24 rounded-full object-cover"
                         src={myStories?.[0]?.media[0]}
                         alt="https://i.ibb.co/yhh0Ljy/profile.jp"
                         onClick={() => handleCurrentStory(myStories?.[0], 0, myStories?.[0]?._id)}
@@ -92,7 +92,7 @@ const Story: FC<any> = ({ setView }: any) => {
                         }`}
                      >
                         <div className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300">
-                           <img className="h-24 w-24 rounded-full" src={story?.media[0]} alt="image" />
+                           <img className="h-24 w-24 rounded-full object-cover" src={story?.media[0]} alt="image" />
                         </div>
                      </div>
                      <p>{story?.userId?.fullName}</p>

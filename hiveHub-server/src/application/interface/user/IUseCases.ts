@@ -1,4 +1,4 @@
-import { ICreateUserUseCase, IFindAllUsersUseCase, IFindOneUserByIdUseCase, IFindOneUserUseCase, IUpdateUserByIdUseCase } from "../../../domain/useCase/user";
+import { IBlockUserByUserUseCase, ICreateUserUseCase, IFindAllUsersUseCase, IFindOneUserByIdUseCase, IFindOneUserUseCase, IUnblockUserByUserUseCase, IUpdateUserByIdUseCase } from "../../../domain/useCase/user";
 import { IVerifyUserUseCase } from "../../../domain/useCase/user";
 import { IUpdateOneUserUseCase } from "../../../domain/useCase/user";
 
@@ -10,4 +10,6 @@ export interface IUseCases {
     updateUserByIdUseCase: (dependencies: any) => IUpdateUserByIdUseCase;
     findAllUsersUseCase: (dependencies: any) => IFindAllUsersUseCase;
     findOneUserByIdUseCase: (dependencies: any) => IFindOneUserByIdUseCase;
+    blockUserByUserUseCase: (dependencies: any) => IBlockUserByUserUseCase;
+    unblockUserByUserUseCase: (dependencies: any) => IUnblockUserByUserUseCase
 }

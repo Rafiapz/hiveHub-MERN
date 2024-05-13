@@ -7,6 +7,8 @@ export interface IRepositories {
     updateOne: (query: { email: string }, data: any) => Promise<UserEntity | null>;
     updateUserById: (id: any, data: any) => Promise<UserEntity | null>;
     findAllUsers: (userId: any) => Promise<UserEntity[] | []>;
-    findOneUserById: (id: any) => Promise<UserEntity | null>
+    findOneUserById: (id: any) => Promise<UserEntity | null>;
+    blockUserByUser: (data: any) => Promise<UserEntity | null>;
+    unblockUserByUser:(data:any)=>Promise<UserEntity|null>
 
 }

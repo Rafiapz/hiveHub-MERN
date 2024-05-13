@@ -39,6 +39,10 @@ import { INotificationsDependencies } from '../application/interface/notificatio
 import * as notificationsUseCases from '../application/useCase/notifications'
 import * as notificationsRepositories from '../infrastructure/database/repositories/notifications'
 
+import { IPollsDependencies } from '../application/interface/polls/IDependencies'
+import * as pollsUseCases from '../application/useCase/polls'
+import * as pollsRepositories from '../infrastructure/database/repositories/polls'
+
 
 
 
@@ -61,3 +65,5 @@ export const adminDependencies: IAdminDependencies = { adminRepositories, adminU
 export const storyDependencies: IStoryDependencies = { storyRepositories, storyUseCases }
 
 export const notificationsDependencies: INotificationsDependencies = { notificationsRepositories, notificationsUseCases }
+
+export const pollsDependencies: IPollsDependencies = { pollsRepositories, pollsUseCases }

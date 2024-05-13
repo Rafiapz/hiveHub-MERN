@@ -121,3 +121,15 @@ export const PREMIUM_ORDER_VALIDATE_URL = '/premium/order/validate'
 export const PREMIUM_CREATE_PAYMENT_URL = '/premium/create-payment'
 
 export const FETCH_POST_LIKED_USERS_URL = '/likes/fetch-post-liked-users'
+
+export const BLOCK_OTHER_USER_URl = '/auth/block-another-user'
+
+export const UNBLOCK_OTHER_USER_URl = '/auth/unblock-another-user'
+
+export const CREATE_POLL_URL = '/polls/create-poll'
+
+export const FETCH_ALL_POLLS_URL = '/polls/fetch-all-polls'
+
+export const POLL_VOTE_URL = '/polls/poll-vote'
+
+export const DELETE_POLL_URL = '/polls/delete-poll'

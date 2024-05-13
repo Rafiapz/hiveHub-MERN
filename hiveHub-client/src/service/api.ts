@@ -1,12 +1,17 @@
 import { jsonConfig, multiPartConfig } from "../utils/apiUtils";
 import apiClient from "../utils/axios";
 import {
+    BLOCK_OTHER_USER_URl,
+    CREATE_POLL_URL,
     DELETE_NOTIFICATION_URL,
+    DELETE_POLL_URL,
     DELETE_REPLY_COMMENT_URL,
+    FETCH_ALL_POLLS_URL,
     FETCH_CONVERSATIONS_URL,
     FETCH_NOTIFICATIONS_URL,
     FETCH_POST_LIKED_USERS_URL,
     LIKE_COMMENT_URL,
+    POLL_VOTE_URL,
     PREMIUM_CREATE_PAYMENT_URL,
     PREMIUM_ORDER_URL,
     PREMIUM_ORDER_VALIDATE_URL,
@@ -18,6 +23,7 @@ import {
     SEARCH_USER_URL,
     SEND_EMAIL_FOR_RESET_PASSWORD_URL,
     SEND_VIDEO_URL,
+    UNBLOCK_OTHER_USER_URl,
     UPLOAD_STORY_URL,
     VERIFY_EMAIL_UPDATE_OTP_URL,
 } from "../utils/endPoint";
@@ -102,4 +108,28 @@ export const createPayment = async (form: any) => {
 
 export const fetchPostLikedUsers = async (postId: any,) => {
     return await apiClient.get(`${FETCH_POST_LIKED_USERS_URL}?postId=${postId}`)
+}
+
+export const blockOtherUser = async (form: any) => {
+    return await apiClient.put(BLOCK_OTHER_USER_URl, form, jsonConfig)
+}
+
+export const unblockOtherUser = async (form: any) => {
+    return await apiClient.put(UNBLOCK_OTHER_USER_URl, form, jsonConfig)
+}
+
+export const createPoll = async (form: any) => {
+    return await apiClient.post(CREATE_POLL_URL, form, jsonConfig)
+}
+
+export const fetchAllPolls = async () => {
+    return await apiClient.get(FETCH_ALL_POLLS_URL)
+}
+
+export const pollVote = async (form: any) => {
+    return await apiClient.put(POLL_VOTE_URL, form, jsonConfig)
+}
+
+export const deletePoll = async (id: any) => {
+    return await apiClient.delete(`${DELETE_POLL_URL}?pollId=${id}`)
 }

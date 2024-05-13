@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { IDependencies } from "../../application/interface/user/IDependencies";
-import { controllers } from "../controllers/auth";
+import { controllers } from "../controllers/user";
 import passport from "passport";
 import { currentUser } from "../middlewares/currentUser";
 import { uploadSingleFile } from "../../_lib/multer";
@@ -20,7 +20,9 @@ export const authRoutes = (dependencies: IDependencies) => {
         resetPasswordVerification,
         changePassword,
         fetchOtherUser,
-        editEmailVerifyandUpdate
+        editEmailVerifyandUpdate,
+        blockOtherUser,
+        unblockOtherUser
     } = controllers(dependencies);
 
     const router = Router();
@@ -56,6 +58,10 @@ export const authRoutes = (dependencies: IDependencies) => {
     router.route("/send-confirmation-email-reset-password/:email").get(resetPasswordVerification);
 
     router.route("/change-password").post(changePassword);
+
+    router.route('/block-another-user').put(currentUser, blockOtherUser)
+
+    router.route('/unblock-another-user').put(currentUser, unblockOtherUser)
 
     router.route("/fetch-other-user").get(currentUser, fetchOtherUser);
 

@@ -2,20 +2,27 @@ import { FC, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchOtherUser } from "../../store/actions/auth/userActions";
+import { fetchOtherUser, fetchuser } from "../../store/actions/auth/userActions";
 import ConnectButton from "../connectButton/ConnectButton";
 import { handleUnfollowModal } from "../../store/slices/network/networkSlice";
-import { faBan, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faEnvelope, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { blockOtherUser, unblockOtherUser } from "../../service/api";
+import toast from "react-hot-toast";
 
 const OthersCoverPhoto: FC = () => {
    const [userData, setUserData] = useState<any>({});
    const [searchQuery, setSearchQuery] = useSearchParams();
    const networks: any = useSelector((state: RootState) => state?.networks?.network?.data);
    const dispatch = useDispatch<AppDispatch>();
-   const userId = useSelector((state: RootState) => state.user.user.userId);
+   const userId: any = useSelector((state: RootState) => state.user.user.userId);
+   const ownData: any = useSelector((state: RootState) => state?.user.user?.data);
 
    const email = searchQuery.get("email");
+
+   useEffect(() => {
+      dispatch(fetchuser());
+   }, []);
 
    useEffect(() => {
       if (email) {
@@ -34,6 +41,34 @@ const OthersCoverPhoto: FC = () => {
    const handleUnfollow = (id: any) => {
       const data = networks?.filter((ob: any) => ob?.targetUserId === id);
       dispatch(handleUnfollowModal({ status: true, curId: data[0]?._id }));
+   };
+
+   const handleBlockUser = async (id: any) => {
+      try {
+         const form = new FormData();
+         form.append("userId", userId);
+         form.append("targetUserId", id);
+
+         const response = await blockOtherUser(form);
+         toast.success(response?.data?.message);
+         dispatch(fetchuser());
+      } catch (error: any) {
+         toast.error(error?.response?.data?.message);
+      }
+   };
+
+   const handleUblockUser = async (id: any) => {
+      try {
+         const form = new FormData();
+         form.append("userId", userId);
+         form.append("targetUserId", id);
+
+         const response = await unblockOtherUser(form);
+         toast.success(response?.data?.message);
+         dispatch(fetchuser());
+      } catch (error) {
+         toast.error("Something went wrong");
+      }
    };
 
    return (
@@ -69,14 +104,28 @@ const OthersCoverPhoto: FC = () => {
                   ) : (
                      <ConnectButton id={userData?._id} content={"Follow"} />
                   )}
-                  {/* Add a message button */}
-                  <button className="message-button border border-blue-700 rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-green-200">
+
+                  <button className="message-button border border-blue-700 rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none   hover:bg-green-200">
                      <FontAwesomeIcon icon={faEnvelope} /> Message
                   </button>
-                  {/* Add a block user button */}
-                  <button className="block-button border border-red-700 rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-red-200">
-                     <FontAwesomeIcon icon={faBan} /> Block
-                  </button>
+
+                  {ownData?.blockedUsers?.includes(userData?._id) ? (
+                     <button
+                        onClick={() => handleUblockUser(userData?._id)}
+                        className="block-button border  rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-green-200 
+                        border-green-500"
+                     >
+                        Unblock
+                     </button>
+                  ) : (
+                     <button
+                        onClick={() => handleBlockUser(userData?._id)}
+                        className="block-button border  rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-red-200 
+                           border-red-700"
+                     >
+                        <FontAwesomeIcon icon={faBan} /> Block
+                     </button>
+                  )}
                </div>
             </div>
             <div className="profile-photo absolute top-48 left-8 ml-4 mb-8">

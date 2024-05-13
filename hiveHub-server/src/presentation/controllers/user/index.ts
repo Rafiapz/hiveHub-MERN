@@ -1,4 +1,5 @@
 import { IDependencies } from "../../../application/interface/user/IDependencies";
+import { blockOtherUserController, unblockOtherUserController } from "./blockOtherUser";
 import { editUserEmailController, editUserProfile } from "./editUserProfile";
 import { fetchOtherUserController, fetchUserController } from "./fetchUser";
 import { findAllUsersController } from "./findAllUsers";
@@ -27,6 +28,8 @@ export const controllers = (dependencies: IDependencies) => {
         resetPasswordVerification: resetPasswordVerificationController(dependencies),
         changePassword: changePasswordController(dependencies),
         fetchOtherUser: fetchOtherUserController(dependencies),
-        editEmailVerifyandUpdate: editUserEmailController(dependencies)
+        editEmailVerifyandUpdate: editUserEmailController(dependencies),
+        blockOtherUser: blockOtherUserController(dependencies),
+        unblockOtherUser: unblockOtherUserController(dependencies)
     }
 }

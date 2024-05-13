@@ -145,15 +145,15 @@ function Menu() {
                               <FontAwesomeIcon icon={faHome} className="mr-2 text-indigo-500" />
                               Home
                            </Link>
-                           <div className="flex">
-                              <Link
-                                 to="/notifications"
-                                 className="flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
-                              >
-                                 <FontAwesomeIcon icon={faBell} className="mr-2 text-indigo-500" />
-                                 Notifications
-                              </Link>
-                           </div>
+
+                           <Link
+                              to="/notifications"
+                              className="flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
+                           >
+                              <FontAwesomeIcon icon={faBell} className="mr-2 text-indigo-500" />
+                              Notifications
+                           </Link>
+
                            <Link
                               to={"/messages"}
                               className="flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
@@ -181,6 +181,13 @@ function Menu() {
                            >
                               <FontAwesomeIcon icon={faCrown} className="mr-2 text-indigo-500" />
                               Premium
+                           </Link>
+                           <Link
+                              to="/polls"
+                              className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
+                           >
+                              <FontAwesomeIcon icon={faUserCircle} className="mr-2 text-indigo-500" />
+                              Polls
                            </Link>
                         </div>
                         <div className="p-4">

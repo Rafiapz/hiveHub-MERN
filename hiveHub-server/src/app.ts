@@ -1,7 +1,7 @@
 import express, { Application } from 'express'
 import { authRoutes } from './presentation/routes/authRoutes'
 import { postRoutes } from './presentation/routes/postRoutes'
-import { adminDependencies, authDependencies, chatsDependencies, commentsDependencies, likesDependencies, notificationsDependencies, reportsDependencies, storyDependencies } from './_boot/dependencies'
+import { adminDependencies, authDependencies, chatsDependencies, commentsDependencies, likesDependencies, notificationsDependencies, pollsDependencies, reportsDependencies, storyDependencies } from './_boot/dependencies'
 import { postDependencies } from './_boot/dependencies'
 import { networkDependencies } from './_boot/dependencies'
 import { connect } from './_boot/databse'
@@ -23,6 +23,7 @@ import { storyRoutes } from './presentation/routes/storyRoutes'
 import { notificationsRoutes } from './presentation/routes/notificationsRoutes'
 import { premiumRoutes } from './presentation/routes/premiumRoutes'
 import { config } from './_boot/config'
+import { pollRoutes } from './presentation/routes/pollRoutes'
 
 
 
@@ -81,8 +82,10 @@ app.use('/notifications', notificationsRoutes(notificationsDependencies))
 
 app.use('/premium', premiumRoutes())
 
+app.use('/polls', pollRoutes(pollsDependencies))
+
 app.use((req: Request, res: Response) => {
-    res.json({ message: 'not found' }).status(404)
+    res.status(404).json({ message: 'Not found' })
 })
 
 server.listen(PORT, () => console.log(`server running on the port ${PORT}`))

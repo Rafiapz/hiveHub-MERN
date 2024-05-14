@@ -37,8 +37,12 @@ const addUser = (userId: any, socketId: any) => {
 
 };
 
-const removeUser = (socketId: any) => {
-    users = users.filter((user: any) => user.socketId !== socketId);
+export const removeUser = (userId: any) => {
+    console.log(userId);
+
+    users = users.filter((user: any) => user.userId !== userId);
+    console.log(users);
+
 };
 
 const getUser = (userId: any) => {
@@ -131,6 +135,7 @@ export const initializeSocketIO = (server: Server) => {
 
             socket.on('sendMessage', ({ senderId, receiverId, message }: any) => {
                 const user = getUser(receiverId);
+                console.log(user, 'userId');
 
                 if (user) {
                     io.to(user.socketId).emit("recieveMessage", {
@@ -143,11 +148,16 @@ export const initializeSocketIO = (server: Server) => {
                 }
             });
 
+            socket.on('typing', (data: any) => {
+                const user = getUser(data?.receiverId)
+                if (user) {
+                    io.to(user.socketId).emit('typing', { data: 'Typing...', senderId: data?.senderId });
+                }
+            })
+
             socket.on('image', (data: any) => {
                 console.log('image called');
-
                 const user = getUser(data?.receiverId);
-
                 if (user) {
                     io.to(user.socketId).emit('image', { data: data?.data, senderId: data?.senderId });
                 } else {
@@ -167,9 +177,10 @@ export const initializeSocketIO = (server: Server) => {
             });
 
             socket.on("disconnect", () => {
+                console.log('dis calling');
 
-                removeUser(socket.id);
-                io.emit("getUsers", users);
+                // removeUser(socket.id);
+                // io.emit("getUsers", users);
             });
 
             socket.on('callUser', ({ userToCall, signalData, from, name }: any) => {

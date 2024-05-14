@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
-import { fetchConversations, sendVideo } from "../../service/api";
+import { fetchConversations, fetchOnlineUsers, sendVideo } from "../../service/api";
 import { connect, io } from "socket.io-client";
 import NewMessage from "../newMessage/NewMessage";
 import VideoCall from "../videoCall/VideoCall";
@@ -14,6 +14,7 @@ import ReactPlayer from "react-player";
 import LoadingButton from "../loading/LoadingButton";
 import toast from "react-hot-toast";
 import AudioRecorderComponent from "../audioRecorder/AudioRecorder";
+import { format } from "timeago.js";
 
 const socket = io("http://localhost:7700");
 
@@ -21,7 +22,6 @@ const MessageBox: FC = () => {
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const [curChat, setCurChat] = useState<any>(null);
    const [conversations, setConversations] = useState<any>([]);
-   // const messages: string[] = useSelector((state: RootState) => state?.messages?.messages);
    const [messages, setMessages] = useState<any>([]);
    const scrollRef = useRef<any>();
    const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +35,7 @@ const MessageBox: FC = () => {
    const [selectedFile, setSelectedFile] = useState<File | null>(null);
    const [progress, setProgress] = useState<number>(0);
    const [loading, setLoading] = useState<boolean>(false);
+   const [typing, setTyping] = useState<boolean>(false);
 
    const handleVideoChange = (event: any) => {
       if (event.target.files && event.target.files.length > 0) {
@@ -99,10 +100,20 @@ const MessageBox: FC = () => {
 
    useEffect(() => {
       socket.emit("addUser", userId);
-      socket.on("getUsers", (users) => {
-         setOnlineUsers(users);
-      });
    }, [userId]);
+
+   useEffect(() => {
+      handlefetchOnline();
+   }, []);
+
+   const handlefetchOnline = async () => {
+      try {
+         const response = await fetchOnlineUsers();
+         setOnlineUsers(response?.data?.data);
+      } catch (error) {
+         toast.error("Something went wrong");
+      }
+   };
 
    const handleSelectConversation = (chat: any) => {
       setCurChat(chat);
@@ -119,10 +130,18 @@ const MessageBox: FC = () => {
       const form = new FormData();
       let type = "message";
 
+      if (curChat?.members[0]._id === userId) {
+         receiverId = curChat.members[1]._id;
+      } else {
+         receiverId = curChat.members[0]._id;
+      }
+
       if (image) {
          const reader = new FileReader();
          reader.readAsDataURL(image);
          reader.onloadend = () => {
+            console.log("reciever id", receiverId);
+
             const fileData = reader.result;
             socket.emit("image", { data: fileData, senderId: userId, receiverId });
          };
@@ -170,13 +189,9 @@ const MessageBox: FC = () => {
          return;
       }
 
-      if (curChat?.members[0]._id === userId) {
-         receiverId = curChat.members[1]._id;
-      } else {
-         receiverId = curChat.members[0]._id;
-      }
-
       if (message) {
+         console.log(receiverId, "reciever id");
+
          socket.emit("sendMessage", {
             senderId: userId,
             receiverId,
@@ -277,6 +292,27 @@ const MessageBox: FC = () => {
       }
    }, [videoUrl]);
 
+   const handleTyping = () => {
+      let receiverId: any;
+      if (curChat?.members[0]._id === userId) {
+         receiverId = curChat.members[1]._id;
+      } else {
+         receiverId = curChat.members[0]._id;
+      }
+      socket.emit("typing", {
+         senderId: userId,
+         receiverId,
+         message,
+      });
+   };
+
+   useEffect(() => {
+      socket.on("typing", (data) => {
+         setTyping(true);
+         setTimeout(() => setTyping(false), 2000);
+      });
+   }, [socket]);
+
    return (
       <div className="bg-white ml-0  w-full sm:w-3/5 sm:ml-72 h-96 flex flex-col">
          <div className="flex w-full h-10 mt-5 justify-between">
@@ -299,6 +335,7 @@ const MessageBox: FC = () => {
                   handleFetchConversations={handleFetchConversations}
                   handleSelectConversation={handleSelectConversation}
                   conversations={conversations}
+                  onlineUsers={onlineUsers}
                />
             </div>
          </div>
@@ -307,19 +344,30 @@ const MessageBox: FC = () => {
                {conversations?.map((c: any) => (
                   <div
                      key={c?._id}
-                     className="user-card bg-white hover:cursor-pointer border bottom-1 w-52 h-16 shadow-lg p-4 "
+                     className="user-card bg-white hover:bg-gray-100 rounded-lg shadow-md transition-colors duration-200 cursor-pointer border border-gray-200 w-64 h-24 p-4"
                      onClick={() => handleSelectConversation(c)}
                   >
-                     <div className="flex items-center mb-2">
+                     <div className="flex items-center">
                         <div className="profile-photo mr-4">
                            <img
                               src={c?.members[1]?._id !== userId ? c?.members[1].profilePhoto : c?.members[0].profilePhoto}
                               alt="Profile"
-                              className="w-10 h-8 rounded-full"
+                              className="w-14 h-14 rounded-full object-cover"
                            />
                         </div>
-                        <div className="user-name text-sm font-semibold">
-                           {c?.members[1]?._id !== userId ? c?.members[1].fullName : c?.members[0].fullName}
+                        <div className="flex-grow">
+                           <div className="user-name font-semibold text-gray-800">
+                              {c?.members[1]?._id !== userId ? c?.members[1].fullName : c?.members[0].fullName}
+                           </div>
+                           <div className="text-sm text-gray-500">
+                              {format(c?.createdAt)}
+                              {onlineUsers.includes(c?.members[1]?._id !== userId ? c?.members[1]?._id : c?.members[0]?._id) && (
+                                 <div className="flex items-center mt-1">
+                                    <div className="w-2 h-2 rounded-full bg-green-500 mr-1" />
+                                    <span className="text-green-500">Online</span>
+                                 </div>
+                              )}
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -329,13 +377,27 @@ const MessageBox: FC = () => {
             {curChat ? (
                <div className="flex flex-col  sm:w-full">
                   <div style={{ height: "550px" }} className="bg-gray-100 ml-1 w-full p-4  flex flex-col">
-                     <div className="flex mb-3">
-                        <img
-                           src={curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto}
-                           className="w-8 rounded-lg"
-                           alt=""
-                        />
-                        <h1 className="ml-2">{curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}</h1>
+                     <div className="flex items-center mb-3">
+                        <div className="w-10 h-10 rounded-full overflow-hidden">
+                           <img
+                              src={curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto}
+                              className="w-full h-full object-cover"
+                              alt=""
+                           />
+                        </div>
+                        <div className="ml-3">
+                           <h1 className="text-lg font-semibold text-gray-800">
+                              {curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}
+                           </h1>
+                           {typing && (
+                              <p className="text-sm text-gray-500">
+                                 <span className="animate-pulse">Typing</span>
+                                 <span className="animate-pulse animation-delay-200">.</span>
+                                 <span className="animate-pulse animation-delay-400">.</span>
+                                 <span className="animate-pulse animation-delay-600">.</span>
+                              </p>
+                           )}
+                        </div>
                      </div>
 
                      <div className="overflow-y-auto flex-grow">
@@ -353,6 +415,7 @@ const MessageBox: FC = () => {
                            className="w-full p-2 border border-black rounded-md focus:outline-none"
                            placeholder="Type your message here"
                            value={message}
+                           onFocus={handleTyping}
                            onChange={(e) => setMessage(e.target.value)}
                         />
                         {/* <AudioRecorderComponent /> */}

@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -20,8 +19,12 @@ const PostLikesModal: FC<any> = ({ likesModal, closeLikesModal, postId, likes })
 
    const fetchLikedUsers = async () => {
       try {
-         const response = await fetchPostLikedUsers(postId);
-         setLikedUsers(response?.data?.data);
+         if (postId) {
+            const response = await fetchPostLikedUsers(postId);
+            setLikedUsers(response?.data?.data);
+         } else {
+            return;
+         }
       } catch (error: any) {}
    };
 

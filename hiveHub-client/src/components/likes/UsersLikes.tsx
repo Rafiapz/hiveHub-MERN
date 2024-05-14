@@ -36,8 +36,6 @@ const UsersLikes: FC = () => {
       dispatch(fetchUsersLikedPosts());
    }, []);
 
-   console.log(posts);
-
    const navigate = useNavigate();
 
    useEffect(() => {

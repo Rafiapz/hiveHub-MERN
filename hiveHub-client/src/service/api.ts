@@ -6,9 +6,11 @@ import {
     DELETE_NOTIFICATION_URL,
     DELETE_POLL_URL,
     DELETE_REPLY_COMMENT_URL,
+    EDIT_POLL_URL,
     FETCH_ALL_POLLS_URL,
     FETCH_CONVERSATIONS_URL,
     FETCH_NOTIFICATIONS_URL,
+    FETCH_ONLINE_USERS_URL,
     FETCH_POST_LIKED_USERS_URL,
     LIKE_COMMENT_URL,
     POLL_VOTE_URL,
@@ -132,4 +134,12 @@ export const pollVote = async (form: any) => {
 
 export const deletePoll = async (id: any) => {
     return await apiClient.delete(`${DELETE_POLL_URL}?pollId=${id}`)
+}
+
+export const editPoll = async (form: any) => {
+    return await apiClient.put(EDIT_POLL_URL, form, jsonConfig)
+}
+
+export const fetchOnlineUsers = async () => {
+    return await apiClient.get(FETCH_ONLINE_USERS_URL)
 }

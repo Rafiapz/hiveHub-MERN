@@ -12,7 +12,8 @@ export const pollRoutes = (dependencies: IPollsDependencies) => {
         createPoll,
         fetchAllPolls,
         voteController,
-        deletePoll
+        deletePoll,
+        editPoll
     } = controllers(dependencies);
 
     const router = Router()
@@ -25,6 +26,8 @@ export const pollRoutes = (dependencies: IPollsDependencies) => {
     router.route('/poll-vote').put(currentUser, voteController)
 
     router.route('/delete-poll').delete(currentUser, deletePoll)
+
+    router.route('/edit-poll').put(currentUser, editPoll)
 
 
 

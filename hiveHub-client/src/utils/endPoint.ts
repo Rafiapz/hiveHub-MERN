@@ -133,3 +133,7 @@ export const FETCH_ALL_POLLS_URL = '/polls/fetch-all-polls'
 export const POLL_VOTE_URL = '/polls/poll-vote'
 
 export const DELETE_POLL_URL = '/polls/delete-poll'
+
+export const EDIT_POLL_URL = '/polls/edit-poll'
+
+export const FETCH_ONLINE_USERS_URL = '/chats/fetch-online-users'

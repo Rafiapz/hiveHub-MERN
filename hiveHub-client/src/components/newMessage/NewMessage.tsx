@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createConversation } from "../../store/actions/message/messageActions";
 import { searchUser } from "../../service/api";
 
-const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleSelectConversation, conversations }: any) => {
+const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleSelectConversation, conversations, onlineUsers }: any) => {
    const allUsers: any = useSelector((state: RootState) => state?.user?.allUsers?.data);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const [suggestions, setSuggestions] = useState<any>([]);
@@ -111,7 +111,7 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
                   {suggestions?.map((user: any) => (
                      <div
                         key={user?._id}
-                        className="user-card bg-white rounded-lg w-full shadow-md p-3 m-4 h-20 hover:shadow-lg transition-shadow duration-300"
+                        className="user-card bg-white rounded-lg w-full shadow-md p-3 m-4 h-24 hover:shadow-lg transition-shadow duration-300"
                      >
                         <div className="flex items-center mb-4">
                            <div className="profile-photo mr-4 hover:cursor-pointer" onClick={() => handleClick(user?._id)}>
@@ -120,6 +120,12 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
                            <div className="user-name hover:cursor-pointer" onClick={() => handleClick(user?._id)}>
                               <h1 className="text-lg font-semibold">{user?.fullName}</h1>
                               <h5>{user?.email}</h5>
+                              {onlineUsers?.includes(user?._id) && (
+                                 <div className="flex">
+                                    <div className="w-2 h-2 mt-2 rounded-full bg-green-500 mr-1" />
+                                    <span className="text-green-500">Online</span>
+                                 </div>
+                              )}
                            </div>
                         </div>
                      </div>

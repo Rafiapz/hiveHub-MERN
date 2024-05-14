@@ -43,7 +43,7 @@ export const authRoutes = (dependencies: IDependencies) => {
 
     router.route("/google").post(googleAuth);
 
-    router.route("/logout").get(logout);
+    router.route("/logout").get(currentUser, logout);
 
     router.route("/edit-user-images/:type").post(currentUser, uploadSingleFile, editProfile);
 

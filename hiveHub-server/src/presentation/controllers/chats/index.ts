@@ -3,6 +3,7 @@ import { createChatController } from "./createChat";
 import { createConversationController } from "./createConversation";
 import { fetchAllConversationsByIdController } from "./fetchConversations";
 import { fetchMessagesController } from "./fetchChats";
+import { fetchOnlineUsersController } from "./fetchOnlineUsers";
 
 
 
@@ -12,6 +13,7 @@ export const controllers = (dependencies: IChatsDependencies) => {
         createChat: createChatController(dependencies),
         createConvesation: createConversationController(dependencies),
         fetchConversations: fetchAllConversationsByIdController(dependencies),
-        fetchChats: fetchMessagesController(dependencies)
+        fetchChats: fetchMessagesController(dependencies),
+        onlineUsers:fetchOnlineUsersController
     }
 }

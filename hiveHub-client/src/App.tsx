@@ -26,6 +26,7 @@ import Reports from "./pages/admin/reports/Reports";
 import Notifications from "./pages/user/notifications/Notifications";
 import Premium from "./pages/user/premium/Premium";
 import Poll from "./components/Polls/Poll";
+import PollPage from "./pages/user/polls/PollPage";
 
 function App() {
    const auth = useSelector((state: RootState) => state?.user?.user?.auth?.isAuth);
@@ -78,7 +79,7 @@ function App() {
                         <Route path="/messages" element={<Messages />} />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/premium" element={<Premium />} />
-                        <Route path="/polls" element={<Poll />} />
+                        <Route path="/polls" element={<PollPage />} />
                         <Route path="/profile" element={<Profile />}>
                            <Route index element={<UserPosts />} />
                            <Route path="/profile/following" element={<Following />} />

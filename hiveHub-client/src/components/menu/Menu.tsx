@@ -27,9 +27,13 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchuser } from "../../store/actions/auth/userActions";
+import { fetchAllNetworks } from "../../store/actions/network/networkActions";
+import { fetchNotifications } from "../../service/api";
+import toast from "react-hot-toast";
 
 function Menu() {
    const role = useSelector((state: RootState) => state.user.user.auth.role);
+   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const dispatch = useDispatch<AppDispatch>();
 
    const [showSidebar, setShowSidebar] = useState(true);
@@ -38,7 +42,17 @@ function Menu() {
       dispatch(fetchuser());
    }, [role]);
 
-   console.log(role);
+   // useEffect(() => {
+   //    handlefetchNotifications();
+   // }, []);
+
+   // const handlefetchNotifications = async () => {
+   //    try {
+   //       const response = await fetchNotifications(userId, 0);
+   //    } catch (error) {
+   //       toast.error("failed to load notifications");
+   //    }
+   // };
 
    const toggleSidebar = () => {
       setShowSidebar(!showSidebar);
@@ -148,10 +162,13 @@ function Menu() {
 
                            <Link
                               to="/notifications"
-                              className="flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
+                              className="relative flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
                            >
                               <FontAwesomeIcon icon={faBell} className="mr-2 text-indigo-500" />
                               Notifications
+                              {/* <span className="absolute top-0 left-4 flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full">
+                                 10
+                              </span> */}
                            </Link>
 
                            <Link

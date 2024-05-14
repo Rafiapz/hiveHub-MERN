@@ -12,9 +12,6 @@ export const repostController = (dependencies: IPostDependencies) => {
 
             const postId = req?.body?.postId
 
-            console.log(postId);
-
-
             const originalPost = await findOneUseCase(dependencies).execute(postId)
 
             if (!originalPost) {
@@ -36,8 +33,6 @@ export const repostController = (dependencies: IPostDependencies) => {
             if (!newPost) {
                 throw new Error('Unable to repost the post')
             }
-
-
 
             res.status(200).json({ status: 'ok', data: newPost })
 

@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import ViewStory from "../../../components/story/ViewStory";
 import SharePost from "../../../components/share/SharePost";
 import PostLikesModal from "../../../components/modal/PostLikesModal";
+import Poll from "../../../components/Polls/Poll";
 
 const Home: FC = () => {
    const [modalIsOpen, setIsOpen] = useState(false);
@@ -50,6 +51,7 @@ const Home: FC = () => {
                <div className="flex  ml-80 overflow-hidden ">
                   <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </div>
+
                <CreatePostModal />
                <EditPostModal />
                <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
@@ -63,9 +65,11 @@ const Home: FC = () => {
                <div className="flex  ml-80 overflow-hidden">
                   <Story setView={setStoryViewing} />
                </div>
+               <Poll />
                <div className="flex  ml-80 overflow-hidden ">
                   <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </div>
+
                <CreatePostModal />
                <ReportPost modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} />
                <Comments />

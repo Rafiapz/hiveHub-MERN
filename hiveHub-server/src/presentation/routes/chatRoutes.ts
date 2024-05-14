@@ -11,7 +11,7 @@ import { uploadSingleFile } from '../../_lib/multer'
 
 export const chatRoutes = (dependencies: IChatsDependencies) => {
 
-    const { createConvesation, createChat, fetchConversations, fetchChats } = controllers(dependencies)
+    const { createConvesation, createChat, fetchConversations, fetchChats, onlineUsers } = controllers(dependencies)
 
     const router = Router()
 
@@ -22,6 +22,8 @@ export const chatRoutes = (dependencies: IChatsDependencies) => {
     router.route('/create-message/:type').post(currentUser, uploadSingleFile, createChat)
 
     router.route('/fetch-messages/:id').get(currentUser, fetchChats)
+
+    router.route('/fetch-online-users').get(currentUser, onlineUsers)
 
     router.route('/send-video/:type').post(createChat)
 

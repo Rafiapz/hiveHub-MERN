@@ -6,7 +6,9 @@ export const createComment = async (data: any) => {
 
     try {
 
-        const comment = (await Comments.create(data)).populate('postId')
+        let comment = await Comments.create(data)
+
+        await comment.populate('postId');
 
         await Posts.updateOne({ _id: data.postId }, { $inc: { comments: 1 } })
 

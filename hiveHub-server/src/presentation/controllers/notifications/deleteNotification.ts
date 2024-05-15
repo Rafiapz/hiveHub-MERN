@@ -11,9 +11,6 @@ export const deleteNotificationController = (dependencies: INotificationsDepende
 
             const id = req?.query?.id
 
-            console.log(id);
-
-
             const result = await deleteNotificationUseCase(dependencies).execute(id)
 
             if (result?.deletedCount === 1) {

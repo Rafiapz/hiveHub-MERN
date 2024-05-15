@@ -19,6 +19,8 @@ import toast from "react-hot-toast";
 import { likeComment, replyComment } from "../../service/api";
 import Replies from "./Replies";
 import HeartIcon from "./HeartIcon";
+import socketService from "../../service/socketService";
+const socket = socketService.socket;
 
 const Comments: FC = () => {
    const isOpen = useSelector((state: RootState) => state.posts.comments.modalIsOpen);
@@ -33,6 +35,7 @@ const Comments: FC = () => {
       status: boolean;
       index: number;
    }>({ status: false, index: 0 });
+   const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
 
    const initialValues: { comment: string } = {
       comment: "",
@@ -51,11 +54,18 @@ const Comments: FC = () => {
       const formData = new FormData();
       formData.append("comment", comment);
 
-      dispatch(postComment({ formData, postId })).then((response) => {
+      dispatch(postComment({ formData, postId })).then((response: any) => {
          if (response.payload.status === "ok") {
             dispatch(fetchAllCommentsOfPost(postId));
             dispatch(fetchAllposts({})).then(() => {
                document.body.style.overflow = "hidden";
+            });
+            socket.emit("sendNotification", {
+               senderId: userId,
+               receiverId: response?.payload?.data?.postId?.userId,
+               notification: "Commented on your post",
+               postId,
+               actionBy: userData?.fullName,
             });
          }
       });

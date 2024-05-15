@@ -4,6 +4,7 @@ import { IPostDependencies } from "../../../application/interface/posts/IDepende
 import { Request, Response } from 'express'
 import { NotificationsEntity } from "../../../domain/entities/notificationsEntity"
 
+
 export const createCommentController = (dependencies: ICommentsDependencies, notificationsDependencies: INotificationsDependencies) => {
 
     const { commentsUseCases: { createCommentUseCase } } = dependencies
@@ -33,7 +34,14 @@ export const createCommentController = (dependencies: ICommentsDependencies, not
                     type: 'comment'
                 }
 
-                await createNotificationUseCase(notificationsDependencies).execute(data)
+
+
+                if (newComment?.postId?.userId != userId) {
+
+                    const notification = await createNotificationUseCase(notificationsDependencies).execute(data)
+                }
+
+
                 res.json({ status: 'ok', data: newComment, message: 'successfully added comment' }).status(200)
             }
             else {

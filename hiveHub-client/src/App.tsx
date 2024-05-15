@@ -27,15 +27,22 @@ import Notifications from "./pages/user/notifications/Notifications";
 import Premium from "./pages/user/premium/Premium";
 import Poll from "./components/Polls/Poll";
 import PollPage from "./pages/user/polls/PollPage";
+import socketService from "../src/service/socketService";
+const socket = socketService.socket;
 
 function App() {
    const auth = useSelector((state: RootState) => state?.user?.user?.auth?.isAuth);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
    const dispatch = useDispatch<AppDispatch>();
+   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
 
    useEffect(() => {
       dispatch(fetchuser());
    }, []);
+
+   useEffect(() => {
+      socket.emit("addUser", userId);
+   }, [userId]);
 
    return (
       <>

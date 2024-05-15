@@ -9,6 +9,7 @@ interface VideoChunkData {
     offset: number;
 }
 
+let ioInstance: any = null
 
 const uploadsDir = './public/posts'
 
@@ -45,7 +46,7 @@ export const removeUser = (userId: any) => {
 
 };
 
-const getUser = (userId: any) => {
+export const getUser = (userId: any) => {
 
     for (let i = 0; i < users.length; i++) {
 
@@ -56,6 +57,11 @@ const getUser = (userId: any) => {
 
 
 };
+
+
+export const getSocketServer = () => {
+    return ioInstance
+}
 
 export const initializeSocketIO = (server: Server) => {
 
@@ -71,13 +77,17 @@ export const initializeSocketIO = (server: Server) => {
         });
 
 
-
+        ioInstance = io
 
         io.on('connection', (socket: Socket) => {
 
             socket.on("addUser", (userId) => {
-                addUser(userId, socket.id);
-                io.emit("getUsers", users);
+                console.log('add', userId);
+                if (userId) {
+                    addUser(userId, socket.id);
+                    io.emit("getUsers", users);
+                }
+
             });
 
 
@@ -175,6 +185,19 @@ export const initializeSocketIO = (server: Server) => {
                 }
 
             });
+
+            socket.on('sendNotification', (data) => {
+
+                const user = getUser(data?.receiverId);
+                console.log(user, 'not');
+
+                if (user) {
+                    console.log('emmited');
+                    io.to(user.socketId).emit('getNotifiation', data);
+                }
+            })
+
+
 
             socket.on("disconnect", () => {
                 console.log('dis calling');

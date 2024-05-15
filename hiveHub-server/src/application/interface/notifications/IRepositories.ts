@@ -2,7 +2,7 @@ import { NotificationsEntity } from "../../../domain/entities/notificationsEntit
 
 export interface IRepositories {
 
-    createNotification: (data: NotificationsEntity) => Promise<NotificationsEntity | null>;
+    createNotification: (data: NotificationsEntity) => any
     findAllNotifications: (data: any) => Promise<NotificationsEntity[] | []>;
     deleteNotification: (id: any) => any
 

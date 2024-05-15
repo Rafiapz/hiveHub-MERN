@@ -15,12 +15,26 @@ import ViewStory from "../../../components/story/ViewStory";
 import SharePost from "../../../components/share/SharePost";
 import PostLikesModal from "../../../components/modal/PostLikesModal";
 import Poll from "../../../components/Polls/Poll";
+import Popup from "../../../components/notification/Popup";
+import socketService from "../../../service/socketService";
+
+const socket = socketService.socket;
 
 const Home: FC = () => {
    const [modalIsOpen, setIsOpen] = useState(false);
    const [storyViewing, setStoryViewing] = useState<boolean>(false);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
    const [sharePostModalIsOpen, setSharePostModalIsOpen] = useState(false);
+   const [notified, setNotified] = useState<boolean>(false);
+   const [notificationData, setNotionData] = useState<any>(null);
+   const userId: any = useSelector((state: RootState) => state.user.user.userId);
+
+   useEffect(() => {
+      socket.on("getNotifiation", (data) => {
+         setNotionData(data);
+         setNotified(true);
+      });
+   }, [socket]);
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -66,6 +80,7 @@ const Home: FC = () => {
                   <Story setView={setStoryViewing} />
                </div>
                <Poll />
+               <Popup notification={notified} data={notificationData} />
                <div className="flex  ml-80 overflow-hidden ">
                   <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </div>

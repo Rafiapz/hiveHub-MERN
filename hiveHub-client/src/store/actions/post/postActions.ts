@@ -227,7 +227,6 @@ export const fetchAllStories = createAsyncThunk('/story/fetch-all-stories', asyn
     try {
 
         const response = await apiClient.get(FETCH_ALL_STORIES + '/' + userId)
-        console.log(response?.data);
 
         return response.data
 

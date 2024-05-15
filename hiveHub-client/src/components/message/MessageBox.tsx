@@ -6,7 +6,6 @@ import { faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
 import { fetchConversations, fetchOnlineUsers, sendVideo } from "../../service/api";
-import { connect, io } from "socket.io-client";
 import NewMessage from "../newMessage/NewMessage";
 import VideoCall from "../videoCall/VideoCall";
 import EmojiPicker from "emoji-picker-react";
@@ -15,8 +14,8 @@ import LoadingButton from "../loading/LoadingButton";
 import toast from "react-hot-toast";
 import AudioRecorderComponent from "../audioRecorder/AudioRecorder";
 import { format } from "timeago.js";
-
-const socket = io("http://localhost:7700");
+import socketService from "../../service/socketService";
+const socket = socketService.socket;
 
 const MessageBox: FC = () => {
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
@@ -44,7 +43,7 @@ const MessageBox: FC = () => {
    };
 
    useEffect(() => {
-      socket.on("image", (data) => {
+      socket.on("image", (data: any) => {
          console.log(data);
 
          setArrivalMessage({
@@ -97,10 +96,6 @@ const MessageBox: FC = () => {
    useEffect(() => {
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
    }, [messages]);
-
-   useEffect(() => {
-      socket.emit("addUser", userId);
-   }, [userId]);
 
    useEffect(() => {
       handlefetchOnline();
@@ -260,7 +255,7 @@ const MessageBox: FC = () => {
    }, [socket]);
 
    useEffect(() => {
-      socket.on("upload-comepleted", (data) => {
+      socket.on("upload-comepleted", (data: any) => {
          fetchConversations(userId || "").then((response: any) => {
             setConversations(response?.data?.conversations);
          });
@@ -307,7 +302,7 @@ const MessageBox: FC = () => {
    };
 
    useEffect(() => {
-      socket.on("typing", (data) => {
+      socket.on("typing", () => {
          setTyping(true);
          setTimeout(() => setTyping(false), 2000);
       });
@@ -360,7 +355,7 @@ const MessageBox: FC = () => {
                               {c?.members[1]?._id !== userId ? c?.members[1].fullName : c?.members[0].fullName}
                            </div>
                            <div className="text-sm text-gray-500">
-                              {format(c?.createdAt)}
+                              {format(c?.updatedAt || c?.createdAt)}
                               {onlineUsers.includes(c?.members[1]?._id !== userId ? c?.members[1]?._id : c?.members[0]?._id) && (
                                  <div className="flex items-center mt-1">
                                     <div className="w-2 h-2 rounded-full bg-green-500 mr-1" />
@@ -377,11 +372,11 @@ const MessageBox: FC = () => {
             {curChat ? (
                <div className="flex flex-col  sm:w-full">
                   <div style={{ height: "550px" }} className="bg-gray-100 ml-1 w-full p-4  flex flex-col">
-                     <div className="flex items-center mb-3">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
+                     <div className="flex  h-30">
+                        <div className="w-10 h-14 rounded-full overflow-hidden">
                            <img
                               src={curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto}
-                              className="w-full h-full object-cover"
+                              className="w-8 h-8 rounded-full object-cover"
                               alt=""
                            />
                         </div>

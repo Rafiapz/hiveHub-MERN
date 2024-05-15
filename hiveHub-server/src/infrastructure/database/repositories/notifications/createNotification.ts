@@ -5,7 +5,9 @@ export const createNotification = async (data: NotificationsEntity) => {
 
     try {
 
-        const notification = await Notifications.create(data)
+        let notification = await Notifications.create(data)
+
+        await notification.populate('actionOn')
 
         return notification
 

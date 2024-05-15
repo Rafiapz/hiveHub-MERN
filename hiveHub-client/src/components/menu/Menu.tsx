@@ -30,6 +30,7 @@ import { fetchuser } from "../../store/actions/auth/userActions";
 import { fetchAllNetworks } from "../../store/actions/network/networkActions";
 import { fetchNotifications } from "../../service/api";
 import toast from "react-hot-toast";
+import socketService from "../../service/socketService";
 
 function Menu() {
    const role = useSelector((state: RootState) => state.user.user.auth.role);
@@ -166,9 +167,9 @@ function Menu() {
                            >
                               <FontAwesomeIcon icon={faBell} className="mr-2 text-indigo-500" />
                               Notifications
-                              {/* <span className="absolute top-0 left-4 flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full">
+                              <span className="absolute top-0 left-4 flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full">
                                  10
-                              </span> */}
+                              </span>
                            </Link>
 
                            <Link

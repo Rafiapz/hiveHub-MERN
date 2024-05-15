@@ -8,6 +8,8 @@ import ConnectButton from "../connectButton/ConnectButton";
 import { fetchAllNetworks, fetchFollwing } from "../../store/actions/network/networkActions";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "../loading/Loading";
+import socketService from "../../service/socketService";
+const socket = socketService.socket;
 
 const Notification: React.FC<any> = () => {
    const [notifications, setNotifications] = useState<any>([]);
@@ -15,6 +17,7 @@ const Notification: React.FC<any> = () => {
    const networks: any = useSelector((state: RootState) => state?.networks?.network?.data);
    const [hasMore, setHasMore] = useState<boolean>(true);
    const [page, setPage] = useState<number>(1);
+   const [arrivalNotification, setArrivalNotification] = useState<any>(null);
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -54,7 +57,6 @@ const Notification: React.FC<any> = () => {
       try {
          const response = await deleteNotification(id);
          await fetchData();
-         console.log(notifications);
 
          toast.success("Successfully deleted");
       } catch (error) {
@@ -68,13 +70,17 @@ const Notification: React.FC<any> = () => {
       });
    };
 
+   useEffect(() => {
+      setNotifications((prev: any) => [...prev, arrivalNotification]);
+   }, [arrivalNotification]);
+
    return (
       <div style={{ width: "880px" }} className="flex flex-wrap  justify-center">
          {notifications?.map((notification: any, i: number) => (
             <div
                key={i + "sd"}
                className={`user-card rounded-lg w-full shadow-md p-3 m-1 hover:shadow-lg transition-shadow duration-300 relative${
-                  notification.seen === "true" ? " bg-white" : " bg-white"
+                  notification?.seen === "true" ? " bg-white" : " bg-white"
                }`}
             >
                <div className="flex items-center mb-2">

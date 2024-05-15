@@ -4,7 +4,7 @@ import { NotificationsEntity } from '../../../domain/entities/notificationsEntit
 const NotificationsSchema: Schema = new Schema({
     type: { type: String, required: true },
     actionBy: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-    actionOn: { type: Schema.Types.ObjectId, required: true },
+    actionOn: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
     message: { type: String },
     read: { type: Boolean },
 }, { timestamps: true });

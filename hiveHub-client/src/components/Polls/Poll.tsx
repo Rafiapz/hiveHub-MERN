@@ -267,36 +267,32 @@ const Poll = () => {
                      <h2 className="text-2xl font-bold mb-4">{ob?.question}</h2>
                      <ul className="flex flex-col gap-3">
                         {ob?.options.map((option: any) => (
-                           <>
-                              <div
-                                 key={option.id}
-                                 className="flex items-center mb-2  overflow-hidden"
-                                 onClick={() => handleVote(ob?._id, option?.option, option?.id)}
-                              >
-                                 <div className="w-full relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                       <span className="font-semibold text-gray-950 ml-4">{option.option}</span>
-                                       <span className="text-gray-950 font-semibold ml-4">
-                                          {ob?.options && ob.options.reduce((sum: number, opt: any) => sum + opt.votes, 0) !== 0
-                                             ? `${Math.floor(
-                                                  (option.votes / ob.options.reduce((sum: number, opt: any) => sum + opt.votes, 0)) * 100
-                                               )}%`
-                                             : "0%"}
-                                       </span>
-                                    </div>
-                                    <div className="h-8 bg-gray-200">
-                                       <div
-                                          className="h-full bg-gray-400"
-                                          style={{
-                                             width: `${
-                                                (option.votes / ob?.options?.reduce((sum: number, option: any) => sum + option?.votes, 0)) * 100
-                                             }%`,
-                                          }}
-                                       ></div>
-                                    </div>
+                           <div
+                              key={option.id}
+                              className="flex items-center mb-2  overflow-hidden"
+                              onClick={() => handleVote(ob?._id, option?.option, option?.id)}
+                           >
+                              <div className="w-full relative">
+                                 <div className="absolute inset-0 flex items-center">
+                                    <span className="font-semibold text-gray-950 ml-4">{option.option}</span>
+                                    <span className="text-gray-950 font-semibold ml-4">
+                                       {ob?.options && ob.options.reduce((sum: number, opt: any) => sum + opt.votes, 0) !== 0
+                                          ? `${Math.floor((option.votes / ob.options.reduce((sum: number, opt: any) => sum + opt.votes, 0)) * 100)}%`
+                                          : "0%"}
+                                    </span>
+                                 </div>
+                                 <div className="h-8 bg-gray-200">
+                                    <div
+                                       className="h-full bg-gray-400"
+                                       style={{
+                                          width: `${
+                                             (option.votes / ob?.options?.reduce((sum: number, option: any) => sum + option?.votes, 0)) * 100
+                                          }%`,
+                                       }}
+                                    ></div>
                                  </div>
                               </div>
-                           </>
+                           </div>
                         ))}
                      </ul>
                   </>

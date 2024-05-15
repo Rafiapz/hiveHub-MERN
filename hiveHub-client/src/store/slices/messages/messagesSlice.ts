@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "../../actions/message/messageActions";
+import { connect, io } from "socket.io-client";
+
+
 
 
 
@@ -7,7 +10,7 @@ const initialState = {
 
     conversations: [],
     messages: [],
-    socket: null
+    // socket: JSON.stringify(socket)
 
 }
 

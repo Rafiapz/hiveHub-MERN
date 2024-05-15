@@ -15,6 +15,8 @@ import { format } from "timeago.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EditPostModal from "../modal/EditPostModal";
 import PostLikesModal from "../modal/PostLikesModal";
+import socketService from "../../service/socketService";
+const socket = socketService.socket;
 
 const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const dispatch = useDispatch<AppDispatch>();
@@ -27,6 +29,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const [items, setItems] = useState<any>(posts);
    const [likesModal, setLikesModal] = useState<boolean>(false);
    const [curLikesCount, setCurLikesCount] = useState<number | null>(null);
+   const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
 
    const navigate = useNavigate();
 
@@ -112,6 +115,16 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                   });
                   return newItems;
                });
+
+               if (response?.payload?.message === "Succesfully liked post") {
+                  socket.emit("sendNotification", {
+                     senderId: userId,
+                     receiverId: response?.payload?.post?.userId?._id,
+                     notification: "Liked your post",
+                     postId: id,
+                     actionBy: userData?.fullName,
+                  });
+               }
             });
          }
       });

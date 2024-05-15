@@ -3,17 +3,18 @@ import apiClient from "../../../utils/axios";
 import { CONNECTION_REQUEST_URL, FETCH_ALL_NETWORKS, FETCH_FOLLOWERS_URL, FETCH_FOLLOWING_URL, UNFOLLOW_URL, } from "../../../utils/endPoint";
 
 
-export const connectionRequestAction = createAsyncThunk('/network/connection-request', async (targetUserId: number, { rejectWithValue }) => {
+export const connectionRequestAction = createAsyncThunk('/network/connection-request', async ({ targetId, userId }: any, { rejectWithValue }) => {
 
     try {
 
-        const response = await apiClient.post(`${CONNECTION_REQUEST_URL}/${targetUserId}`)
+        const response = await apiClient.post(`${CONNECTION_REQUEST_URL}/${userId}?target=${targetId}`)
         console.log(response.data);
 
         return response.data
 
     } catch (error: any) {
-        rejectWithValue(error.messge)
+        console.log(error);
+        rejectWithValue(error)
     }
 })
 

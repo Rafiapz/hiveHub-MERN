@@ -4,26 +4,25 @@ import { connectionRequestAction, fetchAllNetworks, fetchFollwing } from "../../
 import toast from "react-hot-toast";
 
 function ConnectButton({ id, content }: any) {
-   const allPosts: any = useSelector((state: RootState) => state?.posts?.posts?.data);
-
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
-
    const dispatch = useDispatch<AppDispatch>();
 
    const handleConnect = (targetId: number) => {
-      dispatch(connectionRequestAction(targetId)).then((response) => {
-         if (response.payload.status === "ok") {
-            dispatch(fetchAllNetworks());
-            toast(response?.payload?.message, {
-               style: { backgroundColor: "#4caf50", color: "white" },
-            });
-            dispatch(fetchFollwing());
-         } else {
-            toast(response?.payload?.message, {
-               style: { backgroundColor: "#ff6347", color: "#eeeeee" },
-            });
-         }
-      });
+      dispatch(connectionRequestAction({ targetId, userId }))
+         .then((response) => {
+            if (response.payload.status === "ok") {
+               dispatch(fetchAllNetworks());
+               toast(response?.payload?.message, {
+                  style: { backgroundColor: "#4caf50", color: "white" },
+               });
+               dispatch(fetchFollwing());
+            } else {
+               toast.error(response?.payload?.message);
+            }
+         })
+         .catch((err) => {
+            toast.error(err?.response?.payload?.message);
+         });
    };
 
    return (

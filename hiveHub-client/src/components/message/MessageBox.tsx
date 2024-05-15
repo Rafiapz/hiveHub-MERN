@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
-import { fetchConversations, fetchOnlineUsers, sendVideo } from "../../service/api";
+import { fetchConversations, fetchOnlineUsers, isUserBlocked, sendVideo, unblockOtherUser } from "../../service/api";
 import NewMessage from "../newMessage/NewMessage";
 import VideoCall from "../videoCall/VideoCall";
 import EmojiPicker from "emoji-picker-react";
@@ -15,10 +15,12 @@ import toast from "react-hot-toast";
 import AudioRecorderComponent from "../audioRecorder/AudioRecorder";
 import { format } from "timeago.js";
 import socketService from "../../service/socketService";
+import { useSearchParams } from "react-router-dom";
+import { fetchuser } from "../../store/actions/auth/userActions";
 const socket = socketService.socket;
 
 const MessageBox: FC = () => {
-   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
+   const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
    const [curChat, setCurChat] = useState<any>(null);
    const [conversations, setConversations] = useState<any>([]);
    const [messages, setMessages] = useState<any>([]);
@@ -35,12 +37,18 @@ const MessageBox: FC = () => {
    const [progress, setProgress] = useState<number>(0);
    const [loading, setLoading] = useState<boolean>(false);
    const [typing, setTyping] = useState<boolean>(false);
+   const [blocked, setBlocked] = useState<any>({ status: false });
+   const [searchQuery] = useSearchParams();
 
    const handleVideoChange = (event: any) => {
       if (event.target.files && event.target.files.length > 0) {
          setSelectedFile(event.target.files[0]);
       }
    };
+
+   const existing = searchQuery.get("userId");
+
+   useEffect(() => {}, []);
 
    useEffect(() => {
       socket.on("image", (data: any) => {
@@ -110,12 +118,32 @@ const MessageBox: FC = () => {
       }
    };
 
+   // const userId = searchQuery.get("conversa");
+
+   // useEffect(() => {
+   //    handleSelectConversation();
+   // });
+
    const handleSelectConversation = (chat: any) => {
       setCurChat(chat);
 
-      dispatch(fetchChats(chat?._id)).then((response) => {
-         setMessages(response?.payload?.data);
-      });
+      dispatch(fetchChats(chat?._id))
+         .then((response) => {
+            setMessages(response?.payload?.data);
+         })
+         .then(() => {
+            const target = chat?.members?.filter((ob: any) => ob?._id != userId);
+            console.log(target, "target");
+            isUserBlocked(userId, target[0]?._id).then((result: any) => {
+               if (result?.data?.data === "blockedByMe") {
+                  setBlocked({ status: true, byHim: false });
+               } else if (result?.data?.data === "blockedByHim") {
+                  setBlocked({ status: true, byHim: true });
+               } else {
+                  setBlocked({ status: false });
+               }
+            });
+         });
    };
 
    const handleSubmit = (event: any) => {
@@ -308,6 +336,35 @@ const MessageBox: FC = () => {
       });
    }, [socket]);
 
+   const handleUnblockUser = async () => {
+      try {
+         const form = new FormData();
+         form.append("userId", userId);
+         const target = curChat?.members?.filter((ob: any) => ob?._id != userId);
+         form.append("targetUserId", target[0]?._id);
+
+         const response = await unblockOtherUser(form);
+         dispatch(fetchChats(curChat?._id))
+            .then((response) => {
+               setMessages(response?.payload?.data);
+            })
+            .then(() => {
+               const target = curChat?.members?.filter((ob: any) => ob?._id != userId);
+               console.log(target, "target");
+               isUserBlocked(userId, target[0]?._id).then((result) => {
+                  if (result?.data?.data === "blocked") {
+                     setBlocked(true);
+                  } else {
+                     setBlocked(false);
+                  }
+               });
+            });
+         toast.success(response?.data?.message);
+      } catch (error) {
+         toast.error("Something went wrong");
+      }
+   };
+
    return (
       <div className="bg-white ml-0  w-full sm:w-3/5 sm:ml-72 h-96 flex flex-col">
          <div className="flex w-full h-10 mt-5 justify-between">
@@ -402,44 +459,66 @@ const MessageBox: FC = () => {
                            </div>
                         ))}
                      </div>
-                     <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
-
-                     <div className="flex items-center mt-4">
-                        <input
-                           type="text"
-                           className="w-full p-2 border border-black rounded-md focus:outline-none"
-                           placeholder="Type your message here"
-                           value={message}
-                           onFocus={handleTyping}
-                           onChange={(e) => setMessage(e.target.value)}
-                        />
-                        {/* <AudioRecorderComponent /> */}
-
-                        <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2">
-                           😊
-                        </button>
-                        <div className="flex items-center bg-gray-400 ml-2 h-10 rounded-md ">
-                           <label htmlFor="image-upload" className="cursor-pointer flex px-4  items-center">
-                              <FontAwesomeIcon icon={faFileImage} className="h-6  w-6 mr-2" />
-                           </label>
-                           <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                        </div>
-                        <div className="flex i  tems-center bg-gray-400 ml-2 w-20 h-10 rounded-md ">
-                           <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
-                              <FontAwesomeIcon icon={faVideo} className="text-black size-8 mt-4 ml-2 mr-2" />
-                           </label>
-                           <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
-                        </div>
-                        {loading ? (
-                           <div className="pl-3">
-                              <LoadingButton />
+                     {blocked?.status === true ? (
+                        <div className="bg-gray-100 p-4 rounded-md shadow-md">
+                           <div className="flex items-center justify-between mb-4">
+                              <h3 className="text-lg font-semibold text-gray-800">Blocked User</h3>
+                              {blocked?.byHim === false && (
+                                 <button
+                                    onClick={() => handleUnblockUser()}
+                                    className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                                 >
+                                    Unblock
+                                 </button>
+                              )}
                            </div>
-                        ) : (
-                           <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
-                              Send
-                           </button>
-                        )}
-                     </div>
+                           {blocked?.byHim === false ? (
+                              <p className="text-gray-600">You have blocked this user, so you can't send them messages or view their content.</p>
+                           ) : (
+                              <p> This user has blocked you. You won't be able to send them messages </p>
+                           )}
+                        </div>
+                     ) : (
+                        <>
+                           <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
+                           <div className="flex items-center mt-4">
+                              <input
+                                 type="text"
+                                 className="w-full p-2 border border-black rounded-md focus:outline-none"
+                                 placeholder="Type your message here"
+                                 value={message}
+                                 onFocus={handleTyping}
+                                 onChange={(e) => setMessage(e.target.value)}
+                              />
+                              {/* <AudioRecorderComponent /> */}
+
+                              <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2">
+                                 😊
+                              </button>
+                              <div className="flex items-center bg-gray-400 ml-2 h-10 rounded-md ">
+                                 <label htmlFor="image-upload" className="cursor-pointer flex px-4  items-center">
+                                    <FontAwesomeIcon icon={faFileImage} className="h-6  w-6 mr-2" />
+                                 </label>
+                                 <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                              </div>
+                              <div className="flex i  tems-center bg-gray-400 ml-2 w-20 h-10 rounded-md ">
+                                 <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
+                                    <FontAwesomeIcon icon={faVideo} className="text-black size-8 mt-4 ml-2 mr-2" />
+                                 </label>
+                                 <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
+                              </div>
+                              {loading ? (
+                                 <div className="pl-3">
+                                    <LoadingButton />
+                                 </div>
+                              ) : (
+                                 <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
+                                    Send
+                                 </button>
+                              )}
+                           </div>
+                        </>
+                     )}
                   </div>
                </div>
             ) : (

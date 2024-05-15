@@ -16,7 +16,7 @@ export const createLike = async (data: LikesEntity): Promise<any> => {
 
                 throw new Error('Failed to unlike post')
             }
-            const post = await Posts.findOneAndUpdate({ _id: data.postId }, { $inc: { likes: -1 } }, { new: true })
+            const post = await Posts.findOneAndUpdate({ _id: data.postId }, { $inc: { likes: -1 } }, { new: true }).populate('userId')
 
             return { post, unlike: true }
 

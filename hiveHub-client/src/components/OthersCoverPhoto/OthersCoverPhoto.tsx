@@ -9,6 +9,7 @@ import { faBan, faEnvelope, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { blockOtherUser, unblockOtherUser } from "../../service/api";
 import toast from "react-hot-toast";
+import { fetchUsersPost } from "../../store/actions/post/postActions";
 
 const OthersCoverPhoto: FC = () => {
    const [userData, setUserData] = useState<any>({});
@@ -52,12 +53,13 @@ const OthersCoverPhoto: FC = () => {
          const response = await blockOtherUser(form);
          toast.success(response?.data?.message);
          dispatch(fetchuser());
+         dispatch(fetchUsersPost({ target: id, id: userId }));
       } catch (error: any) {
          toast.error(error?.response?.data?.message);
       }
    };
 
-   const handleUblockUser = async (id: any) => {
+   const handleUnblockUser = async (id: any) => {
       try {
          const form = new FormData();
          form.append("userId", userId);
@@ -66,6 +68,7 @@ const OthersCoverPhoto: FC = () => {
          const response = await unblockOtherUser(form);
          toast.success(response?.data?.message);
          dispatch(fetchuser());
+         dispatch(fetchUsersPost({ target: id, id: userId }));
       } catch (error) {
          toast.error("Something went wrong");
       }
@@ -111,7 +114,7 @@ const OthersCoverPhoto: FC = () => {
 
                   {ownData?.blockedUsers?.includes(userData?._id) ? (
                      <button
-                        onClick={() => handleUblockUser(userData?._id)}
+                        onClick={() => handleUnblockUser(userData?._id)}
                         className="block-button border  rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-green-200 
                         border-green-500"
                      >

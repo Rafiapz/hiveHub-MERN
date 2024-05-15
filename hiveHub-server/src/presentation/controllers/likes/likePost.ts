@@ -46,9 +46,6 @@ export const likePostController = (dependencies: ILikesDependencies, notificatio
                 res.status(200).json({ status: 'ok', message: 'Successfully unlike post', post })
             }
 
-
-
-
         } catch (error: any) {
             res.status(error?.status || 500).json({ status: 'Failed', message: error.message })
         }

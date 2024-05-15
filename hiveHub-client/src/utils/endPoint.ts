@@ -137,3 +137,5 @@ export const DELETE_POLL_URL = '/polls/delete-poll'
 export const EDIT_POLL_URL = '/polls/edit-poll'
 
 export const FETCH_ONLINE_USERS_URL = '/chats/fetch-online-users'
+
+export const FETCH_IS_USER_BLOCKED_URL = '/auth/is-user-blocked'

@@ -29,6 +29,10 @@ const Users: FC = () => {
       navigate(`/others-profile?userId=${id}&email=${email}`);
    };
 
+   const handleMeessageClick = (id: number) => {
+      navigate(`/messages?userId=${id}`);
+   };
+
    return (
       <div className="flex flex-wrap justify-center overflow-y-auto">
          {users?.map((user: any) => (
@@ -43,7 +47,10 @@ const Users: FC = () => {
                            <div onClick={() => handleClick(user?._id, user?.email)}>{user?.fullName}</div>
                            <div className="mt-2">
                               {isFollowing(user?._id) ? (
-                                 <button className="px-4 py-2 w-28 rounded-md text-white bg-indigo-500 hover:bg-purple-700 focus:outline-none transition-colors duration-300">
+                                 <button
+                                    onClick={() => handleMeessageClick(user?._id)}
+                                    className="px-4 py-2 w-28 rounded-md text-white bg-indigo-500 hover:bg-purple-700 focus:outline-none transition-colors duration-300"
+                                 >
                                     Message
                                  </button>
                               ) : (

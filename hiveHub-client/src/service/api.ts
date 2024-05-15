@@ -9,6 +9,7 @@ import {
     EDIT_POLL_URL,
     FETCH_ALL_POLLS_URL,
     FETCH_CONVERSATIONS_URL,
+    FETCH_IS_USER_BLOCKED_URL,
     FETCH_NOTIFICATIONS_URL,
     FETCH_ONLINE_USERS_URL,
     FETCH_POST_LIKED_USERS_URL,
@@ -118,6 +119,12 @@ export const blockOtherUser = async (form: any) => {
 
 export const unblockOtherUser = async (form: any) => {
     return await apiClient.put(UNBLOCK_OTHER_USER_URl, form, jsonConfig)
+}
+
+export const isUserBlocked = async (id: any, target: any) => {
+    console.log('calignggg');
+
+    return await apiClient.get(`${FETCH_IS_USER_BLOCKED_URL}/${id}?target=${target}`)
 }
 
 export const createPoll = async (form: any) => {

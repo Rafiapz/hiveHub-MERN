@@ -5,6 +5,7 @@ import passport from "passport";
 import { currentUser } from "../middlewares/currentUser";
 import { uploadSingleFile } from "../../_lib/multer";
 import { validatePassword } from "../../_lib/bcrypt";
+import { isUserBlocked } from "../middlewares/isUserBlocked";
 
 export const authRoutes = (dependencies: IDependencies) => {
     const {
@@ -22,7 +23,9 @@ export const authRoutes = (dependencies: IDependencies) => {
         fetchOtherUser,
         editEmailVerifyandUpdate,
         blockOtherUser,
-        unblockOtherUser
+        unblockOtherUser,
+        isUserBlockedController
+
     } = controllers(dependencies);
 
     const router = Router();
@@ -62,6 +65,8 @@ export const authRoutes = (dependencies: IDependencies) => {
     router.route('/block-another-user').put(currentUser, blockOtherUser)
 
     router.route('/unblock-another-user').put(currentUser, unblockOtherUser)
+
+    router.route('/is-user-blocked/:id').get(currentUser, isUserBlockedController)
 
     router.route("/fetch-other-user").get(currentUser, fetchOtherUser);
 

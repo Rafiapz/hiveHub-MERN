@@ -13,6 +13,8 @@ const OthersPost: FC<any> = ({ openModal }) => {
    const loading = useSelector((state: RootState) => state.posts.posts.loading);
    const likes: any = useSelector((state: RootState) => state?.posts?.ownPost?.likes);
    const posts: any = useSelector((state: RootState) => state.posts?.ownPost?.data);
+   const userId: any = useSelector((state: RootState) => state.user.user.userId);
+   const [blocked, setBlocked] = useState<any>({ status: false });
 
    const [showOptions, setShowOptions] = useState<{
       status: boolean;
@@ -21,10 +23,18 @@ const OthersPost: FC<any> = ({ openModal }) => {
 
    const [searchQuery] = useSearchParams();
 
-   const userId = searchQuery.get("userId");
+   const target = searchQuery.get("userId");
    useEffect(() => {
-      dispatch(fetchUsersPost(userId));
-   }, [userId]);
+      dispatch(fetchUsersPost({ target, id: userId })).then((response) => {
+         if (response?.payload?.data === "blockedByMe") {
+            setBlocked({ status: true, byMe: true });
+         } else if (response?.payload?.data === "blockedByHim") {
+            setBlocked({ status: true, byHim: true });
+         } else {
+            setBlocked({ status: false });
+         }
+      });
+   }, [target]);
 
    const handleOptionsClick = (index: number) => {
       setShowOptions((prev) => {
@@ -66,6 +76,26 @@ const OthersPost: FC<any> = ({ openModal }) => {
             <Loading />
          ) : (
             <>
+               {/* {blocked?.status && blocked?.byMe && (
+                  <div className="bg-gray-100 p-4 rounded-md shadow-md">
+                     <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-gray-800">Blocked User</h3>
+                        {blocked?.byHim === false && (
+                           <button
+                              // onClick={() => handleUnblockUser()}
+                              className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                           >
+                              Unblock
+                           </button>
+                        )}
+                     </div>
+                     {blocked?.byHim === false ? (
+                        <p className="text-gray-600">You have blocked this user, so you can't send them messages or view their content.</p>
+                     ) : (
+                        <p> This user has blocked you. You won't be able to send them messages </p>
+                     )}
+                  </div>
+               )} */}
                {posts?.map((item: any, i: number) => {
                   return (
                      <div

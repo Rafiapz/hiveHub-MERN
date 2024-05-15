@@ -4,12 +4,25 @@ import ConverPhoto from "../../../components/converPhoto/CoverPhoto";
 import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import UnfollowModal from "../../../components/modal/UnfollowModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreatePostModal from "../../../components/modal/CreatePostModal";
 import EditPostModal from "../../../components/modal/EditPostModal";
+import Popup from "../../../components/notification/Popup";
+import socketService from "../../../service/socketService";
+
+const socket = socketService.socket;
 
 function Profile() {
    const [classs, setClasss] = useState({ posts: "font-bold underline underline-offset-2", following: "", followers: "", likes: "", reports: "" });
+   const [notified, setNotified] = useState<boolean>(false);
+   const [notificationData, setNotionData] = useState<any>(null);
+
+   useEffect(() => {
+      socket.on("getNotifiation", (data) => {
+         setNotionData(data);
+         setNotified(true);
+      });
+   }, [socket]);
 
    const handleClick = (position: string) => {
       setClasss((prev) => {
@@ -64,6 +77,7 @@ function Profile() {
          <CreatePostModal />
          <EditPostModal />
          <Comments />
+         <Popup notification={notified} data={notificationData} />
          <UnfollowModal />
          <RightSideBar />
       </>

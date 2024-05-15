@@ -17,7 +17,7 @@ export const coneectionRequestController = (dependencies: INetworkDependencies, 
 
             const user = req?.user
             const sourceUserId = (user as any)?.id;
-            const targetUserId: any = req?.params?.id
+            const targetUserId: any = req?.query?.target
 
             const data: NetworksEntity = {
                 sourceUserId: sourceUserId,

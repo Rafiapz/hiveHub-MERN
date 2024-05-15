@@ -184,11 +184,11 @@ export const fetchAllReplies = createAsyncThunk('/comments/fetch-all-replies', a
     }
 })
 
-export const fetchUsersPost = createAsyncThunk('/post/fetch-users-post', async (id: any) => {
+export const fetchUsersPost = createAsyncThunk('/post/fetch-users-post', async ({ id, target }: any) => {
 
     try {
 
-        const response = await apiClient.get(`${FETCH_USERS_POSTS_URL}/${id}`)
+        const response = await apiClient.get(`${FETCH_USERS_POSTS_URL}/${id}?target=${target}`)
 
         return response.data
 

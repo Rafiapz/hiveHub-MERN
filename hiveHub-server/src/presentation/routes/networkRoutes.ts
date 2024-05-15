@@ -3,6 +3,7 @@ import { controllers } from '../controllers/networks/'
 import { currentUser } from '../middlewares/currentUser'
 import { INetworkDependencies } from '../../application/interface/network/IDependencies'
 import { INotificationsDependencies } from '../../application/interface/notifications/IDependencies'
+import { isUserBlocked } from '../middlewares/isUserBlocked'
 
 
 
@@ -12,7 +13,7 @@ export const networksRoutes = (dependencies: INetworkDependencies, notificationD
 
     const router = Router()
 
-    router.route('/connection-request/:id').post(currentUser, connectionRequest)
+    router.route('/connection-request/:id').post(currentUser, isUserBlocked, connectionRequest)
 
     router.route('/fetch-all-networks').get(currentUser, fetchAllNetworks)
 

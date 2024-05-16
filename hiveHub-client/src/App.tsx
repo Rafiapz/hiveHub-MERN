@@ -28,6 +28,7 @@ import Premium from "./pages/user/premium/Premium";
 import Poll from "./components/Polls/Poll";
 import PollPage from "./pages/user/polls/PollPage";
 import socketService from "../src/service/socketService";
+import UsersPoll from "./components/Polls/UsersPolls";
 const socket = socketService.socket;
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
                         <Route path="/polls" element={<PollPage />} />
                         <Route path="/profile" element={<Profile />}>
                            <Route index element={<UserPosts />} />
+                           <Route path={`/profile/polls`} element={<UsersPoll />} />
                            <Route path="/profile/following" element={<Following />} />
                            <Route path="/profile/followers" element={<Followers />} />
                            <Route path="/profile/likes" element={<UsersLikes />} />
@@ -96,6 +98,7 @@ function App() {
                         <Route path="/edit-profile" element={<EditProfile />} />
                         <Route path="/others-profile" element={<OthersProfile />}>
                            <Route index element={<OthersProfilePosts />} />
+                           <Route path="/others-profile/polls" element={<UsersPoll />} />
                         </Route>
                      </Routes>
                   </>

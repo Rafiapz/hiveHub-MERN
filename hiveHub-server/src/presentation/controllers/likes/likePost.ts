@@ -39,7 +39,11 @@ export const likePostController = (dependencies: ILikesDependencies, notificatio
 
                 }
 
-                await createNotificationUseCase(notificationsDependencies).execute(data)
+                if (post?.userId?._id != userIdData) {
+                    await createNotificationUseCase(notificationsDependencies).execute(data)
+                }
+
+
                 res.status(200).json({ status: 'ok', message: 'Succesfully liked post', post })
             } else if (unlike) {
 

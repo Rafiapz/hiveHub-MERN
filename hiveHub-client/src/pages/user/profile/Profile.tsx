@@ -9,13 +9,23 @@ import CreatePostModal from "../../../components/modal/CreatePostModal";
 import EditPostModal from "../../../components/modal/EditPostModal";
 import Popup from "../../../components/notification/Popup";
 import socketService from "../../../service/socketService";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const socket = socketService.socket;
 
 function Profile() {
-   const [classs, setClasss] = useState({ posts: "font-bold underline underline-offset-2", following: "", followers: "", likes: "", reports: "" });
+   const [classs, setClasss] = useState({
+      posts: "font-bold underline underline-offset-2",
+      following: "",
+      polls: "",
+      followers: "",
+      likes: "",
+      reports: "",
+   });
    const [notified, setNotified] = useState<boolean>(false);
    const [notificationData, setNotionData] = useState<any>(null);
+   const userId = useSelector((state: RootState) => state?.user?.user?.userId);
 
    useEffect(() => {
       socket.on("getNotifiation", (data) => {
@@ -30,6 +40,7 @@ function Profile() {
             ...prev,
             followers: "",
             posts: "",
+            polls: "",
             following: "",
             likes: "",
             reports: "",
@@ -50,6 +61,14 @@ function Profile() {
             >
                Posts
             </Link>
+            <Link
+               onClick={() => handleClick("polls")}
+               to={`/profile/polls?userId=${userId}`}
+               className={`px-2 py-1 ${classs.polls} rounded-md text-black text-xl u focus:outline-none `}
+            >
+               Polls
+            </Link>
+
             <Link
                onClick={() => handleClick("following")}
                to={"/profile/following"}

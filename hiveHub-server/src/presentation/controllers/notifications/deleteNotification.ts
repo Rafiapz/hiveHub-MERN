@@ -1,5 +1,8 @@
 import { INotificationsDependencies } from "../../../application/interface/notifications/IDependencies";
 import { Request, Response } from 'express'
+import cron from 'node-cron'
+import Notifications from "../../../infrastructure/database/models/notifications";
+import { NotificationsEntity } from "../../../domain/entities/notificationsEntity";
 
 export const deleteNotificationController = (dependencies: INotificationsDependencies) => {
 
@@ -27,3 +30,33 @@ export const deleteNotificationController = (dependencies: INotificationsDepende
         }
     }
 }
+
+
+
+const task = cron.schedule('0 */10 * * *', async () => {
+
+    try {
+
+        let sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 1);
+
+        const notifications = await Notifications.find({
+            createdAt: { $lt: sevenDaysAgo }
+        })
+
+
+        notifications.forEach(async (ob: any) => {
+            await Notifications.deleteOne({ _id: ob?._id })
+
+        })
+
+
+    } catch (error) {
+        console.log(error);
+
+    }
+
+});
+
+
+task.start();

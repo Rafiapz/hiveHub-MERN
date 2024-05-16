@@ -319,9 +319,9 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                               </div>
                            </div>
 
-                           <div className="cursor-pointer">
+                           {/* <div className="cursor-pointer">
                               <FontAwesomeIcon icon={faBookmark} className="text-gray-500 text-xl hover:text-gray-700 transition duration-300" />
-                           </div>
+                           </div> */}
                         </div>
                      </div>
                   );

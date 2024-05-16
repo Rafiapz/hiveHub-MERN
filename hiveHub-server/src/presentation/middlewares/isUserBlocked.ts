@@ -9,13 +9,13 @@ export const isUserBlocked = async (req: Request, res: Response, next: NextFunct
 
         const target: any = req?.query?.target
 
-        const requser = req?.user
-        const sourceUserId = (requser as any)?.id;
+        // const requser = req?.user
+        // const sourceUserId = (requser as any)?.id;
 
-        if (sourceUserId === userId) {
-            next()
-            return
-        }
+        // if (sourceUserId === userId) {
+        //     next()
+        //     return
+        // }
 
         const user = await User.findOne({ _id: userId })
 

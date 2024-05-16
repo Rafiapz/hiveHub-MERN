@@ -9,7 +9,7 @@ export const findUsersPostController = (dependencies: IPostDependencies) => {
 
         try {
 
-            const id = req?.params?.id
+            const id = req?.query?.target
 
             const { posts, likes } = await findUsersPostUseCase(dependencies).execute(id)
 

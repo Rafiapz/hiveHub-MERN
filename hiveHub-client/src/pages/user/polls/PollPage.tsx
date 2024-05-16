@@ -1,14 +1,22 @@
-import React, { FC } from "react";
-import Menu from "../../../components/menu/Menu";
-import PollInput from "../../../components/Polls/PollInput";
-import RightSideBar from "../../../components/rightSideBar/RightSideBar";
+import React, { FC, lazy, Suspense } from "react";
+const Menu = lazy(() => import("../../../components/menu/Menu"));
+const PollInput = lazy(() => import("../../../components/Polls/PollInput"));
+const RightSideBar = lazy(() => import("../../../components/rightSideBar/RightSideBar"));
 
 const PollPage: FC = () => {
    return (
       <>
-         <Menu />
-         <PollInput />
-         <RightSideBar />
+         <Suspense fallback={<div>Loading...</div>}>
+            <Menu />
+         </Suspense>
+
+         <Suspense fallback={<div>Loading...</div>}>
+            <PollInput />
+         </Suspense>
+
+         <Suspense fallback={<div>Loading...</div>}>
+            <RightSideBar />
+         </Suspense>
       </>
    );
 };

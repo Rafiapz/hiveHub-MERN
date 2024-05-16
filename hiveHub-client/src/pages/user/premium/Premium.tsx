@@ -64,7 +64,7 @@ const Premium: FC = () => {
                      createPayment(form).then((res) => {
                         if (res?.data?.status === "ok") {
                            toast.success("Payment Success");
-                           
+
                            setModalIsOpen(true);
                         }
                      });
@@ -131,7 +131,7 @@ const Premium: FC = () => {
 
                   <div className="mb-6">
                      <p className="text-gray-600 mb-2 text-center">Price: ₹699/month</p>
-                     <p className="text-gray-600 mb-6 text-center">Free trial available for 7 days</p>
+                     {/* <p className="text-gray-600 mb-6 text-center">Free trial available for 7 days</p> */}
                   </div>
 
                   <div className="flex justify-center mb-6">
@@ -171,13 +171,13 @@ const Premium: FC = () => {
                      </button>
                   </div>
 
-                  <p className="text-gray-600 text-center text-sm">
+                  {/* <p className="text-gray-600 text-center text-sm">
                      By clicking "Upgrade Now", you agree to our{" "}
                      <a href="#" className="text-indigo-600">
                         Terms and Conditions
                      </a>
                      .
-                  </p>
+                  </p> */}
                </div>
             </div>
          )}

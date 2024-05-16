@@ -100,7 +100,7 @@ const OthersCoverPhoto: FC = () => {
                   {isFollowing(userData?._id) ? (
                      <button
                         onClick={() => handleUnfollow(userData?._id)}
-                        className="bg-white hover:bg-white text-blue-400 border border-black font-bold py-2 px-4 rounded"
+                        className="bg-white hover:bg-white text-blue-400 border border-black font-bold py-2 px-4 "
                      >
                         Unfollow
                      </button>
@@ -108,14 +108,14 @@ const OthersCoverPhoto: FC = () => {
                      <ConnectButton id={userData?._id} content={"Follow"} />
                   )}
 
-                  <button className="message-button border border-blue-700 rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none   hover:bg-green-200">
+                  {/* <button className="message-button border border-blue-700 rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none   hover:bg-green-200">
                      <FontAwesomeIcon icon={faEnvelope} /> Message
-                  </button>
+                  </button> */}
 
                   {ownData?.blockedUsers?.includes(userData?._id) ? (
                      <button
                         onClick={() => handleUnblockUser(userData?._id)}
-                        className="block-button border  rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-green-200 
+                        className="block-button border   text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-green-200 
                         border-green-500"
                      >
                         Unblock
@@ -123,7 +123,7 @@ const OthersCoverPhoto: FC = () => {
                   ) : (
                      <button
                         onClick={() => handleBlockUser(userData?._id)}
-                        className="block-button border  rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-red-200 
+                        className="block-button border  text-black font-semibold py-2 px-4 focus:outline-none  hover:bg-red-200 
                            border-red-700"
                      >
                         <FontAwesomeIcon icon={faBan} /> Block

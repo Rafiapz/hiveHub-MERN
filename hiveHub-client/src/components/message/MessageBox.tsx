@@ -413,6 +413,7 @@ const MessageBox: FC = () => {
                            </div>
                            <div className="text-sm text-gray-500">
                               {format(c?.updatedAt || c?.createdAt)}
+
                               {onlineUsers.includes(c?.members[1]?._id !== userId ? c?.members[1]?._id : c?.members[0]?._id) && (
                                  <div className="flex items-center mt-1">
                                     <div className="w-2 h-2 rounded-full bg-green-500 mr-1" />

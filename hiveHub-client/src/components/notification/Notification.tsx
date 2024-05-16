@@ -9,6 +9,7 @@ import { fetchAllNetworks, fetchFollwing } from "../../store/actions/network/net
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "../loading/Loading";
 import socketService from "../../service/socketService";
+import { useNavigate } from "react-router-dom";
 const socket = socketService.socket;
 
 const Notification: React.FC<any> = () => {
@@ -18,6 +19,7 @@ const Notification: React.FC<any> = () => {
    const [hasMore, setHasMore] = useState<boolean>(true);
    const [page, setPage] = useState<number>(1);
    const [arrivalNotification, setArrivalNotification] = useState<any>(null);
+   const navigate = useNavigate();
 
    const dispatch = useDispatch<AppDispatch>();
 
@@ -70,6 +72,10 @@ const Notification: React.FC<any> = () => {
       });
    };
 
+   const handleNavigate = (id: any, email: string) => {
+      navigate(`/others-profile?userId=${id}&email=${email}`);
+   };
+
    useEffect(() => {
       setNotifications((prev: any) => [...prev, arrivalNotification]);
    }, [arrivalNotification]);
@@ -89,14 +95,19 @@ const Notification: React.FC<any> = () => {
                   </div>
                   <div className="flex">
                      <div className="user-name hover:cursor-pointer">
-                        <h1 className="text-lg font-semibold text-purple-600">{notification?.actionBy?.fullName}</h1>
+                        <h1
+                           onClick={() => handleNavigate(notification?.actionBy?._id, notification?.actionBy?.email)}
+                           className="text-lg font-semibold text-purple-600"
+                        >
+                           {notification?.actionBy?.fullName}
+                        </h1>
                         <p className="text-gray-600">{notification?.message}</p>
                      </div>
-                     {notification?.type === "started_following" && !isFollowing(notification?.actionBy?._id) && (
+                     {/* {notification?.type === "started_following" && !isFollowing(notification?.actionBy?._id) && (
                         <div className="mt-3 ml-20">
                            <ConnectButton id={notification?.actionBy?._id} content={"Follow back"} />
                         </div>
-                     )}
+                     )} */}
                   </div>
 
                   <div className="absolute top-2 right-2 flex items-center">

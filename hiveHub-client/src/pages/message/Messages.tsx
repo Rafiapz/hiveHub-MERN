@@ -7,9 +7,13 @@ import NewMessage from "../../components/newMessage/NewMessage";
 const Messages: FC = () => {
    return (
       <>
-         <Menu />
+         <div className="">
+            <Menu />
+         </div>
          <MessageBox />
-         <RightSideBar />
+         <div className="hidden lg:block">
+            <RightSideBar />
+         </div>
       </>
    );
 };

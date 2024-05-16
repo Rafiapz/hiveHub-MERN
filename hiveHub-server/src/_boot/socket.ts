@@ -39,10 +39,10 @@ const addUser = (userId: any, socketId: any) => {
 };
 
 export const removeUser = (userId: any) => {
-    console.log(userId);
 
     users = users.filter((user: any) => user.userId !== userId);
-    console.log(users);
+
+
 
 };
 
@@ -82,7 +82,7 @@ export const initializeSocketIO = (server: Server) => {
         io.on('connection', (socket: Socket) => {
 
             socket.on("addUser", (userId) => {
-                console.log('add', userId);
+
                 if (userId) {
                     addUser(userId, socket.id);
                     io.emit("getUsers", users);
@@ -145,7 +145,7 @@ export const initializeSocketIO = (server: Server) => {
 
             socket.on('sendMessage', ({ senderId, receiverId, message }: any) => {
                 const user = getUser(receiverId);
-                console.log(user, 'userId');
+
 
                 if (user) {
                     io.to(user.socketId).emit("recieveMessage", {
@@ -198,9 +198,17 @@ export const initializeSocketIO = (server: Server) => {
             })
 
 
+            socket.on('sendNotificationtoAll', (data) => {
+
+
+                io.emit('getNotifiation', data);
+
+            })
+
+
 
             socket.on("disconnect", () => {
-                console.log('dis calling');
+
 
                 // removeUser(socket.id);
                 // io.emit("getUsers", users);

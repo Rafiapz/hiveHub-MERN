@@ -34,24 +34,26 @@ const Users: FC = () => {
    };
 
    return (
-      <div className="flex flex-wrap justify-center overflow-y-auto">
+      <div className="flex flex-col items-center overflow-y-auto">
          {users?.map((user: any) => (
-            <div key={user?._id}>
+            <div key={user?._id} className="w-full max-w-md mb-6">
                {user?.role !== "admin" && (
-                  <div className="user-card bg-white rounded-lg shadow-md p-6 m-4 w-72 hover:shadow-lg transition-shadow duration-300">
-                     <div className="flex items-center mb-4">
-                        <div className="profile-photo mr-4 hover:cursor-pointer" onClick={() => handleClick(user?._id, user?.email)}>
-                           <img src={user?.profilePhoto} alt="Profile" className="min-w-20 max-w-20 h-20 rounded-full object-cover" />
+                  <div className="user-card bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                     <div className="flex p-6">
+                        <div className="profile-photo hover:cursor-pointer" onClick={() => handleClick(user?._id, user?.email)}>
+                           <img src={user?.profilePhoto} alt="Profile" className="w-16 h-16 rounded-full object-cover" />
                         </div>
-                        <div className="user-name text-lg font-semibold hover:cursor-pointer">
-                           <div onClick={() => handleClick(user?._id, user?.email)}>{user?.fullName}</div>
-                           <div className="mt-2">
+                        <div className="ml-4 flex-grow">
+                           <div className="user-name text-lg font-semibold hover:cursor-pointer">
+                              <div onClick={() => handleClick(user?._id, user?.email)}>{user?.fullName}</div>
+                           </div>
+                           <div className="mt-2 flex items-center">
                               {isFollowing(user?._id) ? (
                                  <button
-                                    onClick={() => handleMeessageClick(user?._id)}
-                                    className="px-4 py-2 w-28 rounded-md text-white bg-indigo-500 hover:bg-purple-700 focus:outline-none transition-colors duration-300"
+                                    onClick={() => handleClick(user?._id, user?.email)}
+                                    className="px-3 py-1 rounded-md text-black font-bold border border-black bg-white hover:bg-gray-200 focus:outline-none transition-colors duration-300"
                                  >
-                                    Message
+                                    View
                                  </button>
                               ) : (
                                  <ConnectButton id={user?._id} content="Follow" />

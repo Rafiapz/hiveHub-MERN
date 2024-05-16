@@ -54,7 +54,7 @@ const Poll = () => {
          const response = await deletePoll(id);
 
          if (response.data.status === "ok") {
-            toast.error("Deleted successfully");
+            toast.success("Deleted successfully");
             fetchPolls();
          } else {
             throw new Error("Failed to delete");
@@ -107,6 +107,12 @@ const Poll = () => {
             >
                <div className="flex items-center mb-4">
                   <img src={ob?.userId?.profilePhoto} className="w-8 h-8 rounded-full mr-2 object-cover" />
+                  {ob?.userId?.premium && (
+                     <svg className="fill-current mr-2 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                        <circle cx="8" cy="8" r="8" fill="" />
+                        <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
+                     </svg>
+                  )}
                   <div className="flex flex-col">
                      <span className="text-gray-700 font-semibold">{ob?.userId?.fullName}</span>
                      <p className="text-sm text-gray-500">{format(ob?.createdAt || Date.now())}</p>
@@ -139,9 +145,10 @@ const Poll = () => {
                         </button>
                      </div>
                   ) : (
-                     <button className="ml-auto text-sm text-gray-500 hover:text-gray-700" onClick={() => {}}>
-                        Report
-                     </button>
+                     // <button className="ml-auto text-sm text-gray-500 hover:text-gray-700" onClick={() => {}}>
+                     //    Report
+                     // </button>
+                     <></>
                   )}
                </div>
                {ob?.isEditing && editing ? (

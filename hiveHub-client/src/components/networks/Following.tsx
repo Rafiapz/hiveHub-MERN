@@ -52,14 +52,17 @@ const Following: FC = () => {
                         src={item?.targetUserId?.profilePhoto}
                         onClick={() => handleClick(item?.targetUserId?._id, item?.targetUserId?.email)}
                         alt="Profile"
-                        className="w-24 h-20 rounded-full"
+                        className="w-20 h-20 object-cover rounded-full"
                      />
                   </div>
                   <div className="user-name text-lg font-semibold">
                      {item?.targetUserId?.fullName}
                      <div>
-                        <button className="px-2 py-1 rounded-md text-blue-400 bg-white hover:bg-blue-700 focus:outline-none border border-blue-700">
-                           message
+                        <button
+                           onClick={() => handleClick(item?.targetUserId?._id, item?.targetUserId?.email)}
+                           className="px-3 py-1 rounded-md text-black font-bold border border-black bg-white hover:bg-gray-200 focus:outline-none transition-colors duration-300"
+                        >
+                           View
                         </button>
                      </div>
                   </div>

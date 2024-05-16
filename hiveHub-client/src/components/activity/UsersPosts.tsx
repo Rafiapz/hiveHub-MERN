@@ -24,7 +24,7 @@ const UserPosts: FC = () => {
    const navigate = useNavigate();
 
    useEffect(() => {
-      dispatch(fetchUsersPost(userId));
+      dispatch(fetchUsersPost({ target: userId, id: userId }));
    }, []);
 
    useEffect(() => {

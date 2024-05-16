@@ -13,6 +13,7 @@ import {
     FETCH_NOTIFICATIONS_URL,
     FETCH_ONLINE_USERS_URL,
     FETCH_POST_LIKED_USERS_URL,
+    FETCH_USERS_POLLS_URL,
     LIKE_COMMENT_URL,
     POLL_VOTE_URL,
     PREMIUM_CREATE_PAYMENT_URL,
@@ -149,4 +150,11 @@ export const editPoll = async (form: any) => {
 
 export const fetchOnlineUsers = async () => {
     return await apiClient.get(FETCH_ONLINE_USERS_URL)
+}
+
+export const fetchUsersPolls = async (id: any) => {
+
+    console.log(`${FETCH_USERS_POLLS_URL}/${id}`);
+
+    return await apiClient.get(`${FETCH_USERS_POLLS_URL}/${id}`)
 }

@@ -18,7 +18,7 @@ const RightSideBar: FC = () => {
    };
 
    return (
-      <div className="bg-gray-50 h-full w-80 hidden fixed top-0 right-0 sm:flex flex-col  shadow-lg">
+      <div className="bg-gray-50 mt-8 h-full w-80 hidden fixed top-0 right-0 sm:flex flex-col  shadow-lg">
          <div className="p-4">
             <Searchbox />
          </div>

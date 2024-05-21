@@ -5,6 +5,7 @@ import { emailSchema } from "../../schemas/SignupSchema";
 import { forgotPasswordSendEmail } from "../../service/api";
 import toast from "react-hot-toast";
 import LoadingButton from "../loading/LoadingButton";
+import { Link } from "react-router-dom";
 
 const ForgotPassword: FC = () => {
    const [loading, setLoading] = useState(false);
@@ -25,16 +26,17 @@ const ForgotPassword: FC = () => {
       });
    };
    return (
-      <div className="flex w-full   overflow-auto">
-         <AuthBody />
-         <div className="forgot-password-container flex flex-col items-center mt-32  h-screen">
-            <h2 className="text-2xl font-medium text-gray-800">Don't worry, we've got you covered!</h2>
-            <p className="text-gray-600 mt-4 text-center">
+      <div className="flex flex-col md:flex-row w-full overflow-auto">
+         <div className="w-full md:w-1/2 mb-8 md:mb-0">
+            <img src="images/front-image.png" className="mt-12 mx-auto md:mt-24" alt="" />
+         </div>
+         <div className="forgot-password-container flex flex-col items-center w-full md:w-1/2 mt-8 md:mt-32">
+            <h2 className="text-xl md:text-2xl font-medium text-gray-800 text-center mb-4">Don't worry, we've got you covered!</h2>
+            <p className="text-gray-600 text-center px-4 md:px-0">
                It happens to the best of us. Enter your email address below, and we'll send you a confirmation email to reset your password.
             </p>
-
             <Formik initialValues={{ email: "" }} onSubmit={handleSubmit} validationSchema={emailSchema}>
-               <Form className="p-8  w-96">
+               <Form className="p-4 md:p-8 w-full max-w-md">
                   <div className="flex flex-col space-y-2">
                      <label htmlFor="email" className="text-sm font-medium text-gray-700">
                         Email Address:
@@ -49,7 +51,7 @@ const ForgotPassword: FC = () => {
                   {loading ? (
                      <LoadingButton />
                   ) : (
-                     <button type="submit" className="mt-4 w-32 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-700">
+                     <button type="submit" className="mt-4 w-full md:w-32 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-700">
                         Continue
                      </button>
                   )}

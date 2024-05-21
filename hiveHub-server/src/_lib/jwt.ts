@@ -14,7 +14,7 @@ export const genereateToken = (payload: any) => {
 
     return jwt.sign(payload, secret, {
       algorithm: "HS256",
-      expiresIn: 60 * 60,
+      expiresIn: 60 * 60 * 24,
     });
   } catch (error: any) {
     throw new Error(error.message);

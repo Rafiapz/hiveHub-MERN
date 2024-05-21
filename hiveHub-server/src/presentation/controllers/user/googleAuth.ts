@@ -48,7 +48,6 @@ export const googleAuthController = (dependencies: IDependencies) => {
                         fullName: googleData.name,
                         isActive: true,
                         profilePhoto: googleData.picture,
-                        username: googleData.name,
                         password: googleData.sub
 
                     }
@@ -59,7 +58,7 @@ export const googleAuthController = (dependencies: IDependencies) => {
 
                         const token = genereateToken({ id: newUser._id, email: newUser?.email })
 
-                        res.cookie('usre_token', token, { maxAge: 1000 * 60 * 60, httpOnly: true })
+                        res.cookie('usre_token', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true })
                         res.json({ status: 'ok', userData: newUser }).status(200)
                     }
                 }

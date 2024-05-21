@@ -14,7 +14,6 @@ export interface UserEntity {
     coverPhoto?: string,
     email: string,
     password: string,
-    username: string,
     role?: string,
     isActive: boolean
     isVerified: boolean

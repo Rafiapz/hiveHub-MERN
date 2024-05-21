@@ -99,11 +99,11 @@ const Poll = () => {
    };
 
    return (
-      <div className="ml-80 overflow-hidden">
+      <div className="flex flex-col items-center overflow-hidden">
          {polls?.map((ob: any, i: number) => (
             <div
                key={ob?._id}
-               className="bg-white w-2/3 ml-10 p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 relative"
+               className="bg-white w-full sm:w-[800px] p-6 sm:p-8 rounded-lg shadow-md mx-auto mt-2  hover:shadow-lg transition-shadow duration-300 "
             >
                <div className="flex items-center mb-4">
                   <img src={ob?.userId?.profilePhoto} className="w-8 h-8 rounded-full mr-2 object-cover" />
@@ -279,8 +279,8 @@ const Poll = () => {
                               className="flex items-center mb-2  overflow-hidden"
                               onClick={() => handleVote(ob?._id, option?.option, option?.id)}
                            >
-                              <div className="w-full relative">
-                                 <div className="absolute inset-0 flex items-center">
+                              <div className="w-full ">
+                                 <div className=" inset-0 flex items-center">
                                     <span className="font-semibold text-gray-950 ml-4">{option.option}</span>
                                     <span className="text-gray-950 font-semibold ml-4">
                                        {ob?.options && ob.options.reduce((sum: number, opt: any) => sum + opt.votes, 0) !== 0

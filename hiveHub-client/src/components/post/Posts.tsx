@@ -175,7 +175,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
 
    return (
       <>
-         <div className="min w-full">
+         <div className="flex flex-col items-center overflow-hidden">
             <InfiniteScroll
                dataLength={items?.length}
                next={() => fetchMore()}
@@ -190,15 +190,16 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                   return (
                      <div
                         key={item?._id + i}
-                        className="bg-white w-2/3 ml-10 p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 relative"
+                        className="bg-white  w-full sm:w-[800px] p-6 sm:p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 "
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
-                        <div className="absolute top-2 right-2">
+                        <div className=" flex justify-end">
                            <div
                               onClick={(e) => {
-                                 e.stopPropagation(), handleOptionsClick(i);
+                                 e.stopPropagation();
+                                 handleOptionsClick(i);
                               }}
-                              className="flex gap-1 items-center justify-center w-14 h-6 rounded-full hover:bg-gray-200 cursor-pointer"
+                              className="flex gap-1 items-center  justify-center w-14 h-6 rounded-full hover:bg-gray-200 cursor-pointer"
                            >
                               <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
                               <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
@@ -206,7 +207,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                            </div>
                         </div>
 
-                        <div className="flex items-center hover:cursor-pointer">
+                        <div className="flex items-center h-10 hover:cursor-pointer">
                            <div className="w-10 h-10 rounded-full overflow-hidden mr-4">
                               <img src={item?.userId?.profilePhoto} alt="User" className="w-full h-full object-cover" />
                            </div>
@@ -229,8 +230,13 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                               </div>
                            </div>
                            {showOptions?.status && showOptions?.index === i && (
-                              <div className="absolute right-16 mt-1 z-10 w-28 bg-white border border-gray-400 shadow-lg rounded-md">
-                                 <ul className="py-1">
+                              <div
+                                 className={` left-[190px] mt-1 w-28 bg-white border border-gray-400 shadow-lg rounded-md
+                                        ${showOptions?.status && showOptions?.index === i ? "block" : "hidden"}
+                                        left-[600px] static ml-auto w-auto border-none shadow-none rounded-none
+                              `}
+                              >
+                                 <ul className="py-1 flex md:items-center">
                                     {userId === item?.userId?._id && (
                                        <>
                                           <li
@@ -247,11 +253,14 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                                                    })
                                                 )
                                              }
-                                             className="p-2 hover:bg-gray-100 cursor-pointer"
+                                             className="p-2 hover:bg-gray-100 cursor-pointer md:mr-2"
                                           >
                                              Edit
                                           </li>
-                                          <li onClick={() => handleDeletePostModal(item?._id)} className="p-2 hover:bg-gray-100 cursor-pointer">
+                                          <li
+                                             onClick={() => handleDeletePostModal(item?._id)}
+                                             className="p-2 hover:bg-gray-100 cursor-pointer md:mr-2"
+                                          >
                                              Delete
                                           </li>
                                        </>

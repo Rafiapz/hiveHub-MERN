@@ -21,6 +21,7 @@ import { AppDispatch, RootState } from "../../../store/store";
 import { fetchAllposts } from "../../../store/actions/post/postActions";
 import toast from "react-hot-toast";
 import LoadingFalBack from "../../../components/loading/LoadingFalBack";
+import Header from "../../../components/header/Header";
 
 const socket = socketService.socket;
 
@@ -99,19 +100,16 @@ const Home: FC = () => {
                <Suspense fallback={<LoadingFalBack />}>
                   <Menu />
                </Suspense>
+               <Header />
                <Suspense fallback={<LoadingFalBack />}>
-                  <div className="flex  ml-80 overflow-hidden">
-                     <Story setView={setStoryViewing} />
-                  </div>
+                  <Story setView={setStoryViewing} />
                </Suspense>
                <Suspense fallback={<LoadingFalBack />}>
                   <Poll />
                </Suspense>
                <Popup notification={notified} data={notificationData} />
                <Suspense fallback={<LoadingFalBack />}>
-                  <div className="flex  ml-80 overflow-hidden ">
-                     <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
-                  </div>
+                  <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </Suspense>
                <Suspense fallback={<LoadingFalBack />}>
                   <CreatePostModal />

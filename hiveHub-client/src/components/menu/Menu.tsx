@@ -47,16 +47,19 @@ function Menu() {
       <>
          {role === "admin" ? (
             <>
-               <div className="lg:hidden fixed top-4 right-4 z-10">
+               {/* Mobile sidebar button */}
+               <div className="fixed bottom-4 right-4  sm:hidden">
                   <button
                      onClick={toggleSidebar}
-                     className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 transition-colors duration-300"
+                     className="bg-indigo-500 text-white p-2 rounded-full hover:bg-indigo-600 transition-colors duration-300"
                   >
                      {showSidebar ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
                   </button>
                </div>
+
+               {/* Sidebar */}
                <div
-                  className={`bg-white h-full w-72 fixed flex flex-col justify-between shadow-lg transition-all duration-300 lg:translate-x-0 ${
+                  className={`bg-white h-screen w-72 fixed top-0 left-0 flex flex-col justify-between shadow-lg transition-all duration-300 lg:translate-x-0 ${
                      showSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
                   }`}
                >
@@ -68,7 +71,6 @@ function Menu() {
                         <FontAwesomeIcon icon={faChartPie} className="mr-2 text-indigo-500" />
                         Dashboard
                      </Link>
-
                      <Link
                         to="/admin/reports"
                         className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
@@ -83,7 +85,6 @@ function Menu() {
                         <FontAwesomeIcon icon={faBlog} className="mr-2 text-indigo-500" />
                         Posts
                      </Link>
-
                      <Link
                         to={"/messages"}
                         className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
@@ -91,7 +92,6 @@ function Menu() {
                         <FontAwesomeIcon icon={faCommentDots} className="mr-2 text-indigo-500" />
                         Messages
                      </Link>
-
                      <Link
                         to="/profile"
                         className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
@@ -106,16 +106,18 @@ function Menu() {
             <>
                {role === "user" && (
                   <>
-                     <div className="lg:hidden fixed top-4 right-4 z-10">
+                     <div className="sm:hidden  fixed bottom-4 right-4">
                         <button
                            onClick={toggleSidebar}
-                           className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600 transition-colors duration-300"
+                           className="text-indigo-500 border-2 border-indigo-500 p-2 rounded-full shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300"
                         >
                            {showSidebar ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
                         </button>
                      </div>
+
+                     {/* Sidebar */}
                      <div
-                        className={`bg-white h-full w-72 fixed flex flex-col justify-between shadow-lg transition-all duration-300 lg:translate-x-0 ${
+                        className={`bg-white h-screen w-72 fixed top-8 left-0 flex flex-col justify-between shadow-lg transition-all duration-300 lg:translate-x-0 ${
                            showSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
                         }`}
                      >
@@ -169,7 +171,7 @@ function Menu() {
                         <div className="p-4">
                            <button
                               onClick={() => dispatch(handleCreatePostModal())}
-                              className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 w-full rounded flex items-center justify-center transition-colors duration-300"
+                              className="bg-indigo-500 hover:bg-indigo-600 mb-8 text-white font-semibold py-2 px-4 w-full rounded flex items-center justify-center transition-colors duration-300"
                            >
                               <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
                               New Post

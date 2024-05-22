@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
 import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
 import { fetchConversations, fetchOnlineUsers, isUserBlocked, sendVideo, unblockOtherUser } from "../../service/api";
@@ -17,6 +17,7 @@ import { format } from "timeago.js";
 import socketService from "../../service/socketService";
 import { useSearchParams } from "react-router-dom";
 import { fetchuser } from "../../store/actions/auth/userActions";
+import Conversations from "./Conversations";
 const socket = socketService.socket;
 
 const MessageBox: FC = () => {
@@ -39,6 +40,7 @@ const MessageBox: FC = () => {
    const [typing, setTyping] = useState<boolean>(false);
    const [blocked, setBlocked] = useState<any>({ status: false });
    const [searchQuery] = useSearchParams();
+   const [direct, setDirect] = useState(false);
 
    const handleVideoChange = (event: any) => {
       if (event.target.files && event.target.files.length > 0) {
@@ -241,7 +243,7 @@ const MessageBox: FC = () => {
                .then((response: any) => {
                   setMessages(response?.payload?.data);
                })
-               .catch((err) => {
+               .catch(() => {
                   toast.error("Failed send");
                });
          }
@@ -366,167 +368,154 @@ const MessageBox: FC = () => {
    };
 
    return (
-      <div className="bg-white ml-0  w-full sm:w-3/5 sm:ml-72 h-96 flex flex-col">
-         <div className="flex w-full h-10 mt-5 justify-between">
-            <div className="flex items-center">
-               <h1 className="text-blue px-4 py-2 text-xl font-bold">New Message</h1>
-            </div>
-            <div className="flex items-center">
-               {/* <button className="bg-blue-700 text-white px-4 py-2 rounded mr-4">
-                  <FontAwesomeIcon icon={faVideo} className="mr-2" />
-                  Video Call
-               </button> */}
-               <button onClick={openModal} className="bg-blue-700 text-white px-4 py-2 rounded">
-                  <FontAwesomeIcon icon={faComment} className="mr-2" />
-                  new Message
-               </button>
-
-               <NewMessage
-                  modalIsOpen={modalIsOpen}
-                  closeModal={closeModal}
-                  handleFetchConversations={handleFetchConversations}
-                  handleSelectConversation={handleSelectConversation}
-                  conversations={conversations}
-                  onlineUsers={onlineUsers}
-               />
-            </div>
-         </div>
-         <div className="flex  flex-grow">
-            <div className="flex flex-col sm:w-54">
-               {conversations?.map((c: any) => (
-                  <div
-                     key={c?._id}
-                     className="user-card bg-white hover:bg-gray-100 rounded-lg shadow-md transition-colors duration-200 cursor-pointer border border-gray-200 w-64 h-24 p-4"
-                     onClick={() => handleSelectConversation(c)}
-                  >
-                     <div className="flex items-center">
-                        <div className="profile-photo mr-4">
-                           <img
-                              src={c?.members[1]?._id !== userId ? c?.members[1].profilePhoto : c?.members[0].profilePhoto}
-                              alt="Profile"
-                              className="w-14 h-14 rounded-full object-cover"
-                           />
-                        </div>
-                        <div className="flex-grow">
-                           <div className="user-name font-semibold text-gray-800">
-                              {c?.members[1]?._id !== userId ? c?.members[1].fullName : c?.members[0].fullName}
-                           </div>
-                           <div className="text-sm text-gray-500">
-                              {format(c?.updatedAt || c?.createdAt)}
-
-                              {onlineUsers.includes(c?.members[1]?._id !== userId ? c?.members[1]?._id : c?.members[0]?._id) && (
-                                 <div className="flex items-center mt-1">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 mr-1" />
-                                    <span className="text-green-500">Online</span>
-                                 </div>
-                              )}
-                           </div>
-                        </div>
-                     </div>
+      <div className="flex flex-col bg-gray-100 min-h-screen items-center overflow-hidden">
+         <div className="mt-5 w-full  h-[90vh] flex flex-col items-center overflow-hidden rounded-lg shadow-lg bg-white md:mx-auto">
+            {!direct && (
+               <div className="flex w-full h-14 mt-5 justify-between px-4  text-white">
+                  <div className="flex items-center">
+                     <h1 className="px-4 py-2 text-xl font-bold">New Message</h1>
                   </div>
-               ))}
-            </div>
 
-            {curChat ? (
-               <div className="flex flex-col  sm:w-full">
-                  <div style={{ height: "550px" }} className="bg-gray-100 ml-1 w-full p-4  flex flex-col">
-                     <div className="flex  h-30">
-                        <div className="w-10 h-14 rounded-full overflow-hidden">
-                           <img
-                              src={curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto}
-                              className="w-8 h-8 rounded-full object-cover"
-                              alt=""
-                           />
-                        </div>
-                        <div className="ml-3">
-                           <h1 className="text-lg font-semibold text-gray-800">
-                              {curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}
-                           </h1>
-                           {typing && (
-                              <p className="text-sm text-gray-500">
-                                 <span className="animate-pulse">Typing</span>
-                                 <span className="animate-pulse animation-delay-200">.</span>
-                                 <span className="animate-pulse animation-delay-400">.</span>
-                                 <span className="animate-pulse animation-delay-600">.</span>
-                              </p>
-                           )}
-                        </div>
-                     </div>
+                  <div className="flex items-center">
+                     <button onClick={openModal} className="bg-indigo-700 px-4 py-2 rounded-md flex items-center">
+                        <FontAwesomeIcon icon={faComment} className="mr-2" />
+                        <span>New Message</span>
+                     </button>
 
-                     <div className="overflow-y-auto flex-grow">
-                        {messages?.map((ob: any, i: number) => (
-                           <div key={i + "message"} ref={scrollRef}>
-                              <Chat message={ob} own={ob?.senderId === userId} playerRef={playerRef} />
-                           </div>
-                        ))}
-                     </div>
-                     {blocked?.status === true ? (
-                        <div className="bg-gray-100 p-4 rounded-md shadow-md">
-                           <div className="flex items-center justify-between mb-4">
-                              <h3 className="text-lg font-semibold text-gray-800">Blocked User</h3>
-                              {blocked?.byHim === false && (
+                     <NewMessage
+                        modalIsOpen={modalIsOpen}
+                        closeModal={closeModal}
+                        handleFetchConversations={handleFetchConversations}
+                        handleSelectConversation={handleSelectConversation}
+                        conversations={conversations}
+                        onlineUsers={onlineUsers}
+                     />
+                  </div>
+               </div>
+            )}
+            <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
+               {!direct ? (
+                  <div className="bg-gray-200 w-full  lg:w-full flex flex-col md:rounded-l-lg md:border-r border-gray-300">
+                     <Conversations
+                        conversations={conversations}
+                        handleSelectConversation={handleSelectConversation}
+                        setDirect={setDirect}
+                        userId={userId}
+                        onlineUsers={onlineUsers}
+                     />
+                  </div>
+               ) : (
+                  <div className="flex mt-4 flex-col items-center flex-grow bg-white md:rounded-r-lg">
+                     {curChat ? (
+                        <div className="flex flex-col md:w-1/2 flex-grow">
+                           <div style={{ height: "550px" }} className="bg-gray-100 p-4 flex flex-col flex-grow">
+                              <div className="flex h-14 mb-5 p-2 items-center px-4 bg-gray-500 text-white rounded-t-lg">
                                  <button
-                                    onClick={() => handleUnblockUser()}
-                                    className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                                    onClick={() => setDirect(false)}
+                                    className="mr-4 flex items-center justify-center rounded-full bg-gray-300 p-2 hover:bg-gray-400 transition-colors"
                                  >
-                                    Unblock
+                                    <FontAwesomeIcon icon={faArrowLeft} className="text-gray-800" />
                                  </button>
+                                 <div className="w-10 h-10 rounded-full overflow-hidden">
+                                    <img
+                                       src={curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto}
+                                       className="w-full h-full rounded-full object-cover"
+                                       alt=""
+                                    />
+                                 </div>
+                                 <div className="ml-3">
+                                    <h1 className="text-lg font-semibold">
+                                       {curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}
+                                    </h1>
+                                    {typing && (
+                                       <p className="text-sm">
+                                          <span className="animate-pulse">Typing</span>
+                                          <span className="animate-pulse animation-delay-200">.</span>
+                                          <span className="animate-pulse animation-delay-400">.</span>
+                                          <span className="animate-pulse animation-delay-600">.</span>
+                                       </p>
+                                    )}
+                                 </div>
+                              </div>
+
+                              <div className="overflow-y-auto flex-grow p-4">
+                                 {messages?.map((ob: any, i: number) => (
+                                    <div key={i + "message"} ref={scrollRef}>
+                                       <Chat message={ob} own={ob?.senderId === userId} playerRef={playerRef} />
+                                    </div>
+                                 ))}
+                              </div>
+                              {blocked?.status === true ? (
+                                 <div className="bg-gray-100 p-4 rounded-md shadow-md">
+                                    <div className="flex items-center justify-between mb-4">
+                                       <h3 className="text-lg font-semibold text-gray-800">Blocked User</h3>
+                                       {blocked?.byHim === false && (
+                                          <button
+                                             onClick={() => handleUnblockUser()}
+                                             className="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                                          >
+                                             Unblock
+                                          </button>
+                                       )}
+                                    </div>
+                                    {blocked?.byHim === false ? (
+                                       <p className="text-gray-600">
+                                          You have blocked this user, so you can't send them messages or view their content.
+                                       </p>
+                                    ) : (
+                                       <p> This user has blocked you. You won't be able to send them messages </p>
+                                    )}
+                                 </div>
+                              ) : (
+                                 <>
+                                    <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
+                                    <div className="flex items-center p-4">
+                                       <input
+                                          type="text"
+                                          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                          placeholder="Type your message here"
+                                          value={message}
+                                          onFocus={handleTyping}
+                                          onChange={(e) => setMessage(e.target.value)}
+                                       />
+
+                                       <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md ml-2">
+                                          😊
+                                       </button>
+                                       <div className="flex items-center bg-gray-200 ml-2 h-10 rounded-md">
+                                          <label htmlFor="image-upload" className="cursor-pointer flex px-4 items-center">
+                                             <FontAwesomeIcon icon={faFileImage} className="h-6 w-6 text-gray-800" />
+                                          </label>
+                                          <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                                       </div>
+                                       <div className="flex items-center bg-gray-200 ml-2 w-20 h-10 rounded-md">
+                                          <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
+                                             <FontAwesomeIcon icon={faVideo} className="text-gray-800 size-8 mt-4 ml-2 mr-2" />
+                                          </label>
+                                          <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
+                                       </div>
+                                       {loading ? (
+                                          <div className="pl-3">
+                                             <LoadingButton />
+                                          </div>
+                                       ) : (
+                                          <button onClick={handleSubmit} className="bg-indigo-600 text-white px-4 py-2 rounded-md ml-2">
+                                             Send
+                                          </button>
+                                       )}
+                                    </div>
+                                 </>
                               )}
                            </div>
-                           {blocked?.byHim === false ? (
-                              <p className="text-gray-600">You have blocked this user, so you can't send them messages or view their content.</p>
-                           ) : (
-                              <p> This user has blocked you. You won't be able to send them messages </p>
-                           )}
                         </div>
                      ) : (
                         <>
-                           <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
-                           <div className="flex items-center mt-4">
-                              <input
-                                 type="text"
-                                 className="w-full p-2 border border-black rounded-md focus:outline-none"
-                                 placeholder="Type your message here"
-                                 value={message}
-                                 onFocus={handleTyping}
-                                 onChange={(e) => setMessage(e.target.value)}
-                              />
-                              {/* <AudioRecorderComponent /> */}
-
-                              <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2">
-                                 😊
-                              </button>
-                              <div className="flex items-center bg-gray-400 ml-2 h-10 rounded-md ">
-                                 <label htmlFor="image-upload" className="cursor-pointer flex px-4  items-center">
-                                    <FontAwesomeIcon icon={faFileImage} className="h-6  w-6 mr-2" />
-                                 </label>
-                                 <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                              </div>
-                              <div className="flex i  tems-center bg-gray-400 ml-2 w-20 h-10 rounded-md ">
-                                 <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
-                                    <FontAwesomeIcon icon={faVideo} className="text-black size-8 mt-4 ml-2 mr-2" />
-                                 </label>
-                                 <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
-                              </div>
-                              {loading ? (
-                                 <div className="pl-3">
-                                    <LoadingButton />
-                                 </div>
-                              ) : (
-                                 <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
-                                    Send
-                                 </button>
-                              )}
-                           </div>
+                           <span className="text-5xl text-gray-400 cursor-default m-auto">Open a conversation to start a chat.</span>
                         </>
                      )}
                   </div>
-               </div>
-            ) : (
-               <>
-                  <span className=" text-5xl text-gray-300 cursor-default ">Open a conversation to start a chat.</span>
-               </>
-            )}
+               )}
+            </div>
          </div>
       </div>
    );

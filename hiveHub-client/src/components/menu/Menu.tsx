@@ -106,16 +106,15 @@ function Menu() {
             <>
                {role === "user" && (
                   <>
-                     <div className="sm:hidden  fixed bottom-4 right-4">
+                     <div className="lg:hidden fixed top-2 sm:top-1 left-0 z-10">
                         <button
                            onClick={toggleSidebar}
-                           className="text-indigo-500 border-2 border-indigo-500 p-2 rounded-full shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300"
+                           className="text-indigo-500 border-2 h-8 bg-white border-indigo-500 w-10 rounded-full shadow-lg hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300"
                         >
                            {showSidebar ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
                         </button>
                      </div>
 
-                     {/* Sidebar */}
                      <div
                         className={`bg-white h-screen w-72 fixed top-8 left-0 flex flex-col justify-between shadow-lg transition-all duration-300 lg:translate-x-0 ${
                            showSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"

@@ -85,6 +85,7 @@ function App() {
                      <Routes>
                         <Route path="/" element={userData?.role === "admin" ? <Navigate to={"/admin"} /> : <Home />} />
                         <Route path="/messages" element={<Messages />} />
+                        <Route path="/direct" />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/premium" element={<Premium />} />
                         <Route path="/polls" element={<PollPage />} />

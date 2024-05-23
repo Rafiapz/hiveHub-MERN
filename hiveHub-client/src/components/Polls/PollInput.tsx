@@ -88,7 +88,7 @@ const PollInput: FC<any> = ({ addOption }) => {
    const totalVotes = pollOptions.reduce((sum: any, option: any) => sum + option.votes, 0);
 
    return (
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg">
+      <div className="max-w-3xl mx-auto bg-white rounded-lg mt-2 shadow-lg">
          <div className="p-6 border-b border-gray-300">
             <h1 className="text-2xl font-bold text-gray-800">Create New Poll</h1>
          </div>

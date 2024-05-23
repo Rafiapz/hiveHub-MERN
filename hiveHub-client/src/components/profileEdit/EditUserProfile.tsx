@@ -138,11 +138,11 @@ function EditUserProfile() {
    };
 
    return (
-      <div className="flex justify-center mt-3 -500 gap-52">
-         <div className="flex justify-center h-screen mt-20 bg-green-300">
-            <div className="bg-white  w-full max-w-md">
+      <div className="flex flex-col md:flex-row justify-center mt-3 gap-0">
+         <div className="flex justify-center sm:justify-end  w-full md:w-1/2 md:h-screen">
+            <div className="bg-white w-full max-w-md mt-20 p-6">
                <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
-               <div className="grid grid-cols-1 ">
+               <div className="grid grid-cols-1">
                   <Formik initialValues={{ fullName: userData?.fullName }} validationSchema={fullNameSchema} onSubmit={handleFullNameSubmit}>
                      <Form>
                         <div className="flex flex-col">
@@ -215,8 +215,8 @@ function EditUserProfile() {
                </div>
             </div>
          </div>
-         <div className="flex justify-center mt-28 h-screen  bg-white">
-            <div className="bg-white  w-full max-w-md">
+         <div className="flex justify-center sm:mt-12 sm:justify-start bg-white w-full md:w-1/2 md:h-screen">
+            <div className="bg-white w-full max-w-md mt-20 p-6">
                <Formik
                   initialValues={{ password: "", oldPassword: "", confirmPassword: "" }}
                   validationSchema={passwordSchema}

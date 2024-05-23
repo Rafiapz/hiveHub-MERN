@@ -5,12 +5,13 @@ import EditUserPhotosModal from "../../../components/modal/EditUserPhotosModal";
 
 import EditUserProfile from "../../../components/profileEdit/EditUserProfile";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
+import Header from "../../../components/header/Header";
 
 const EditProfile: FC = () => {
    return (
       <>
          <Menu />
-
+         <Header />
          <EditCoverPhoto />
          <EditUserProfile />
          <EditUserPhotosModal />

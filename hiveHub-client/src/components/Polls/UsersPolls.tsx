@@ -104,14 +104,20 @@ const UsersPoll = () => {
    };
 
    return (
-      <div className="ml-80 overflow-hidden">
+      <div className="flex flex-col items-center overflow-hidden">
          {polls?.map((ob: any, i: number) => (
             <div
                key={ob?._id}
-               className="bg-white w-2/3 ml-10 p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 relative"
+               className="bg-white w-full sm:w-[800px] p-6 sm:p-8 rounded-lg shadow-md mx-auto mt-2  hover:shadow-lg transition-shadow duration-300 "
             >
                <div className="flex items-center mb-4">
                   <img src={ob?.userId?.profilePhoto} className="w-8 h-8 rounded-full mr-2 object-cover" />
+                  {ob?.userId?.premium && (
+                     <svg className="fill-current mr-2 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                        <circle cx="8" cy="8" r="8" fill="" />
+                        <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
+                     </svg>
+                  )}
                   <div className="flex flex-col">
                      <span className="text-gray-700 font-semibold">{ob?.userId?.fullName}</span>
                      <p className="text-sm text-gray-500">{format(ob?.createdAt || Date.now())}</p>
@@ -278,8 +284,8 @@ const UsersPoll = () => {
                               className="flex items-center mb-2  overflow-hidden"
                               onClick={() => handleVote(ob?._id, option?.option, option?.id)}
                            >
-                              <div className="w-full relative">
-                                 <div className="absolute inset-0 flex items-center">
+                              <div className="w-full ">
+                                 <div className=" inset-0 flex items-center">
                                     <span className="font-semibold text-gray-950 ml-4">{option.option}</span>
                                     <span className="text-gray-950 font-semibold ml-4">
                                        {ob?.options && ob.options.reduce((sum: number, opt: any) => sum + opt.votes, 0) !== 0

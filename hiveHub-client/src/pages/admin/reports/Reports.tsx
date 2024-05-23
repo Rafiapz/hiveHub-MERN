@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "../../../store/store";
 import ViewReport from "../../../components/modal/ViewReport";
 import { rejectReport, resolveReport } from "../../../service/api";
 import toast from "react-hot-toast";
+import Header from "../../../components/header/Header";
 
 const Reports: FC = () => {
    const reports: any = useSelector((state: RootState) => state?.admin?.reports?.data);
@@ -53,7 +54,8 @@ const Reports: FC = () => {
    return (
       <>
          <Menu />
-         <div style={{ width: "900px" }} className="container ml-72 mx-auto px-4 py-8">
+         <Header />
+         <div className="container max-w-[800px] mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">Reports</h1>
             <div className="bg-white rounded-lg shadow-md overflow-x-auto">
                <table className="w-full table-auto">

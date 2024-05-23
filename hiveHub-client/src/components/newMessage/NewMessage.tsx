@@ -78,7 +78,7 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
       <Modal
          appElement={document.getElementById("root") as HTMLElement}
          overlayClassName="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-         className="modal-content bg-white rounded-lg shadow-xl w-1/3 h-2/3 max-h-screen"
+         className="modal-content bg-white  h-[500px] rounded-lg shadow-xl  min-w-3/4 w-[550px]  "
          isOpen={modalIsOpen}
          onRequestClose={closeModal}
          contentLabel="Report Post Modal"
@@ -86,7 +86,7 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
          <div className="p-6 flex flex-col h-full">
             <div className="mb-4">
                <div className="flex items-center justify-between border-b pb-4">
-                  <h2 className="text-xl font-semibold ml-40 text-gray-800">New Message</h2>
+                  <h2 className="text-xl font-semibold text-gray-800">New Message</h2>
                   <button className="text-gray-600 hover:text-gray-800 focus:outline-none" onClick={handleCloseModal}>
                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -109,12 +109,9 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
                </div>
             </div>
             <div className="flex-grow overflow-y-auto">
-               <div className="flex flex-wrap">
+               <div className="grid grid-cols-1  gap-4">
                   {suggestions?.map((user: any) => (
-                     <div
-                        key={user?._id}
-                        className="user-card bg-white rounded-lg w-full shadow-md p-3 m-4 h-24 hover:shadow-lg transition-shadow duration-300"
-                     >
+                     <div key={user?._id} className="user-card bg-white rounded-lg shadow-md p-3 h-24 hover:shadow-lg transition-shadow duration-300">
                         <div className="flex items-center mb-4">
                            <div className="profile-photo mr-4 hover:cursor-pointer" onClick={() => handleClick(user?._id)}>
                               <img src={user?.profilePhoto} alt="Profile" className="w-16 h-16 rounded-full object-cover" />

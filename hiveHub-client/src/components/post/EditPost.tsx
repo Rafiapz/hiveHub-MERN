@@ -111,39 +111,44 @@ const EditPost: FC<any> = ({ setItems }) => {
    };
 
    return (
-      <div className=" bg-gray-200 w-full  mt-2 p-4 shadow-lg mx-auto">
-         <div className="flex gap-3">
-            <label htmlFor="image-upload" className="cursor-pointer mb-4 flex items-center">
+      <div className="bg-gray-200 w-full mt-2 p-4 shadow-lg mx-auto">
+         <div className="md:flex gap-3 flex-wrap">
+            <label htmlFor="image-upload" className="cursor-pointer mb-4 md:mb-0 flex items-center">
                <FontAwesomeIcon icon={faImage} className="text-blue-500 mr-2" />
                Upload Photo
             </label>
             <input id="image-upload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-            <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
+            <label htmlFor="video-upload" className="cursor-pointer mb-4 md:mb-0 flex items-center">
                <FontAwesomeIcon icon={faVideo} className="text-blue-500 mr-2" />
                Upload Video
             </label>
             <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
          </div>
-         <div className="flex  border border-gray-300 border-dashed p-4 text-center mb-4">
+         <div className="flex flex-wrap border border-gray-300 border-dashed p-4 text-center mb-4">
             {imageUrl && (
-               <div>
-                  <img src={imageUrl} alt="Uploaded" className="max-w-60 max-h-60 p-1" />
-                  <i onClick={() => setImageUrl("")} className="fa-regular fa-circle-xmark fa-2x"></i>
+               <div className="mr-4 mb-4 relative">
+                  <img src={imageUrl} alt="Uploaded" className="sm:w-96 sm:h-60 w-full max-h-96 p-1" />
+                  <i
+                     onClick={() => setImageUrl("")}
+                     className="fa-regular fa-circle-xmark fa-2x absolute top-0 right-0 text-red-500 cursor-pointer"
+                  ></i>
                </div>
             )}
             {thumbnail && (
-               <div>
+               <div className="mr-4 mb-4 relative">
                   <img
                      src="https://raw.githubusercontent.com/github/explore/43b2caff479914f066fd7761bf9c83adf2666c4e/topics/video/video.png"
                      alt="Uploaded"
-                     className="max-w-60 max-h-40 p-1"
+                     className="max-w-72 max-h-40 p-1 object-cover"
                   />
-                  <i onClick={() => setThumbnail("")} className="fa-regular fa-circle-xmark fa-2x"></i>
+                  <i
+                     onClick={() => setThumbnail("")}
+                     className="fa-regular fa-circle-xmark fa-2x absolute top-0 right-0 text-gray-300 cursor-pointer"
+                  ></i>
                </div>
             )}
             <p className="text-red-700">{error}</p>
          </div>
-
          <textarea
             value={content}
             onChange={handleContentChange}
@@ -151,8 +156,11 @@ const EditPost: FC<any> = ({ setItems }) => {
             className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500 mb-4"
             rows={4}
          ></textarea>
-         <div className="flex justify-end">
-            <button onClick={() => dispatch(handleEditPostModal({ status: false }))} className="bg-white text-black font-bold py-2 px-4 rounded mr-2">
+         <div className="flex justify-end md:items-center md:flex-row flex-col">
+            <button
+               onClick={() => dispatch(handleEditPostModal({ status: false }))}
+               className="bg-white text-black font-bold py-2 px-4 rounded mr-2 mb-2 md:mb-0"
+            >
                Cancel
             </button>
             <button onClick={handleSubmit} className="bg-orange-400 text-white font-bold py-2 px-4 rounded">

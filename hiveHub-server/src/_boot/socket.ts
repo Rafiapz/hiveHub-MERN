@@ -80,6 +80,7 @@ export const initializeSocketIO = (server: Server) => {
         ioInstance = io
 
         io.on('connection', (socket: Socket) => {
+            console.log('caled con');
 
             socket.on("addUser", (userId) => {
 

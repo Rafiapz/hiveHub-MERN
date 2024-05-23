@@ -71,10 +71,10 @@ const Home: FC = () => {
                <Suspense fallback={<LoadingFalBack />}>
                   <Menu />
                </Suspense>
+               <Header />
+               <div className="mt-8"></div>
                <Suspense fallback={<LoadingFalBack />}>
-                  <div className="flex  ml-80 overflow-hidden ">
-                     <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
-                  </div>
+                  <Posts openModal={openModal} openSharePostModal={openSharePostModal} />
                </Suspense>
                <Suspense fallback={<LoadingFalBack />}>
                   <CreatePostModal />

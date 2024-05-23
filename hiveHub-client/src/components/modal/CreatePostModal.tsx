@@ -15,7 +15,7 @@ function CreatePostModal() {
    return (
       <div className="fixed inset-0 z-50 flex items-center justify-center">
          <div className="fixed inset-0 bg-gray-900 opacity-50"></div>
-         <div className="bg-white p-8 rounded-lg z-50 w-1/2">
+         <div className="bg-white p-8 rounded-lg z-50 w-3/4 sm:w-1/2">
             <CreatePost />
          </div>
       </div>

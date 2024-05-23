@@ -81,12 +81,12 @@ const ViewStory: React.FC<{ modalIsOpen: boolean; closeModal: () => void }> = ({
       <Modal
          appElement={document.getElementById("root") as HTMLElement}
          overlayClassName="modal-bg-overlay"
-         className="bg-white w-1/3 py-4 shadow-xl rounded-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+         className="bg-white  py-4 shadow-xl w-4/5 sm:w-auto rounded-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
          isOpen={modalIsOpen}
          onRequestClose={closeModal}
          contentLabel="Stories"
       >
-         <div className="bg-white rounded-lg shadow-md p-4">
+         <div className="bg-white rounded-lg h-auto shadow-md p-4">
             <div className="flex items-center justify-between mb-4">
                <button
                   className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full"

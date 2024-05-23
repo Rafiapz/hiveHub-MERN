@@ -190,7 +190,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                   return (
                      <div
                         key={item?._id + i}
-                        className="bg-white  w-full sm:w-[800px] p-6 sm:p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 "
+                        className="bg-white  w-full sm:w-[800px]  border border-gray-300  p-6 sm:p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300 "
                         onClick={() => setShowOptions({ index: i, status: false })}
                      >
                         <div className=" flex justify-end">

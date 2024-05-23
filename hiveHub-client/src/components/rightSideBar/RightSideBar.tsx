@@ -18,13 +18,13 @@ const RightSideBar: FC = () => {
    };
 
    return (
-      <div className="bg-gray-50 mt-8 h-full w-80 hidden fixed top-0 right-0 sm:flex flex-col  shadow-lg">
+      <div className="hidden md:flex bg-gray-50 mt-8 h-full w-full fixed top-0 right-0 sm:w-80 flex-col shadow-lg">
          <div className="p-4">
             <Searchbox />
          </div>
          <Users />
          {pathname === "/edit-profile" && (
-            <div className="flex justify-end pr-4 pb-4">
+            <div className="flex justify-end items-start mb-5 p-4">
                <button onClick={() => handleLogout()} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                   Logout

@@ -125,9 +125,9 @@ const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
                   </label>
                   <input id="image-upload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                </div>
-               <div className="flex justify-center items-center border border-gray-300 border-dashed p-4 rounded-md mb-4">
+               <div className="flex justify-center  items-center border border-gray-300 border-dashed p-4 rounded-md ">
                   {imageUrl && (
-                     <div>
+                     <div className="flex flex-col">
                         <img src={imageUrl} alt="Uploaded" className="max-w-60 max-h-60 p-1" />
                         <i onClick={() => setImageUrl("")} className="fa-regular fa-circle-xmark fa-2x cursor-pointer"></i>
                      </div>

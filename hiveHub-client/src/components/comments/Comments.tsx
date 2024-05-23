@@ -191,11 +191,11 @@ const Comments: FC = () => {
    };
 
    return (
-      <div className="fixed inset-0 z-50   flex items-center justify-center ">
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
          <div className="fixed inset-0 bg-gray-900 opacity-50"></div>
-         <div className="bg-white p-8 rounded-lg z-50 w-1/3  relative">
+         <div className="bg-white p-8 rounded-lg z-50 w-full max-w-xl mx-auto relative">
             <button className="absolute top-0 right-0 m-1 text-gray-500 w-20 h-10 focus:outline-none" onClick={() => handleCloseModal()}>
-               <i className="fa-regular fa-circle-xmark fa-2x "></i>
+               <i className="fa-regular fa-circle-xmark fa-2x"></i>
             </button>
             <div className="max-w-sm mx-auto mb-4">
                <Formik initialValues={initialValues} onSubmit={handleCommentSubmit} validationSchema={commentSchema}>
@@ -265,7 +265,7 @@ const Comments: FC = () => {
                               </div>
                            </div>
                         ) : (
-                           <li key={item?._id} className="relative mb-4 px-4 py-2  rounded">
+                           <li key={item?._id} className="relative mb-4 px-4 py-2 rounded">
                               {
                                  <div className="absolute top-0 right-0 mt-2 mr-1">
                                     <div

@@ -22,8 +22,8 @@ const CoverPhoto: FC = () => {
    };
 
    return (
-      <div className="flex justify-center w-full h-64 ">
-         <div style={{ width: "800px" }} className="user-profile mt-1 bg-white rounded-lg shadow-lg h-full relative">
+      <div className="flex justify-center w-full h-64 mt-10 -z-30 ">
+         <div style={{ width: "800px" }} className="user-profile mt-1 bg-white rounded-lg shadow-lg h-4/5 sm:h-full relative">
             <div className="cover-photo mb-4 w-full h-full relative">
                <img src={userData?.coverPhoto} alt="Cover" className="rounded-lg w-full h-full object-cover" />
             </div>
@@ -41,22 +41,22 @@ const CoverPhoto: FC = () => {
                         <path d="M5.17 8.5L2.14 5.5L3.5 4.17L8.83 9.5L13.17 5.5z" fill="white" />
                      </svg>
                   )}
-                  <h1 className={userData?.premium ? "text-xl ml-4 font-bold" : "text-xl ml-40 font-bold"}>{userData?.fullName}</h1>
+                  <h1 className={userData?.premium ? "text-xl ml-4 font-bold" : "text-xl ml-14 sm:ml-40 font-bold"}>{userData?.fullName}</h1>
                </div>
-               <div className="profile-actions flex items-center space-x-2">
+               <div className="profile-actions flex  items-center space-x-2">
                   <button
                      onClick={handleEditProfile}
-                     className="edit-profile-button   text-black font-semibold border border-blue-700 py-2 px-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-pink-100"
+                     className="edit-profile-button h-12 sm:h-10 lg:h-12 text-sm sm:text-base lg:text-lg text-black font-semibold border border-blue-700 py-1 px-2 sm:py-2 sm:px-4 lg:py-3 lg:px-6 rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-pink-100"
                   >
                      Edit Profile
                   </button>
-                  <button className="share-button border border-blue-700 rounded-3xl text-black font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-200">
+                  <button className="share-button border h-12 sm:h-12 lg:h-12 text-sm sm:text-base lg:text-lg border-blue-700 rounded-3xl text-black font-semibold py-1 px-2 sm:py-2 sm:px-4 lg:py-3 lg:px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-200">
                      <FontAwesomeIcon icon={faShare} /> Share
                   </button>
                </div>
             </div>
-            <div className="profile-photo absolute top-48 left-8 ml-4 mb-8">
-               <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-28 h-28 object-cover" />
+            <div className="profile-photo absolute top-36 sm:top-48 left-8 ml-4 mb-8">
+               <img src={userData?.profilePhoto} alt="Profile" className="rounded-full w-20 h-20 sm:w-28 sm:h-28 object-cover" />
             </div>
          </div>
       </div>

@@ -19,19 +19,19 @@ const Followers: FC = () => {
    };
 
    return (
-      <div className="flex flex-col  ml-96  overflow-y-auto">
+      <div className="flex flex-col  md:ml-32 lg:ml-64 xl:ml-80 relative overflow-y-auto">
          {followers?.map((item: any) => (
-            <div key={item?._id} className="user-card bg-white rounded-lg w-72 shadow-lg p-4 m-4">
+            <div key={item?._id} className="user-card bg-white rounded-lg w-4/5 sm:w-60 md:w-72 lg:w-80 shadow-lg p-4 my-2 mx-2 sm:my-4 sm:mx-4">
                <div className="flex items-center mb-2">
                   <div className="profile-photo mr-4">
-                     <img src={item?.sourceUserId?.profilePhoto} alt="Profile" className="w-20 h-20 object-cover rounded-full" />
+                     <img src={item?.sourceUserId?.profilePhoto} alt="Profile" className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full" />
                   </div>
-                  <div className="user-name text-lg font-semibold">
+                  <div className="user-name text-base sm:text-lg font-semibold">
                      {item?.sourceUserId?.fullName}
-                     <div>
+                     <div className="mt-2 sm:mt-0">
                         <button
                            onClick={() => handleClick(item?.targetUserId?._id, item?.targetUserId?.email)}
-                           className="px-3 py-1 rounded-md text-black font-bold border border-black bg-white hover:bg-gray-200 focus:outline-none transition-colors duration-300"
+                           className="px-2 sm:px-3 py-1 rounded-md text-black font-bold border border-black bg-white hover:bg-gray-200 focus:outline-none transition-colors duration-300"
                         >
                            View
                         </button>

@@ -395,7 +395,7 @@ const MessageBox: FC = () => {
             )}
             <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
                {!direct ? (
-                  <div className="bg-gray-200 w-full  lg:w-full flex flex-col md:rounded-l-lg md:border-r border-gray-300">
+                  <div className="bg-white w-full  lg:w-full flex flex-col md:rounded-l-lg md:border-r border-gray-300">
                      <Conversations
                         conversations={conversations}
                         handleSelectConversation={handleSelectConversation}

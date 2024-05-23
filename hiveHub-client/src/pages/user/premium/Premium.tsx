@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import PremiumSuccessModal from "../../../components/modal/PremiumSuccessModal";
 import { useNavigate } from "react-router-dom";
+import Header from "../../../components/header/Header";
 
 // declare global {
 //     interface Window {
@@ -97,6 +98,7 @@ const Premium: FC = () => {
    return (
       <>
          <Menu />
+         <Header />
          {userData?.premium ? (
             <div className="mb-8 ml-96 ">
                <h2 className="text-2xl  font-bold mb-4">Welcome, {userData?.fullName}!</h2>

@@ -5,6 +5,7 @@ import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import OthersCoverPhoto from "../../../components/OthersCoverPhoto/OthersCoverPhoto";
 import UnfollowModal from "../../../components/modal/UnfollowModal";
 import { useState } from "react";
+import Header from "../../../components/header/Header";
 
 function OthersProfile() {
    const [searchQuery] = useSearchParams();
@@ -36,8 +37,9 @@ function OthersProfile() {
    return (
       <>
          <Menu />
+         <Header />
          <OthersCoverPhoto />
-         <div className="flex pl-96 pt-16 mt-8 items-center gap-11 h-32 w-full">
+         <div className="flex flex-wrap justify-center mt-20  py-4 sm:py-8">
             <Link
                onClick={() => handleClick("posts")}
                to={"/others-profile"}

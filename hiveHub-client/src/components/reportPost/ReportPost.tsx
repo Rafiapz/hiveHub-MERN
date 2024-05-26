@@ -22,7 +22,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
 
    const handleSubmit = (values: any, actions: any) => {
       const { option, otherReason } = values;
-      if (option === "other" && otherReason == "") {
+      if (option.trim() === "other" && otherReason.trim() == "") {
          setError("This field is required");
          return;
       } else {
@@ -65,7 +65,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
          <Modal
             appElement={document.getElementById("root") as HTMLElement}
             overlayClassName="modal-bg-overlay"
-            className="bg-white w-1/3 py-4 shadow-xl rounded-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            className="bg-white py-4 shadow-xl rounded-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full sm:w-1/3"
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             onAfterOpen={afterOpenModal}
@@ -75,7 +75,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
             <Formik initialValues={{ option: "", otherReason: "" }} onSubmit={handleSubmit} validationSchema={reportSchema}>
                {({ values }) => (
                   <Form>
-                     <div className="grid grid-cols-1 px-10 gap-2">
+                     <div className="px-4 md:px-10 gap-2">
                         {options.map((option, index) => (
                            <label key={index} className="flex items-center">
                               <Field
@@ -85,7 +85,6 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
                                  checked={values.option === option.value}
                                  className="form-radio h-4 w-4 text-blue-500 mr-2"
                               />
-
                               <span className="text-gray-800">{option.label}</span>
                            </label>
                         ))}

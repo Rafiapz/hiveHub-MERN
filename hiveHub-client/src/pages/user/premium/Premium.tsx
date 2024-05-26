@@ -91,7 +91,9 @@ const Premium: FC = () => {
          rzp1.open();
       } catch (error: any) {
          setIsLoading(false);
-         toast.error(error?.message);
+         console.log(error);
+
+         toast.error(error?.response?.data?.message);
       }
    };
 

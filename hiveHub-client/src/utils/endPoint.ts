@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://192.168.1.5:7700'
+export const BASE_URL = 'http://localhost:7700'
 
 export const SIGNUP_URL = '/auth/signup'
 

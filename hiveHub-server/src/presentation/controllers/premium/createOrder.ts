@@ -5,6 +5,7 @@ import { RazorpayOrderEntity } from '../../../domain/entities/razorpayOrder';
 import crypto from 'crypto'
 import Payments from '../../../infrastructure/database/models/paymentsModel';
 import { User } from '../../../infrastructure/database/models';
+import cron from 'node-cron'
 
 export const createOrderController = () => {
 
@@ -47,9 +48,16 @@ export const createOrderController = () => {
 
 
         } catch (error: any) {
-            console.log(error);
 
-            res.status(400).json({ status: 'failed', message: error?.message })
+            if (error?.code == '11000') {
+                console.log('caling in');
+
+                res.status(500).json({ status: 'failed', message: 'Something went wrong please try after 10 minutes' })
+            } else {
+                res.status(400).json({ status: 'failed', message: error?.message })
+            }
+
+
         }
     }
 }
@@ -105,3 +113,31 @@ export const paymentSuccess = () => {
         }
     }
 }
+
+const task = cron.schedule('* * * * *', async () => {
+
+    try {
+
+        let tenMinutesAgo = new Date();
+        tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
+
+        const razorpayOrder = await RazorpayOrder.find({
+            createdAt: { $lt: tenMinutesAgo }
+        });
+
+
+        razorpayOrder.forEach(async (ob: any) => {
+            await RazorpayOrder.deleteOne({ _id: ob?._id })
+
+        })
+
+
+    } catch (error) {
+        console.log(error);
+
+    }
+
+});
+
+
+task.start();

@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
 import { controllers } from '../controllers/admin'
-import { currentUser } from '../middlewares/currentUser'
+import { currentUser, isAdmin } from '../middlewares/currentUser'
 import { IAdminDependencies } from '../../application/interface/admin/IDependencies';
 import { getOnlineUsersController } from '../controllers/admin/getOnlineUsers';
 
@@ -14,11 +14,11 @@ export const adminRoutes = (dependencies: IAdminDependencies) => {
 
     const router = Router()
 
-    router.route('/find-all-users/:id').get(currentUser, findAllUsers)
+    router.route('/find-all-users/:id').get(isAdmin, findAllUsers)
 
-    router.route('/block-unblock-user').put(currentUser, blockUnblockUser)
+    router.route('/block-unblock-user').put(isAdmin, blockUnblockUser)
 
-    router.route('/get-online-users').get(currentUser, getOnlineUsersController)
+    router.route('/get-online-users').get(isAdmin, getOnlineUsersController)
 
 
 

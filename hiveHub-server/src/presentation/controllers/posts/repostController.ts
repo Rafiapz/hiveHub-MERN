@@ -4,7 +4,7 @@ import { PostEntity } from '../../../domain/entities'
 
 export const repostController = (dependencies: IPostDependencies) => {
 
-    const { postUseCases: { findOneUseCase, createPostUseCase, updatePostUseCase } } = dependencies
+    const { postUseCases: { findOneAndUpdateUseCase, createPostUseCase, updatePostUseCase } } = dependencies
 
     return async (req: Request, res: Response) => {
 
@@ -12,7 +12,7 @@ export const repostController = (dependencies: IPostDependencies) => {
 
             const postId = req?.body?.postId
 
-            const originalPost = await findOneUseCase(dependencies).execute(postId)
+            const originalPost = await findOneAndUpdateUseCase(dependencies).execute(postId)
 
             if (!originalPost) {
                 throw new Error('Unable to repost the post')

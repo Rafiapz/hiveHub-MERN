@@ -3,6 +3,7 @@ import { IPostDependencies } from "../../../application/interface/posts/IDepende
 import { Request, Response } from 'express'
 import { PostEntity } from "../../../domain/entities";
 import { ObjectId } from "mongoose";
+import { uploadToS3Bucket } from "../../../_lib/s3";
 
 export const editPostController = (dependencies: IPostDependencies) => {
 
@@ -12,10 +13,12 @@ export const editPostController = (dependencies: IPostDependencies) => {
 
         try {
 
+
+
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = getTokenPayloads(token)
-                let path = `http://localhost:7700/posts/${req?.file?.filename}`
+                let path = await uploadToS3Bucket(req.file) || ''
 
 
                 if (decoded && typeof req?.query?.postId === 'string') {

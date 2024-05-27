@@ -31,11 +31,6 @@ const Poll = () => {
 
    const handleVote = async (pollId: any, option: any, optionId: any) => {
       try {
-         // if (polls?.voters?.includes(userId)) {
-         //    toast.error("You have already voted");
-         //    return;
-         // }
-
          let flag = "ok";
 
          polls.forEach((ob: any) => {
@@ -49,8 +44,6 @@ const Poll = () => {
             toast.error("You have already voted");
             return;
          }
-
-         console.log(polls, "==", userId);
 
          const form = new FormData();
          form.append("pollId", pollId);

@@ -4,13 +4,13 @@ import Comments from "../../../components/comments/Comments";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import OthersCoverPhoto from "../../../components/OthersCoverPhoto/OthersCoverPhoto";
 import UnfollowModal from "../../../components/modal/UnfollowModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../../components/header/Header";
 
 function OthersProfile() {
    const [searchQuery] = useSearchParams();
    const [classs, setClasss] = useState({
-      posts: "font-bold underline underline-offset-2",
+      posts: "",
       following: "",
       polls: "",
       followers: "",
@@ -19,6 +19,21 @@ function OthersProfile() {
    });
 
    const target = searchQuery.get("userId");
+   const email = searchQuery.get("email");
+
+   useEffect(() => {
+      setClasss((prev) => {
+         return {
+            ...prev,
+            followers: "",
+            posts: "font-bold underline underline-offset-2",
+            polls: "",
+            following: "",
+            likes: "",
+            reports: "",
+         };
+      });
+   }, [email]);
 
    const handleClick = (position: string) => {
       setClasss((prev) => {
@@ -42,14 +57,14 @@ function OthersProfile() {
          <div className="flex flex-wrap justify-center mt-20  py-4 sm:py-8">
             <Link
                onClick={() => handleClick("posts")}
-               to={"/others-profile"}
+               to={`/others-profile?userId=${target}&email=${email}`}
                className={`px-2 py-1 ${classs.posts}   rounded-md text-black text-xl u focus:outline-none `}
             >
                Posts
             </Link>
             <Link
                onClick={() => handleClick("polls")}
-               to={`/others-profile/polls?userId=${target}`}
+               to={`/others-profile/polls?userId=${target}&email=${email}`}
                className={`px-2 py-1 ${classs.polls} rounded-md text-black text-xl u focus:outline-none `}
             >
                Polls

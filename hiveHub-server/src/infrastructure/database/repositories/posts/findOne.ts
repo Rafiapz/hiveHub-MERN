@@ -1,14 +1,13 @@
 import { Posts } from "../../models"
 
-export const findOne = async (postId: any) => {
+export const findOne = async (id: any) => {
 
     try {
 
-        const post = await Posts.findOneAndUpdate({ _id: postId }, { $inc: { shares: 1 } })
-
-        return post
+        return await Posts.findOne({ _id: id })
 
     } catch (error: any) {
         throw new Error(error)
     }
+
 }

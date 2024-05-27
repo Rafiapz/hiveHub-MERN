@@ -5,11 +5,11 @@ export const findOneUseCase = (dependencies: IPostDependencies) => {
     const { postRepositories: { findOne } } = dependencies
 
     return {
-        execute: async (postId: any) => {
+        execute: async (id: any) => {
 
             try {
 
-                return await findOne(postId)
+                return await findOne(id)
 
             } catch (error: any) {
                 throw new Error(error)

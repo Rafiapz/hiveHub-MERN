@@ -32,7 +32,7 @@ export const uploadSingleFile = (req: any, res: any, next: any) => {
       type = 'video'
 
     const upload = multer({
-      storage: storage,
+      storage: multer.memoryStorage(),
       limits: { fileSize: 10 * 1024 * 1024 },
       fileFilter: fileFilter
     }).single(type);

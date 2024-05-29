@@ -1,3 +1,4 @@
+import { getObjectSignedUrl } from "../../../_lib/s3"
 import { IDependencies } from "../../../application/interface/user/IDependencies"
 import { Request, Response } from 'express'
 
@@ -13,6 +14,15 @@ export const findAllUsersController = (dependencies: IDependencies) => {
             const userId = (user as any)?.id;
 
             const allUsers = await findAllUsersUseCase(dependencies).execute(userId)
+
+            if (allUsers) {
+
+                for (let user of allUsers) {
+                    user.profilePhoto = await getObjectSignedUrl(user?.profilePhoto || '')
+                    user.coverPhoto = await getObjectSignedUrl(user?.coverPhoto || '')
+                }
+
+            }
 
             res.status(200).json({ status: 'ok', data: allUsers })
 

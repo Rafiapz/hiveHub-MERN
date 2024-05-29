@@ -39,7 +39,7 @@ function EditUserProfile() {
 
    useEffect(() => {
       dispatch(fetchuser());
-   });
+   }, []);
 
    const handleFullNameSubmit = (values: any) => {
       const { fullName } = values;

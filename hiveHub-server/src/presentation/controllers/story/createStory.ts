@@ -1,6 +1,7 @@
 import { IStoryDependencies } from "../../../application/interface/story/IDependencies";
 import { Request, Response } from 'express'
 import { StoryEntity } from "../../../domain/entities/storyEntity";
+import { uploadToS3Bucket } from "../../../_lib/s3";
 
 export const createStoryController = (dependencies: IStoryDependencies) => {
 
@@ -10,8 +11,7 @@ export const createStoryController = (dependencies: IStoryDependencies) => {
 
         try {
 
-
-            const path = `http://localhost:7700/posts/${req?.file?.filename}`
+            const path = await uploadToS3Bucket(req.file) || ''
 
             const data: StoryEntity = {
                 userId: req?.body?.userId,

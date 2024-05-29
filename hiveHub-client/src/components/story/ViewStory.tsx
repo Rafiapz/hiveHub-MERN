@@ -77,6 +77,8 @@ const ViewStory: React.FC<{ modalIsOpen: boolean; closeModal: () => void }> = ({
          });
    };
 
+   console.log(currentStory?.media[currentImageIndex], "image");
+
    return (
       <Modal
          appElement={document.getElementById("root") as HTMLElement}

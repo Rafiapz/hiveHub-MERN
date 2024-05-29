@@ -26,11 +26,15 @@ export const fetchAllposts = (dependencies: IPostDependencies) => {
             const { posts, likes } = await findAllPostsUseCase(dependencies).execute(data);
 
             for (let post of posts) {
-                post.media.path = await getObjectSignedUrl(post.media.path);
+                post.media.path = await getObjectSignedUrl(post?.media?.path);
+                post.userId.profilePhoto = await getObjectSignedUrl(post?.userId?.profilePhoto)
             }
+
 
             res.status(200).json({ status: "ok", message: "success", data: { posts, likes } });
         } catch (error: any) {
+            console.log(error);
+
             res.status(error?.status || 500).json({ status: "failed", message: error.message });
         }
     };

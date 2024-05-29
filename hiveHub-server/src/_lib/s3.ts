@@ -41,22 +41,25 @@ export const uploadToS3Bucket = async (file: any) => {
 };
 
 export const getObjectSignedUrl = async (key: string) => {
-    try {
-        const bucketName = process.env?.AWS_S3_BUCKET_NAME;
 
-        const params = {
-            Bucket: bucketName,
-            Key: key,
-        };
 
-        const command = new GetObjectCommand(params);
-        const seconds = 60 * 60 * 60;
-        const url = await getSignedUrl(s3, command, { expiresIn: seconds });
-
-        return url;
-    } catch (error) {
-        console.log(error);
+    if (!key) {
+        throw new Error('No key found')
     }
+
+    const bucketName = process.env?.AWS_S3_BUCKET_NAME;
+
+    const params = {
+        Bucket: bucketName,
+        Key: key,
+    };
+
+    const command = new GetObjectCommand(params);
+    const seconds = 60 * 60 * 60;
+    const url = await getSignedUrl(s3, command, { expiresIn: seconds });
+
+    return url;
+
 }
 
 export const deleteFile = (fileName: any) => {
@@ -67,3 +70,5 @@ export const deleteFile = (fileName: any) => {
 
     return s3.send(new DeleteObjectCommand(deleteParams));
 };
+
+

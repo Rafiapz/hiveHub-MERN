@@ -18,53 +18,11 @@ const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
 
    const dispatch = useDispatch<AppDispatch>();
 
-   const resizeFile = (file: any) =>
-      new Promise((resolve) => {
-         Resizer.imageFileResizer(
-            file,
-            500,
-            300,
-            "JPEG",
-            100,
-            0,
-            (uri) => {
-               resolve(dataURItoFile(uri, "resized_image.jpg"));
-            },
-            "base64",
-            200,
-            200
-         );
-      });
-
-   // Function to convert base64 string to Blob
-   const dataURItoBlob = (dataURI: any) => {
-      const byteString = atob(dataURI.split(",")[1]);
-      const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-         ia[i] = byteString.charCodeAt(i);
-      }
-      return new Blob([ab], { type: mimeString });
-   };
-
-   // Function to convert Blob to File
-   const dataURItoFile = (dataURI: any, fileName: any) => {
-      const blob = dataURItoBlob(dataURI);
-      return new File([blob], fileName, { type: blob.type });
-   };
-
    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
 
       if (file) {
-         console.log("file", file);
-
-         const resizedImage: any = await resizeFile(file);
-
-         console.log(resizedImage, "resed");
-
-         setImage(resizedImage);
+         setImage(file);
          if (!["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
             setError("Please select a valid image file (JPEG, PNG, GIF)");
             return;

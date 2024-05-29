@@ -1,4 +1,5 @@
 import { verifyToken } from "../../../_lib/jwt";
+import { getObjectSignedUrl } from "../../../_lib/s3";
 import { IDependencies } from "../../../application/interface/user/IDependencies";
 import { Request, Response } from 'express'
 
@@ -20,7 +21,13 @@ export const fetchUserController = (dependencies: IDependencies) => {
 
                     const id = authorized.id
 
-                    const userData = await findOneUserByIdUseCase(dependencies).execute(id)
+                    let userData = await findOneUserByIdUseCase(dependencies).execute(id)
+
+                    if (userData) {
+                        userData.profilePhoto = await getObjectSignedUrl(userData?.profilePhoto || '')
+                        userData.coverPhoto = await getObjectSignedUrl(userData?.coverPhoto || '')
+                    }
+
                     res.json({ status: 'ok', userData })
                 } else {
                     throw new Error('User not authorized')

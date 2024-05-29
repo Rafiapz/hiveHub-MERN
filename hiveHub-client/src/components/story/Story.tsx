@@ -70,7 +70,11 @@ const Story: FC<any> = ({ setView }: any) => {
                      >
                         <div className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300">
                            {myStories?.length <= 0 || myStories?.[0]?.media.length <= 0 ? (
-                              <img className="h-14 w-14 sm:w-24 sm:h-24 rounded-full " src="https://i.ibb.co/yhh0Ljy/profile.jpg" alt="image" />
+                              <img
+                                 className="h-10 w-14 sm:w-24 sm:h-20 rounded-full object-cover "
+                                 src="https://i.ibb.co/yhh0Ljy/profile.jpg"
+                                 alt="image"
+                              />
                            ) : (
                               <img
                                  className="h-10 w-14 sm:w-24 sm:h-20 rounded-full object-cover"

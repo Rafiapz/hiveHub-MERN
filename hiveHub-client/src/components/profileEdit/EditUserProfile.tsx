@@ -6,7 +6,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { emailSchema, fullNameSchema, passwordSchema } from "../../schemas/SignupSchema";
 import toast from "react-hot-toast";
 import OtpInput from "react-otp-input";
-import EditEmailCountdown from "../CountdownTimer/EditEmailCountdown";
+import EditEmailCountdown from "../CountdownTimerrr/EditEmailCountdown";
 import { verifyEmailUpdateOtp } from "../../service/api";
 
 function EditUserProfile() {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OtpInput from "react-otp-input";
-import CountdownTimer from "../CountdownTimer/CountdownTimer";
+import CountdownTimer from "../CountdownTimerrr/CountdownTimer";
 import { useDispatch } from "react-redux";
 import { otpVerification } from "../../store/actions/auth/userActions";
 import { AppDispatch } from "../../store/store";

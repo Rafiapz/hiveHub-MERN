@@ -1,5 +1,3 @@
-import React from "react";
-
 const AdminCard = () => {
    return (
       <div className="flex">

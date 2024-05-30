@@ -18,7 +18,7 @@ import {
     RESEND_OTP_URL,
     SIGNUP_URL,
 } from "../../../utils/endPoint";
-import cookie from 'js-cookie'
+
 
 export const signupAction = createAsyncThunk("/signup", async (userCredentials: IUserSignupdata, { }) => {
     try {

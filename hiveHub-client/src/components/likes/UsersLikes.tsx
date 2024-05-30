@@ -1,5 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
-import Posts from "../post/Posts";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
@@ -10,10 +9,10 @@ import {
    fetchUsersPost,
    likePostAction,
 } from "../../store/actions/post/postActions";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCommentModal, handleEditPostModal, handleReportPostId, setSharePost } from "../../store/slices/posts/postSlice";
+import { handleCommentModal, handleEditPostModal, setSharePost } from "../../store/slices/posts/postSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faComment, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
 import { format } from "timeago.js";
@@ -26,17 +25,17 @@ const UsersLikes: FC = () => {
 
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    const [curPostId, setCurPostId] = useState<number | null>();
-   const [hasMore, setHasMore] = useState<boolean>(true);
+   // const [hasMore, setHasMore] = useState<boolean>(true);
    // const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
    // const posts: any = useSelector((state: RootState) => state.posts.posts.data);
-   const [page, setPage] = useState<number>(1);
-   const [items, setItems] = useState<any>(posts);
+   const [page] = useState<number>(1);
+   const [_, setItems] = useState<any>(posts);
 
    useEffect(() => {
       dispatch(fetchUsersLikedPosts());
    }, []);
 
-   const navigate = useNavigate();
+   // const navigate = useNavigate();
 
    useEffect(() => {
       dispatch(fetchAllposts({ page })).then((response) => {
@@ -107,7 +106,7 @@ const UsersLikes: FC = () => {
    };
 
    const handleLikePost = (id: number) => {
-      dispatch(likePostAction(id)).then((response) => {
+      dispatch(likePostAction(id)).then(() => {
          dispatch(fetchUsersLikedPosts());
       });
    };
@@ -124,9 +123,9 @@ const UsersLikes: FC = () => {
       });
    };
 
-   const viewOthersProfile = (id: number, email: string) => {
-      navigate(`/others-profile?userId=${id}&email=${email}`);
-   };
+   // const viewOthersProfile = (id: number, email: string) => {
+   //    navigate(`/others-profile?userId=${id}&email=${email}`);
+   // };
 
    const handleSharePost = (post: any) => {
       dispatch(setSharePost({ data: post }));

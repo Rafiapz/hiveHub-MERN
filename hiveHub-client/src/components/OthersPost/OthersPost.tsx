@@ -1,22 +1,20 @@
 import { FC, useEffect, useState } from "react";
-import Loading from "../loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faComment, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
 import { fetchAllCommentsOfPost, fetchUsersPost, likePostAction } from "../../store/actions/post/postActions";
-import { handleCommentModal, handleReportPostId } from "../../store/slices/posts/postSlice";
+import { handleCommentModal } from "../../store/slices/posts/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { useSearchParams } from "react-router-dom";
 
-const OthersPost: FC<any> = ({ openModal }) => {
+const OthersPost: FC<any> = ({}) => {
    const dispatch = useDispatch<AppDispatch>();
-   const loading = useSelector((state: RootState) => state.posts.posts.loading);
    const likes: any = useSelector((state: RootState) => state?.posts?.ownPost?.likes);
    const posts: any = useSelector((state: RootState) => state.posts?.ownPost?.data);
    const userId: any = useSelector((state: RootState) => state.user.user.userId);
-   const [blocked, setBlocked] = useState<any>({ status: false });
+   const [__, setBlocked] = useState<any>({ status: false });
 
-   const [showOptions, setShowOptions] = useState<{
+   const [_, setShowOptions] = useState<{
       status: boolean;
       index: number;
    }>({ status: false, index: 0 });
@@ -38,21 +36,21 @@ const OthersPost: FC<any> = ({ openModal }) => {
       });
    }, [target]);
 
-   const handleOptionsClick = (index: number) => {
-      setShowOptions((prev) => {
-         if (index == prev.index) {
-            return {
-               index: index,
-               status: !prev.status,
-            };
-         } else {
-            return {
-               index: index,
-               status: true,
-            };
-         }
-      });
-   };
+   // const handleOptionsClick = (index: number) => {
+   //    setShowOptions((prev) => {
+   //       if (index == prev.index) {
+   //          return {
+   //             index: index,
+   //             status: !prev.status,
+   //          };
+   //       } else {
+   //          return {
+   //             index: index,
+   //             status: true,
+   //          };
+   //       }
+   //    });
+   // };
 
    const handleLikePost = (id: number) => {
       dispatch(likePostAction(id)).then(() => {

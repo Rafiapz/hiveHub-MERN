@@ -1,5 +1,4 @@
-import React, { FC, useState } from "react";
-import axios from "axios";
+import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { repostPost } from "../../service/api";
@@ -21,7 +20,7 @@ const SharePost: FC<any> = ({ modalIsOpen, closeModal }) => {
          const response = await repostPost(form);
          if (response?.data?.status === "ok") {
             toast.success("Successfully shared the post");
-            dispatch(fetchAllposts());
+            dispatch(fetchAllposts({}));
          }
       } catch (error) {
          toast.error("Failed to share the post");

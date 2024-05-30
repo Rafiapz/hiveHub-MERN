@@ -7,13 +7,12 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchAllStories } from "../../store/actions/post/postActions";
-import Resizer from "react-image-file-resizer";
 
 const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
    const [imageUrl, setImageUrl] = useState<string>("");
-   const [error, setError] = useState<string>("");
-   const [content, setContent] = useState<string>("");
+   const [_, setError] = useState<string>("");
+   // const [content, setContent] = useState<string>("");
    const [image, setImage] = useState<File | null>(null);
 
    const dispatch = useDispatch<AppDispatch>();

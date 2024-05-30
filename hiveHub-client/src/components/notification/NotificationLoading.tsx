@@ -1,5 +1,3 @@
-import React from "react";
-
 function NotificationLoading() {
    return (
       <div className="flex flex-wrap justify-center">

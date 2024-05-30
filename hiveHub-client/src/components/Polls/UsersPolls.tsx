@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Menu from "../menu/Menu";
-import RightSideBar from "../rightSideBar/RightSideBar";
-import PollInput from "./PollInput";
-import { deletePoll, editPoll, fetchAllPolls, fetchUsersPolls, pollVote } from "../../service/api";
+import { useEffect, useState } from "react";
+import { deletePoll, editPoll, fetchUsersPolls, pollVote } from "../../service/api";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -55,7 +52,7 @@ const UsersPoll = () => {
          form.append("option", option);
          form.append("optionId", optionId);
          form.append("userId", userId);
-         const response = await pollVote(form);
+         await pollVote(form);
          toast.success("Success");
          fetchPolls();
       } catch (error) {
@@ -199,7 +196,7 @@ const UsersPoll = () => {
                                  Options
                               </label>
                               <FieldArray name="options">
-                                 {({ remove, push }) => (
+                                 {({ remove }) => (
                                     <div>
                                        {values && values.options && values?.options?.length > 0 ? (
                                           values?.options?.map((option: any, index: number) => (

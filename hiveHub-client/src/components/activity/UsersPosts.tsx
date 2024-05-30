@@ -2,13 +2,12 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePostAction, fetchAllCommentsOfPost, fetchAllposts, fetchUsersPost, likePostAction } from "../../store/actions/post/postActions";
 import { AppDispatch, RootState } from "../../store/store";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
 import { handleCommentModal, handleEditPostModal } from "../../store/slices/posts/postSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark, faComment, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
-import EditPostModal from "../modal/EditPostModal";
+import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { format } from "timeago.js";
 
@@ -19,9 +18,7 @@ const UserPosts: FC = () => {
 
    const likes: any = useSelector((state: RootState) => state?.posts?.ownPost?.likes);
    const posts: any = useSelector((state: RootState) => state.posts.ownPost.data);
-   const [page, setPage] = useState<number>(1);
-
-   const navigate = useNavigate();
+   const [page] = useState<number>(1);
 
    useEffect(() => {
       dispatch(fetchUsersPost({ target: userId, id: userId }));
@@ -91,7 +88,7 @@ const UserPosts: FC = () => {
          if (pathname === "/profile") {
             dispatch(fetchUsersPost(userId));
          } else {
-            const post = response?.payload?.post;
+            response?.payload?.post;
             dispatch(fetchAllposts({ page })).then(() => {});
          }
       });
@@ -109,9 +106,9 @@ const UserPosts: FC = () => {
       });
    };
 
-   const viewOthersProfile = (id: number, email: string) => {
-      navigate(`/others-profile?userId=${id}&email=${email}`);
-   };
+   // const viewOthersProfile = (id: number, email: string) => {
+   //    navigate(`/others-profile?userId=${id}&email=${email}`);
+   // };
 
    // const handleSharePost = (post: any) => {
    //    dispatch(setSharePost({ data: post }));

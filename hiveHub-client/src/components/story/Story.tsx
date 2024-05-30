@@ -1,6 +1,4 @@
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import AddStory from "../addStory/AddStory";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";

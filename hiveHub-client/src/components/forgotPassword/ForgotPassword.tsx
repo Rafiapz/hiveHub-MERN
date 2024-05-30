@@ -1,15 +1,13 @@
 import { FC, useState } from "react";
-import AuthBody from "../authBody/AuthBody";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { emailSchema } from "../../schemas/SignupSchema";
 import { forgotPasswordSendEmail } from "../../service/api";
 import toast from "react-hot-toast";
 import LoadingButton from "../loading/LoadingButton";
-import { Link } from "react-router-dom";
 
 const ForgotPassword: FC = () => {
    const [loading, setLoading] = useState(false);
-   const handleSubmit = (values: { email: string }, { resetForm }: any) => {
+   const handleSubmit = (values: { email: string }) => {
       setLoading(true);
       const { email } = values;
       forgotPasswordSendEmail(email).then((response: any) => {

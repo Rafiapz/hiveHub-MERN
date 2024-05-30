@@ -10,16 +10,11 @@ const Comments = lazy(() => import("../../../components/comments/Comments"));
 const ReportPost = lazy(() => import("../../../components/reportPost/ReportPost"));
 const ViewStory = lazy(() => import("../../../components/story/ViewStory"));
 const SharePost = lazy(() => import("../../../components/share/SharePost"));
-const PostLikesModal = lazy(() => import("../../../components/modal/PostLikesModal"));
 const Poll = lazy(() => import("../../../components/Polls/Poll"));
 import Popup from "../../../components/notification/Popup";
-import Loading from "../../../components/loading/Loading";
-
 import socketService from "../../../service/socketService";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/store";
-import { fetchAllposts } from "../../../store/actions/post/postActions";
-import toast from "react-hot-toast";
+import {  useSelector } from "react-redux";
+import {  RootState } from "../../../store/store";
 import LoadingFalBack from "../../../components/loading/LoadingFalBack";
 import Header from "../../../components/header/Header";
 
@@ -43,7 +38,7 @@ const Home: FC = () => {
       });
    }, [socket]);
 
-   const dispatch = useDispatch<AppDispatch>();
+   // const dispatch = useDispatch<AppDispatch>();
 
    const openModal = () => {
       setIsOpen(true);

@@ -1,15 +1,15 @@
-import axios, { AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE_URL } from "./endPoint";
 
 
 const apiClient = axios.create({
     baseURL: BASE_URL,
-    withCredentials:true
+    withCredentials: true
 })
 
 apiClient.interceptors.request.use((config) => {
 
-    
+
     return config
 },
     (error: AxiosError) => {
@@ -19,11 +19,11 @@ apiClient.interceptors.request.use((config) => {
 
 )
 
-apiClient.interceptors.response.use((response)=>{
+apiClient.interceptors.response.use((response) => {
 
     return response
 },
-    (error:AxiosError)=>{
+    (error: AxiosError) => {
         return Promise.reject(error)
     }
 )

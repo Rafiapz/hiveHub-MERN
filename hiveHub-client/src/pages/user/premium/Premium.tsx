@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import  { FC, useState } from "react";
 import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import { createPayment, premiumOrder, validateOrder } from "../../../service/api";
@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import PremiumSuccessModal from "../../../components/modal/PremiumSuccessModal";
-import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header/Header";
 
 // declare global {
@@ -25,7 +24,7 @@ const Premium: FC = () => {
       setModalIsOpen(false);
    };
 
-   const navigate = useNavigate();
+   // const navigate = useNavigate();
 
    const handleOrder = async () => {
       try {
@@ -55,7 +54,7 @@ const Premium: FC = () => {
                form.append("razorpay_signature", response?.razorpay_signature);
 
                validateOrder(form)
-                  .then((res) => {
+                  .then(() => {
                      const form = new FormData();
                      form.append("paymentId", response?.razorpay_payment_id);
                      form.append("orderId", response?.razorpay_order_id);

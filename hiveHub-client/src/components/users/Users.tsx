@@ -29,9 +29,9 @@ const Users: FC = () => {
       navigate(`/others-profile?userId=${id}&email=${email}`);
    };
 
-   const handleMeessageClick = (id: number) => {
-      navigate(`/messages?userId=${id}`);
-   };
+   // const handleMeessageClick = (id: number) => {
+   //    navigate(`/messages?userId=${id}`);
+   // };
 
    return (
       <div className="flex flex-col items-center overflow-y-auto">

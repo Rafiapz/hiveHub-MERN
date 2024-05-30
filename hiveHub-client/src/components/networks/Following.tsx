@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchFollwing, unFollow } from "../../store/actions/network/networkActions";
+import { fetchFollwing } from "../../store/actions/network/networkActions";
 import { handleUnfollowModal } from "../../store/slices/network/networkSlice";
 import { useNavigate } from "react-router-dom";
 

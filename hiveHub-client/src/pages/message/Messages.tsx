@@ -1,35 +1,33 @@
 import { FC, useEffect, useRef, useState } from "react";
 import Menu from "../../components/menu/Menu";
-import RightSideBar from "../../components/rightSideBar/RightSideBar";
 import MessageBox from "../../components/message/MessageBox";
-import NewMessage from "../../components/newMessage/NewMessage";
 import Header from "../../components/header/Header";
-import Conversations from "../../components/message/Conversations";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { Outlet, useSearchParams } from "react-router-dom";
 import socketService from "../../service/socketService";
-import { fetchConversations, fetchOnlineUsers, isUserBlocked, unblockOtherUser } from "../../service/api";
+import { fetchConversations, fetchOnlineUsers } from "../../service/api";
 import toast from "react-hot-toast";
-import { createMessage, fetchChats } from "../../store/actions/message/messageActions";
+import { fetchChats } from "../../store/actions/message/messageActions";
 import ReactPlayer from "react-player";
 const socket = socketService.socket;
 
 const Messages: FC = () => {
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
-   const [curChat, setCurChat] = useState<any>(null);
-   const [conversations, setConversations] = useState<any>([]);
+   const [curChat] = useState<any>(null);
+   const [______, setConversations] = useState<any>([]);
    const [messages, setMessages] = useState<any>([]);
    const scrollRef = useRef<any>();
    const dispatch = useDispatch<AppDispatch>();
-   const [message, setMessage] = useState<string>("");
+   // const [message, setMessage] = useState<string>("");
    const [arrivalMessage, setArrivalMessage] = useState<any>(null);
-   const [onlineUsers, setOnlineUsers] = useState<any>([]);
+   const [___, setOnlineUsers] = useState<any>([]);
 
-   const [loading, setLoading] = useState<boolean>(false);
+   const [__, setLoading] = useState<boolean>(false);
    const [typing, setTyping] = useState<boolean>(false);
-   const [blocked, setBlocked] = useState<any>({ status: false });
-   const [searchQuery] = useSearchParams();
+   // const [blocked, setBlocked] = useState<any>({ status: false });
+   // const [searchQuery] = useSearchParams();
+
+   console.log(typing);
 
    useEffect(() => {}, []);
 
@@ -94,27 +92,27 @@ const Messages: FC = () => {
    //    handleSelectConversation();
    // });
 
-   const handleSelectConversation = (chat: any) => {
-      setCurChat(chat);
+   // const handleSelectConversation = (chat: any) => {
+   //    setCurChat(chat);
 
-      dispatch(fetchChats(chat?._id))
-         .then((response) => {
-            setMessages(response?.payload?.data);
-         })
-         .then(() => {
-            const target = chat?.members?.filter((ob: any) => ob?._id != userId);
-            console.log(target, "target");
-            isUserBlocked(userId, target[0]?._id).then((result: any) => {
-               if (result?.data?.data === "blockedByMe") {
-                  setBlocked({ status: true, byHim: false });
-               } else if (result?.data?.data === "blockedByHim") {
-                  setBlocked({ status: true, byHim: true });
-               } else {
-                  setBlocked({ status: false });
-               }
-            });
-         });
-   };
+   //    dispatch(fetchChats(chat?._id))
+   //       .then((response) => {
+   //          setMessages(response?.payload?.data);
+   //       })
+   //       .then(() => {
+   //          const target = chat?.members?.filter((ob: any) => ob?._id != userId);
+   //          console.log(target, "target");
+   //          isUserBlocked(userId, target[0]?._id).then((result: any) => {
+   //             if (result?.data?.data === "blockedByMe") {
+   //                setBlocked({ status: true, byHim: false });
+   //             } else if (result?.data?.data === "blockedByHim") {
+   //                setBlocked({ status: true, byHim: true });
+   //             } else {
+   //                setBlocked({ status: false });
+   //             }
+   //          });
+   //       });
+   // };
 
    const handleFetchConversations = () => {
       fetchConversations(userId || "").then((response: any) => {
@@ -174,19 +172,19 @@ const Messages: FC = () => {
       }
    }, [videoUrl]);
 
-   const handleTyping = () => {
-      let receiverId: any;
-      if (curChat?.members[0]._id === userId) {
-         receiverId = curChat.members[1]._id;
-      } else {
-         receiverId = curChat.members[0]._id;
-      }
-      socket.emit("typing", {
-         senderId: userId,
-         receiverId,
-         message,
-      });
-   };
+   // const handleTyping = () => {
+   //    let receiverId: any;
+   //    if (curChat?.members[0]._id === userId) {
+   //       receiverId = curChat.members[1]._id;
+   //    } else {
+   //       receiverId = curChat.members[0]._id;
+   //    }
+   //    socket.emit("typing", {
+   //       senderId: userId,
+   //       receiverId,
+   //       message,
+   //    });
+   // };
 
    useEffect(() => {
       socket.on("typing", () => {

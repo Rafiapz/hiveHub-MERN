@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { handleEditPostModal } from "../../store/slices/posts/postSlice";
-import { editPostAction, fetchAllposts, fetchUsersLikedPosts, fetchUsersPost } from "../../store/actions/post/postActions";
+import { editPostAction,  fetchUsersLikedPosts, fetchUsersPost } from "../../store/actions/post/postActions";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 

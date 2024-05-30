@@ -74,7 +74,7 @@ const Carousel: FC<any> = ({ slides, user, closeModal }) => {
          </div>
 
          <div className="absolute bottom-0 py-4 flex justify-center gap-3 w-full">
-            {slides?.map((s: any, i: number) => {
+            {slides?.map((_: any, i: number) => {
                return (
                   <div
                      onClick={() => {

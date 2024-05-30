@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment, faShare, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment, faShare } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { deletePostAction, fetchAllCommentsOfPost, fetchAllposts, fetchUsersPost, likePostAction } from "../../store/actions/post/postActions";
@@ -9,8 +9,8 @@ import Loading from "../loading/Loading";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { confirmationModalReducer } from "../../store/slices/user/userSlice";
-import { handleCommentModal, handleEditPostModal, handleFetchMore, handleReportPostId, setSharePost } from "../../store/slices/posts/postSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { handleCommentModal, handleEditPostModal, handleReportPostId, setSharePost } from "../../store/slices/posts/postSlice";
+import { useLocation } from "react-router-dom";
 import { format } from "timeago.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EditPostModal from "../modal/EditPostModal";
@@ -22,7 +22,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const dispatch = useDispatch<AppDispatch>();
    const userId = useSelector((state: RootState) => state.user.user.userId);
    const [curPostId, setCurPostId] = useState<number | null>();
-   const [hasMore, setHasMore] = useState<boolean>(true);
+   const [hasMore] = useState<boolean>(true);
    const likes: any = useSelector((state: RootState) => state?.posts?.posts?.likes);
    const posts: any = useSelector((state: RootState) => state.posts.posts.data);
    const [page, setPage] = useState<number>(1);
@@ -31,7 +31,7 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const [curLikesCount, setCurLikesCount] = useState<number | null>(null);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
 
-   const navigate = useNavigate();
+  
 
    useEffect(() => {
       dispatch(fetchAllposts({ page })).then((response) => {
@@ -142,9 +142,9 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
       });
    };
 
-   const viewOthersProfile = (id: number, email: string) => {
-      navigate(`/others-profile?userId=${id}&email=${email}`);
-   };
+   // const viewOthersProfile = (id: number, email: string) => {
+   //    navigate(`/others-profile?userId=${id}&email=${email}`);
+   // };
 
    const handleSharePost = (post: any) => {
       dispatch(setSharePost({ data: post }));

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { faHeart, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { handleCommentDeleteReducer, handleCommentModal, handleCommentsIsEditing } from "../../store/slices/posts/postSlice";
 import {
@@ -9,14 +9,13 @@ import {
    fetchAllCommentsOfPost,
    fetchAllReplies,
    fetchAllposts,
-   fetchallCommentLikes,
    postComment,
 } from "../../store/actions/post/postActions";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { commentSchema, replyCommentSchema } from "../../schemas/CommentSchema";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import toast from "react-hot-toast";
-import { likeComment, replyComment } from "../../service/api";
+import { replyComment } from "../../service/api";
 import Replies from "./Replies";
 import HeartIcon from "./HeartIcon";
 import socketService from "../../service/socketService";
@@ -27,7 +26,6 @@ const Comments: FC = () => {
    const dispatch = useDispatch<AppDispatch>();
    const postId: any = useSelector((state: RootState) => state.posts.comments.postId);
    const allComments: any = useSelector((state: RootState) => state.posts.comments.data);
-   const allLikes: any = useSelector((state: RootState) => state?.posts?.comments?.likes);
    const userId: any = useSelector((state: RootState) => state.user.user.userId);
    const [replying, setReplying] = useState<boolean>(false);
    const [seeReplies, setSeeReplies] = useState<any>({ status: false, index: null });
@@ -99,7 +97,7 @@ const Comments: FC = () => {
       dispatch(handleCommentsIsEditing(updated));
    };
 
-   const handleEditCommentSubmit = (values: { comment: string }, actions: any, commentId: number, postId: number, index: number) => {
+   const handleEditCommentSubmit = (values: { comment: string }, _: any, commentId: number, postId: number, index: number) => {
       const { comment } = values;
 
       const formData = new FormData();
@@ -119,7 +117,7 @@ const Comments: FC = () => {
 
       dispatch(deleteComment(id)).then((response) => {
          if (response.payload.status === "ok") {
-            const updated = allComments.filter((item: any, i: number) => i !== index);
+            const updated = allComments.filter((_: any, i: number) => i !== index);
             dispatch(handleCommentDeleteReducer(updated));
             toast(response.payload.message, { style: { backgroundColor: "#4caf50", color: "white" } });
          } else {

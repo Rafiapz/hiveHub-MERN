@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Popup: FC<any> = ({ data, status }) => {

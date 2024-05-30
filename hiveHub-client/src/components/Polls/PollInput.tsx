@@ -1,11 +1,11 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { createPoll } from "../../service/api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const PollInput: FC<any> = ({ addOption }) => {
+const PollInput: FC<any> = ({}) => {
    const [question, setQuestion] = useState("");
    const [newOption, setNewOption] = useState("");
    const [pollOptions, setPollOptions] = useState<any>([]);

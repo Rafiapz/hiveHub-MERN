@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import toast from "react-hot-toast";
+
 
 export const contentTypeJson = {
     "Content-Type": "application/json",
@@ -22,5 +22,6 @@ export const jsonConfig = {
 };
 
 export const handleApiError = async (error: AxiosError) => {
+    console.log(error);
 
 }

@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import Peer from "simple-peer";
-import { RootState } from "../../store/store";
+import { FC} from "react";
+// import { useSelector } from "react-redux";
+// import Peer from "simple-peer";
+// import { RootState } from "../../store/store";
 
-const VideoCall: FC<any> = ({ socket }: any) => {
+const VideoCall: FC<any> = ({  }: any) => {
    // const userId = useSelector((state: RootState) => state?.user?.user?.userId);
    // const [stream, setStream] = useState();
    // const videoRef = useRef<HTMLVideoElement | null>(null);

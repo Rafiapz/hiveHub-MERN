@@ -161,10 +161,7 @@ const postSlice = createSlice({
                 state.likedPosts.likes = action?.payload?.data?.likes
 
             })
-            .addCase(fetchUsersLikedPosts.rejected, (state, action) => {
 
-
-            })
             .addCase(fetchAllStories.fulfilled, (state, action) => {
                 state.stories.data = action?.payload?.data?.allStories
                 state.stories.myStories = action?.payload?.data?.myStories

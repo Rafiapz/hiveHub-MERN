@@ -7,7 +7,7 @@ interface ChildProps {
    resendOtp: () => void;
 }
 
-const EditEmailCountdown: FC<ChildProps> = ({ timer, setTimer, email, resendOtp }) => {
+const EditEmailCountdown: FC<ChildProps> = ({ timer, setTimer, resendOtp }) => {
    const intervalRef = useRef<any>();
 
    const decreaseTime = () => {

@@ -25,7 +25,6 @@ import BlockedUser from "./components/blockedUser/BlockedUser";
 import Reports from "./pages/admin/reports/Reports";
 import Notifications from "./pages/user/notifications/Notifications";
 import Premium from "./pages/user/premium/Premium";
-import Poll from "./components/Polls/Poll";
 import PollPage from "./pages/user/polls/PollPage";
 import socketService from "../src/service/socketService";
 import UsersPoll from "./components/Polls/UsersPolls";

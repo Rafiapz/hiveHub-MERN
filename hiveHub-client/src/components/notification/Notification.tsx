@@ -1,24 +1,19 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { deleteNotification, fetchNotifications } from "../../service/api";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { format } from "timeago.js";
-import ConnectButton from "../connectButton/ConnectButton";
-import { fetchAllNetworks, fetchFollwing } from "../../store/actions/network/networkActions";
-import InfiniteScroll from "react-infinite-scroll-component";
-import Loading from "../loading/Loading";
-import socketService from "../../service/socketService";
+import { fetchAllNetworks } from "../../store/actions/network/networkActions";
 import { useNavigate } from "react-router-dom";
-const socket = socketService.socket;
 
 const Notification: React.FC<any> = () => {
    const [notifications, setNotifications] = useState<any>([]);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
-   const networks: any = useSelector((state: RootState) => state?.networks?.network?.data);
-   const [hasMore, setHasMore] = useState<boolean>(true);
-   const [page, setPage] = useState<number>(1);
-   const [arrivalNotification, setArrivalNotification] = useState<any>(null);
+   // const networks: any = useSelector((state: RootState) => state?.networks?.network?.data);
+   // const [_, setHasMore] = useState<boolean>(true);
+   const [page] = useState<number>(1);
+   const [arrivalNotification] = useState<any>(null);
    const navigate = useNavigate();
 
    const dispatch = useDispatch<AppDispatch>();
@@ -40,24 +35,24 @@ const Notification: React.FC<any> = () => {
       }
    };
 
-   const fetchMore = async () => {
-      try {
-         setPage(page + 1);
-         const response = await fetchNotifications(userId, page);
+   // const fetchMore = async () => {
+   //    try {
+   //       setPage(page + 1);
+   //       const response = await fetchNotifications(userId, page);
 
-         if (response?.data?.data?.length <= 0) {
-            setHasMore(false);
-         }
+   //       if (response?.data?.data?.length <= 0) {
+   //          setHasMore(false);
+   //       }
 
-         setNotifications((prev: any) => [...prev, ...response?.data?.data]);
-      } catch (error) {
-         toast.error("failed to load notifications");
-      }
-   };
+   //       setNotifications((prev: any) => [...prev, ...response?.data?.data]);
+   //    } catch (error) {
+   //       toast.error("failed to load notifications");
+   //    }
+   // };
 
    const handleDelete = async (id: any) => {
       try {
-         const response = await deleteNotification(id);
+         await deleteNotification(id);
          await fetchData();
 
          toast.success("Successfully deleted");
@@ -66,11 +61,11 @@ const Notification: React.FC<any> = () => {
       }
    };
 
-   const isFollowing = (id: any) => {
-      return networks?.some((ob: any) => {
-         return id == ob?.targetUserId && ob?.sourceUserId === userId;
-      });
-   };
+   // const isFollowing = (id: any) => {
+   //    return networks?.some((ob: any) => {
+   //       return id == ob?.targetUserId && ob?.sourceUserId === userId;
+   //    });
+   // };
 
    const handleNavigate = (id: any, email: string) => {
       navigate(`/others-profile?userId=${id}&email=${email}`);

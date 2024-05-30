@@ -1,4 +1,3 @@
-import AuthBody from "../../../../components/authBody/AuthBody";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { resetPasswordSchema } from "../../../../schemas/SignupSchema";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -8,13 +7,13 @@ import { changePassword } from "../../../../store/actions/auth/userActions";
 import toast from "react-hot-toast";
 
 function ResetPassword() {
-   const [searchQuery, setSearchQuery] = useSearchParams();
+   const [searchQuery] = useSearchParams();
 
    const dispatch = useDispatch<AppDispatch>();
 
    const navigate = useNavigate();
 
-   const handleSubmit = (values: { password: string; confirmPassword: string }, { resetForm }: any) => {
+   const handleSubmit = (values: { password: string; confirmPassword: string }) => {
       const token = searchQuery.get("token");
       const { password } = values;
 

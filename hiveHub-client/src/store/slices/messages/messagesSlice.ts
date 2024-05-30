@@ -1,16 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "../../actions/message/messageActions";
-import { connect, io } from "socket.io-client";
-
-
-
 
 
 const initialState = {
 
     conversations: [],
     messages: [],
-    // socket: JSON.stringify(socket)
 
 }
 
@@ -21,9 +16,7 @@ const messagesSlice = createSlice({
         newMessage: (state, action) => {
             state.messages = action?.payload?.data
         },
-        setSocket: (state, action) => {
 
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -34,7 +27,7 @@ const messagesSlice = createSlice({
 })
 
 
-export const { newMessage, setSocket } = messagesSlice.actions;
+export const { newMessage } = messagesSlice.actions;
 
 
 

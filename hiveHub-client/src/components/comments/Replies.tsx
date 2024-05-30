@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { deleteReplyComment } from "../../service/api";
@@ -11,7 +11,7 @@ const Replies: FC = () => {
 
    const dispatch = useDispatch<AppDispatch>();
 
-   const handleReplyDelete = async (id: any, index: number, commentId: any) => {
+   const handleReplyDelete = async (id: any, _: number, commentId: any) => {
       try {
          const response = await deleteReplyComment(id);
 

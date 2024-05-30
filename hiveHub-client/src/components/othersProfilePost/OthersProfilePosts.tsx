@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import OthersPost from "../OthersPost/OthersPost";
 import ReportPost from "../reportPost/ReportPost";
 

@@ -1,4 +1,3 @@
-import AdminCard from "../../../components/card/AdminCard";
 import Header from "../../../components/header/Header";
 import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";

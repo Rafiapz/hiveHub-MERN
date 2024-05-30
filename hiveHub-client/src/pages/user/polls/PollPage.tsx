@@ -1,4 +1,4 @@
-import React, { FC, lazy, Suspense } from "react";
+import { FC, lazy, Suspense } from "react";
 import Header from "../../../components/header/Header";
 const Menu = lazy(() => import("../../../components/menu/Menu"));
 const PollInput = lazy(() => import("../../../components/Polls/PollInput"));

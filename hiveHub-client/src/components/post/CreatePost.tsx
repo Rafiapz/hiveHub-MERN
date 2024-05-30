@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { handleCreatePostModal } from "../../store/slices/posts/postSlice";
 import { AppDispatch, RootState } from "../../store/store";
@@ -11,7 +11,7 @@ const socket = socketService.socket;
 
 function CreatePost() {
    const [image, setImage] = useState<File | null>(null);
-   const [video, setVideo] = useState<File | null>(null);
+   const [video] = useState<File | null>(null);
    const [content, setContent] = useState<string>("");
    const dispatch = useDispatch<AppDispatch>();
    const [imageUrl, setImageUrl] = useState<string>("");
@@ -39,27 +39,27 @@ function CreatePost() {
       }
    };
 
-   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e?.target?.files?.[0];
+   // const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   //    const file = e?.target?.files?.[0];
 
-      if (file) {
-         setVideo(file);
-         if (!["video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
-            setError("Please select a valid video file (video/mp4, video/webm, video/ogg)");
-            return;
-         } else {
-            const reader = new FileReader();
+   //    if (file) {
+   //       setVideo(file);
+   //       if (!["video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
+   //          setError("Please select a valid video file (video/mp4, video/webm, video/ogg)");
+   //          return;
+   //       } else {
+   //          const reader = new FileReader();
 
-            reader.onload = () => {
-               const thumbnailDataUrl = reader?.result as string;
-               setThumbnail(thumbnailDataUrl);
-            };
+   //          reader.onload = () => {
+   //             const thumbnailDataUrl = reader?.result as string;
+   //             setThumbnail(thumbnailDataUrl);
+   //          };
 
-            reader.readAsDataURL(file);
-            setError("");
-         }
-      }
-   };
+   //          reader.readAsDataURL(file);
+   //          setError("");
+   //       }
+   //    }
+   // };
 
    const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setContent(e.target.value);

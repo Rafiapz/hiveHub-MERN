@@ -1,15 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import Modal from "react-modal";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { fetchPostLikedUsers } from "../../service/api";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const PostLikesModal: FC<any> = ({ likesModal, closeLikesModal, postId, likes }) => {
-   const users: any = useSelector((state: RootState) => state?.user?.allUsers?.data);
    const [likedUsers, setLikedUsers] = useState<any>([]);
-   const [hasMore, setHasMore] = useState<boolean>(true);
 
    const navigate = useNavigate();
 
@@ -39,7 +34,7 @@ const PostLikesModal: FC<any> = ({ likesModal, closeLikesModal, postId, likes })
       navigate(`/others-profile?userId=${id}&email=${email}`);
    };
 
-   const fetchMore = () => {};
+   // const fetchMore = () => {};
    return (
       //   <InfiniteScroll
       //      dataLength={likedUsers.length}

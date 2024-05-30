@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 import Notification from "../../../components/notification/Notification";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import Menu from "../../../components/menu/Menu";

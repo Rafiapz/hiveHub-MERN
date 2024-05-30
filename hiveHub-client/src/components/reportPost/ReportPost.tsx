@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, yupToFormErrors } from "formik";
+import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import Modal from "react-modal";
 import "../modal/ConfirmModal.css";
 import { reportSchema } from "../../schemas/ReportPostSchema";
@@ -20,7 +20,7 @@ const ReportPost = ({ closeModal, modalIsOpen }: any) => {
       }
    };
 
-   const handleSubmit = (values: any, actions: any) => {
+   const handleSubmit = (values: any) => {
       const { option, otherReason } = values;
       if (option.trim() === "other" && otherReason.trim() == "") {
          setError("This field is required");

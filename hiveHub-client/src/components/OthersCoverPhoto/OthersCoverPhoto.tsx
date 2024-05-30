@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { fetchOtherUser, fetchuser } from "../../store/actions/auth/userActions";
 import ConnectButton from "../connectButton/ConnectButton";
 import { handleUnfollowModal } from "../../store/slices/network/networkSlice";
-import { faBan, faEnvelope, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { blockOtherUser, unblockOtherUser } from "../../service/api";
 import toast from "react-hot-toast";
@@ -13,7 +13,7 @@ import { fetchUsersPost } from "../../store/actions/post/postActions";
 
 const OthersCoverPhoto: FC = () => {
    const [userData, setUserData] = useState<any>({});
-   const [searchQuery, setSearchQuery] = useSearchParams();
+   const [searchQuery] = useSearchParams();
    const networks: any = useSelector((state: RootState) => state?.networks?.network?.data);
    const dispatch = useDispatch<AppDispatch>();
    const userId: any = useSelector((state: RootState) => state.user.user.userId);

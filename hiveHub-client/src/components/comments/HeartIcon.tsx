@@ -28,7 +28,7 @@ const HeartIcon: FC<any> = ({ commentId }: any) => {
       formData.append("postId", postId);
 
       likeComment(formData)
-         .then((response: any) => {
+         .then((_: any) => {
             dispatch(fetchAllCommentsOfPost(postId));
             dispatch(fetchallCommentLikes({ postId, commentId })).then((response: any) => {
                setLikes(response?.payload?.data);

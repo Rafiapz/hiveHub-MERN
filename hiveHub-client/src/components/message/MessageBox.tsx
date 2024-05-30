@@ -2,21 +2,16 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faComment, faFileImage, faFileVideo, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faComment, faFileImage,  faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
-import { createConversation, createMessage, fetchChats } from "../../store/actions/message/messageActions";
-import { fetchConversations, fetchOnlineUsers, isUserBlocked, sendVideo, unblockOtherUser } from "../../service/api";
+import {  createMessage, fetchChats } from "../../store/actions/message/messageActions";
+import { fetchConversations, fetchOnlineUsers, isUserBlocked,  unblockOtherUser } from "../../service/api";
 import NewMessage from "../newMessage/NewMessage";
-import VideoCall from "../videoCall/VideoCall";
 import EmojiPicker from "emoji-picker-react";
 import ReactPlayer from "react-player";
 import LoadingButton from "../loading/LoadingButton";
 import toast from "react-hot-toast";
-import AudioRecorderComponent from "../audioRecorder/AudioRecorder";
-import { format } from "timeago.js";
 import socketService from "../../service/socketService";
-import { useSearchParams } from "react-router-dom";
-import { fetchuser } from "../../store/actions/auth/userActions";
 import Conversations from "./Conversations";
 const socket = socketService.socket;
 
@@ -33,13 +28,12 @@ const MessageBox: FC = () => {
    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
    const [emojiOn, setEmojiOn] = useState(false);
    const [image, setImage] = useState<any>(null);
-   const [video, setVideo] = useState<any>(null);
+   // const [video, setVideo] = useState<any>(null);
    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-   const [progress, setProgress] = useState<number>(0);
+   const [_, setProgress] = useState<number>(0);
    const [loading, setLoading] = useState<boolean>(false);
    const [typing, setTyping] = useState<boolean>(false);
    const [blocked, setBlocked] = useState<any>({ status: false });
-   const [searchQuery] = useSearchParams();
    const [direct, setDirect] = useState(false);
 
    const handleVideoChange = (event: any) => {
@@ -48,7 +42,7 @@ const MessageBox: FC = () => {
       }
    };
 
-   const existing = searchQuery.get("userId");
+
 
    useEffect(() => {}, []);
 
@@ -67,7 +61,7 @@ const MessageBox: FC = () => {
       };
    }, [socket]);
 
-   const onEmojiClick = (event: any, emojiObject: any) => {
+   const onEmojiClick = (event: any) => {
       let sym = event.unified.split("-");
       let codesArray: any = [];
       sym.forEach((el: any) => codesArray.push("0x" + el));

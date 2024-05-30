@@ -4,7 +4,7 @@ import { postRoutes } from './presentation/routes/postRoutes'
 import { adminDependencies, authDependencies, chatsDependencies, commentsDependencies, likesDependencies, notificationsDependencies, pollsDependencies, reportsDependencies, storyDependencies } from './_boot/dependencies'
 import { postDependencies } from './_boot/dependencies'
 import { networkDependencies } from './_boot/dependencies'
-import { connect } from './_boot/databse'
+import { connect } from './_boot/database'
 import cors from 'cors'
 import path from 'path'
 import session = require('express-session')
@@ -60,29 +60,29 @@ initializeSocketIO(server)
 
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
-app.use('/auth', authRoutes(authDependencies))
+app.use('/api/auth', authRoutes(authDependencies))
 
-app.use('/post', postRoutes(postDependencies))
+app.use('/api/post', postRoutes(postDependencies))
 
-app.use('/networks', networksRoutes(networkDependencies, notificationsDependencies))
+app.use('/api/networks', networksRoutes(networkDependencies, notificationsDependencies))
 
-app.use('/comments', commentsRoutes(commentsDependencies, notificationsDependencies))
+app.use('/api/comments', commentsRoutes(commentsDependencies, notificationsDependencies))
 
-app.use('/likes', likesRoutes(likesDependencies, notificationsDependencies))
+app.use('/api/likes', likesRoutes(likesDependencies, notificationsDependencies))
 
-app.use('/reports', reportsRoutes(reportsDependencies))
+app.use('/api/reports', reportsRoutes(reportsDependencies))
 
-app.use('/chats', chatRoutes(chatsDependencies))
+app.use('/api/chats', chatRoutes(chatsDependencies))
 
-app.use('/admin', adminRoutes(adminDependencies))
+app.use('/api/admin', adminRoutes(adminDependencies))
 
-app.use('/story', storyRoutes(storyDependencies))
+app.use('/api/story', storyRoutes(storyDependencies))
 
-app.use('/notifications', notificationsRoutes(notificationsDependencies))
+app.use('/api/notifications', notificationsRoutes(notificationsDependencies))
 
-app.use('/premium', premiumRoutes())
+app.use('/api/premium', premiumRoutes())
 
-app.use('/polls', pollRoutes(pollsDependencies))
+app.use('/api/polls', pollRoutes(pollsDependencies))
 
 app.use((req: Request, res: Response) => {
     res.status(404).json({ message: 'Not found' })

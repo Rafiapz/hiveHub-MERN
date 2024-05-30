@@ -67,7 +67,7 @@ export const initializeSocketIO = (server: Server) => {
 
     try {
 
-        const allowedOrgins = ['http://192.168.1.5:5173', 'http://localhost:5173']
+        const allowedOrgins = ['https://hivehub.shop']
 
         const io = new SocketIOServer(server, {
             cors: {

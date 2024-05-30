@@ -38,7 +38,7 @@ const secret: string = process.env.SESSION_SECRET || 'Q3UBzdH9GEfiRCTKbi5MTPyChp
 app.use(session({ secret: secret, resave: true, saveUninitialized: true }));
 
 
-const allowedOrgins = ['http://192.168.1.5:5173', 'http://localhost:5173']
+const allowedOrgins = ['https://hivehub.shop']
 
 
 const corsOptions = {

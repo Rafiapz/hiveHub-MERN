@@ -4,7 +4,7 @@ class SocketService {
     socket;
 
     constructor() {
-        this.socket = io("http://localhost:7700");
+        this.socket = io("https://hivehub.shop");
 
     }
 

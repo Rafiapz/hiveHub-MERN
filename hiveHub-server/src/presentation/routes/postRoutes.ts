@@ -2,7 +2,7 @@
 import { Router } from 'express'
 import { controllers } from '../controllers/posts/'
 import { IPostDependencies } from '../../application/interface/posts/IDependencies'
-import { uploadSingleFile, uploadSingleFilePost } from '../../_lib/multer'
+import { uploadSingleFile } from '../../_lib/multer'
 import { currentUser } from '../middlewares/currentUser'
 import { isUserBlocked } from '../middlewares/isUserBlocked'
 
@@ -21,7 +21,7 @@ export const postRoutes = (dependencies: IPostDependencies) => {
 
   const router = Router()
 
-  router.route('/create-post/:type').post(currentUser, uploadSingleFilePost, createPost)
+  router.route('/create-post/:type').post(currentUser, uploadSingleFile, createPost)
 
   router.route('/fetch-all-posts').get(currentUser, fetchAllPosts)
 

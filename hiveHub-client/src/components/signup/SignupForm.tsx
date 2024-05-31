@@ -67,7 +67,7 @@ function SignupForm() {
                <img src="images/front-image.png" className="mt-12 mx-auto md:mt-24 " alt="" />
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start">
-               <h2 className="text-2xl md:text-3xl font-bold text-orange-400 mb-4 mt-8 md:ml-8">Sign Up</h2>
+               <h2 className="text-2xl md:text-3xl font-bold text-gray-700 -400 mb-4 mt-8 md:ml-8">Sign Up</h2>
                <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
                   {() => (
                      <Form className="p-4 md:p-8 w-full max-w-md">

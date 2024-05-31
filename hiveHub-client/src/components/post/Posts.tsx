@@ -1,4 +1,4 @@
-import  { FC } from "react";
+import { FC } from "react";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment, faShare } from "@fortawesome/free-solid-svg-icons";
@@ -30,8 +30,6 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
    const [likesModal, setLikesModal] = useState<boolean>(false);
    const [curLikesCount, setCurLikesCount] = useState<number | null>(null);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
-
-  
 
    useEffect(() => {
       dispatch(fetchAllposts({ page })).then((response) => {
@@ -185,7 +183,10 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
                next={() => fetchMore()}
                hasMore={hasMore}
                loader={
-                  <div className="bg-gray-50 w-2/3 ml-10 p-8 h-auto shadow-lg mx-auto mt-2 " key={46597}>
+                  <div
+                     className=" g-white  w-full sm:w-[800px]  border border-gray-300  p-6 sm:p-8 rounded-lg shadow-md mx-auto mt-2 hover:shadow-lg transition-shadow duration-300"
+                     key={46597}
+                  >
                      <Loading />
                   </div>
                }

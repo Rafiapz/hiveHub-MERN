@@ -3,7 +3,6 @@ import { IPostDependencies } from "../../../application/interface/posts/IDepende
 import { Request, Response } from 'express'
 import { PostEntity } from "../../../domain/entities";
 import { ObjectId } from "mongoose";
-import { uploadToS3Bucket } from "../../../_lib/s3";
 
 export const editPostController = (dependencies: IPostDependencies) => {
 
@@ -13,12 +12,10 @@ export const editPostController = (dependencies: IPostDependencies) => {
 
         try {
 
-
-
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = getTokenPayloads(token)
-                let path = await uploadToS3Bucket(req.file) || ''
+                let path = `https://www.hivehub.shop/posts/${req?.file?.filename}`
 
 
                 if (decoded && typeof req?.query?.postId === 'string') {

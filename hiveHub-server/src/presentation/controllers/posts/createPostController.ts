@@ -5,8 +5,6 @@ import { getTokenPayloads, verifyToken } from "../../../_lib/jwt";
 import { User } from "../../../infrastructure/database/models";
 import Notifications from "../../../infrastructure/database/models/notifications";
 import { NotificationsEntity } from "../../../domain/entities/notificationsEntity";
-import { uploadToS3Bucket } from "../../../_lib/s3";
-
 
 export const createPostController = (dependencies: IPostDependencies) => {
 
@@ -16,15 +14,14 @@ export const createPostController = (dependencies: IPostDependencies) => {
 
         try {
 
-            const path = await uploadToS3Bucket(req.file) || ''
 
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = verifyToken(token)
+                const path = `https://www.hivehub.shop/posts/${req?.file?.filename}`
 
                 if (decoded) {
                     const mediaType = req.params.type
-                    console.log(req.params);
 
                     const data: PostEntity = {
                         userId: decoded.id,
@@ -75,4 +72,3 @@ export const createPostController = (dependencies: IPostDependencies) => {
         }
     }
 }
-

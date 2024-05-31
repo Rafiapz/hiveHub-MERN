@@ -70,7 +70,7 @@ export const initializeSocketIO = (server: Server) => {
 
         const io = new SocketIOServer(server, {
             cors: {
-                origin: ['https://hivehub.shop', 'www.https://hivehub.shop'],
+                origin: ['https://hivehub.shop', 'https://www.hivehub.shop'],
                 methods: ['GET', 'POST'],
             }
         });

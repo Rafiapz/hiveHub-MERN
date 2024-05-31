@@ -38,7 +38,7 @@ const secret: string = process.env.SESSION_SECRET || 'Q3UBzdH9GEfiRCTKbi5MTPyChp
 app.use(session({ secret: secret, resave: true, saveUninitialized: true }));
 
 const corsOptions = {
-    origin: ['https://hivehub.shop', 'www.https://hivehub.shop'],
+    origin: ['https://hivehub.shop', 'https://www.hivehub.shop'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }

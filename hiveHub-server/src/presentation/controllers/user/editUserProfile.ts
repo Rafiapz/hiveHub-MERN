@@ -21,7 +21,7 @@ export const editUserProfile = (dependencies: IDependencies) => {
             if (req?.query.coverPhoto) {
                 data.coverPhoto = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
             } else if (req?.query?.profilePhoto) {
-                data.profilePhoto = `http://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
+                data.profilePhoto = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
             }
             if (data?.password) {
                 data.password = await passwordHashing(data.password)

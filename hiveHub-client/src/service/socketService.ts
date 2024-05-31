@@ -4,8 +4,12 @@ class SocketService {
     socket;
 
     constructor() {
-        this.socket = io("https://www.hivehub.shop");
-
+        this.socket = io("https://hivehub.shop", {
+            path: '/socket.io',
+            transports: ['websocket'],
+            secure: true,
+            withCredentials: true
+        });
     }
 
 }

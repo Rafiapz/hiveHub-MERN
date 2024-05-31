@@ -72,7 +72,10 @@ export const initializeSocketIO = (server: Server) => {
             cors: {
                 origin: ['https://hivehub.shop', 'https://www.hivehub.shop', 'http://localhost:5173'],
                 methods: ['GET', 'POST'],
-            }
+                credentials: true
+            },
+            path: '/socket.io'
+
         });
 
 

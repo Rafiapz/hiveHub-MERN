@@ -18,7 +18,7 @@ export const createPostController = (dependencies: IPostDependencies) => {
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = verifyToken(token)
-                const path = `https://www.hivehub.shop/posts/${req?.file?.filename}`
+                const path = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
 
                 if (decoded) {
                     const mediaType = req.params.type

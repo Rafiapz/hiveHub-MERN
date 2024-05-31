@@ -22,8 +22,8 @@ export const signupController = (dependencies: IDependencies) => {
             const otpDetails = generateOtp(data.email)
             const otp = otpDetails?.OTP
             data.otp = otp
-            data.profilePhoto = 'https://www.hivehub.shop/posts/image-1717132759691-948891976'
-            data.coverPhoto = 'https://www.hivehub.shop/posts/image-1717132749428-39846952'
+            data.profilePhoto = 'https://www.hivehub.shop/api/image/posts/image-1717132759691-948891976'
+            data.coverPhoto = 'https://www.hivehub.shop/api/image/posts/image-1717132749428-39846952'
 
             const user = await createUserUseCase(dependencies).execute(data)
 

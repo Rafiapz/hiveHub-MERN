@@ -55,7 +55,7 @@ connect()
 initializeSocketIO(server)
 
 
-app.use(express.static(path.join(__dirname, '..', 'public')))
+app.use('/api/image', express.static(path.join(__dirname, '..', 'public')))
 
 app.use('/api/auth', authRoutes(authDependencies))
 

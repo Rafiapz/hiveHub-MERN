@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { StoryEntity } from "../../../domain/entities/storyEntity";
 import { uploadToS3Bucket } from "../../../_lib/s3";
 
+
 export const createStoryController = (dependencies: IStoryDependencies) => {
 
     const { storyUseCases: { createStoryUseCase } } = dependencies
@@ -11,7 +12,8 @@ export const createStoryController = (dependencies: IStoryDependencies) => {
 
         try {
 
-            const path = await uploadToS3Bucket(req.file) || ''
+
+            const path = `https://hivehub.shop/posts/${req?.file?.filename}`
 
             const data: StoryEntity = {
                 userId: req?.body?.userId,

@@ -5,7 +5,7 @@ import { deleteFile } from "../../../_lib/s3";
 
 export const deletePostController = (dependencies: IPostDependencies) => {
 
-    const { postUseCases: { deletePostUseCase, findOneAndUpdateUseCase, findOneUseCase } } = dependencies
+    const { postUseCases: { deletePostUseCase, findOneUseCase } } = dependencies
 
     return async (req: Request, res: Response, next: NextFunction) => {
 

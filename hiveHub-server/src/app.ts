@@ -37,15 +37,12 @@ const secret: string = process.env.SESSION_SECRET || 'Q3UBzdH9GEfiRCTKbi5MTPyChp
 
 app.use(session({ secret: secret, resave: true, saveUninitialized: true }));
 
-
-const allowedOrgins = ['https://hivehub.shop']
-
-
 const corsOptions = {
-    origin: allowedOrgins,
+    origin: ['https://hivehub.shop', 'www.https://hivehub.shop'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }
+
 app.use(cors(corsOptions));
 app.use(cookieParser())
 app.use(nocache())

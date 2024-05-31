@@ -23,10 +23,6 @@ export const fetchUserController = (dependencies: IDependencies) => {
 
                     let userData = await findOneUserByIdUseCase(dependencies).execute(id)
 
-                    if (userData) {
-                        userData.profilePhoto = await getObjectSignedUrl(userData?.profilePhoto || '')
-                        userData.coverPhoto = await getObjectSignedUrl(userData?.coverPhoto || '')
-                    }
 
                     res.json({ status: 'ok', userData })
                 } else {

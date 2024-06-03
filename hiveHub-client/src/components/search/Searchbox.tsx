@@ -23,16 +23,16 @@ const Searchbox: FC = () => {
    };
 
    return (
-      <div className="relative">
+      <div className="relative -500 h-8 sm:h-10">
          <input
             type="text"
             placeholder="Search"
-            className="p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500 w-full"
+            className="p-2 rounded border border-gray-300 focus:outline-none h-8 sm:h-10 focus:border-blue-500 w-full"
             onChange={handleInputChange}
          />
 
          {suggestions.length > 0 && (
-            <div className="absolute top-full left-0 w-full  bg-white border border-gray-200 shadow-lg rounded-b-lg z-10">
+            <div className="absolute top-full left-0 w-full  bg-white border border-gray-200 shadow-lg rounded-b-lg z-50">
                <table className="w-full">
                   <tbody>
                      {suggestions.map((suggestion: any, index: number) => (

@@ -27,7 +27,7 @@ const Popup: FC<any> = ({ data, status }) => {
       <div
          style={{ left: "550px" }}
          onClick={handleNavigate}
-         className={`fixed top-4  w-1/2 rounded-md shadow-lg bg-gray-800 text-white transition-all duration-300 ${
+         className={`fixed top-4  w-1/2 rounded-md shadow-lg text-gray-800 border  bg-white transition-all duration-300 ${
             showPopup ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full"
          } z-50 max-w-lg`}
       >
@@ -44,7 +44,7 @@ const Popup: FC<any> = ({ data, status }) => {
                   </span>
                )}
             </div>
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-800">
                <span className="font-semibold">{actionBy}</span> {notification.toLowerCase()}
             </p>
             {actionOn && <p className="text-sm text-gray-400 mt-1">Action on: {actionOn}</p>}

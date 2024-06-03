@@ -6,6 +6,12 @@ import OthersCoverPhoto from "../../../components/OthersCoverPhoto/OthersCoverPh
 import UnfollowModal from "../../../components/modal/UnfollowModal";
 import { useEffect, useState } from "react";
 import Header from "../../../components/header/Header";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import Popup from "../../../components/notification/Popup";
+import socketService from "../../../service/socketService";
+
+const socket = socketService.socket;
 
 function OthersProfile() {
    const [searchQuery] = useSearchParams();
@@ -17,6 +23,22 @@ function OthersProfile() {
       likes: "",
       reports: "",
    });
+   const [notified, setNotified] = useState<boolean>(false);
+   const [notificationData, setNotificationData] = useState<any>(null);
+   const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
+
+   useEffect(() => {
+      const getNotifiationEvent = (data: any) => {
+         if (data?.senderId !== userId) {
+            setNotificationData(data);
+            setNotified(true);
+         }
+      };
+      socket.on("getNotifiation", getNotifiationEvent);
+      return () => {
+         socket.off("getNotifiation", getNotifiationEvent);
+      };
+   }, [socket]);
 
    const target = searchQuery.get("userId");
    const email = searchQuery.get("email");
@@ -53,6 +75,7 @@ function OthersProfile() {
       <>
          <Menu />
          <Header />
+         <Popup notification={notified} data={notificationData} />
          <OthersCoverPhoto />
          <div className="flex flex-wrap justify-center mt-20  py-4 sm:py-8">
             <Link

@@ -13,8 +13,8 @@ const SharePost = lazy(() => import("../../../components/share/SharePost"));
 const Poll = lazy(() => import("../../../components/Polls/Poll"));
 import Popup from "../../../components/notification/Popup";
 import socketService from "../../../service/socketService";
-import {  useSelector } from "react-redux";
-import {  RootState } from "../../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 import LoadingFalBack from "../../../components/loading/LoadingFalBack";
 import Header from "../../../components/header/Header";
 
@@ -25,20 +25,22 @@ const Home: FC = () => {
    const [storyViewing, setStoryViewing] = useState<boolean>(false);
    const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
    const [sharePostModalIsOpen, setSharePostModalIsOpen] = useState(false);
-   const [notified, setNotified] = useState<boolean>(false);
-   const [notificationData, setNotionData] = useState<any>(null);
    const userId: any = useSelector((state: RootState) => state.user.user.userId);
+   const [notified, setNotified] = useState<boolean>(false);
+   const [notificationData, setNotificationData] = useState<any>(null);
 
    useEffect(() => {
-      socket.on("getNotifiation", (data) => {
+      const getNotifiationEvent = (data: any) => {
          if (data?.senderId !== userId) {
-            setNotionData(data);
+            setNotificationData(data);
             setNotified(true);
          }
-      });
+      };
+      socket.on("getNotifiation", getNotifiationEvent);
+      return () => {
+         socket.off("getNotifiation", getNotifiationEvent);
+      };
    }, [socket]);
-
-   // const dispatch = useDispatch<AppDispatch>();
 
    const openModal = () => {
       setIsOpen(true);
@@ -91,7 +93,7 @@ const Home: FC = () => {
                </Suspense>
             </div>
          ) : (
-            <div className="bg-gray-100 ">
+            <div className="bg-gray-100 overflow-scroll">
                <Suspense fallback={<LoadingFalBack />}>
                   <Menu />
                </Suspense>

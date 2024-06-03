@@ -124,7 +124,7 @@ export const initializeSocketIO = (server: Server) => {
                             form.append('conversationId', conversationId)
                             form.append('from', 'socket')
 
-                            await axios.post('http://localhost:7700/chats/send-video/video', form, {
+                            await axios.post(`${process?.env.BACK_END_URL}/api/chats/send-video/video`, form, {
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
@@ -148,6 +148,7 @@ export const initializeSocketIO = (server: Server) => {
 
             socket.on('sendMessage', ({ senderId, receiverId, message }: any) => {
                 const user = getUser(receiverId);
+                console.log('calling', user);
 
 
                 if (user) {
@@ -172,7 +173,7 @@ export const initializeSocketIO = (server: Server) => {
                 console.log('image called');
                 const user = getUser(data?.receiverId);
                 if (user) {
-                    io.to(user.socketId).emit('image', { data: data?.data, senderId: data?.senderId });
+                    io.emit('image', { data: data?.data, senderId: data?.senderId });
                 } else {
                     // console.log('user not found');
 
@@ -212,6 +213,7 @@ export const initializeSocketIO = (server: Server) => {
 
             socket.on("disconnect", () => {
 
+                console.log('disconnected');
 
                 // removeUser(socket.id);
                 // io.emit("getUsers", users);

@@ -25,14 +25,20 @@ function Profile() {
       reports: "",
    });
    const [notified, setNotified] = useState<boolean>(false);
-   const [notificationData, setNotionData] = useState<any>(null);
+   const [notificationData, setNotificationData] = useState<any>(null);
    const userId = useSelector((state: RootState) => state?.user?.user?.userId);
 
    useEffect(() => {
-      socket.on("getNotifiation", (data) => {
-         setNotionData(data);
-         setNotified(true);
-      });
+      const getNotifiationEvent = (data: any) => {
+         if (data?.senderId !== userId) {
+            setNotificationData(data);
+            setNotified(true);
+         }
+      };
+      socket.on("getNotifiation", getNotifiationEvent);
+      return () => {
+         socket.off("getNotifiation", getNotifiationEvent);
+      };
    }, [socket]);
 
    const handleClick = (position: string) => {

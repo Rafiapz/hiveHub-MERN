@@ -2,10 +2,10 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faComment, faFileImage,  faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faComment, faFileImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Chat from "./Chat";
-import {  createMessage, fetchChats } from "../../store/actions/message/messageActions";
-import { fetchConversations, fetchOnlineUsers, isUserBlocked,  unblockOtherUser } from "../../service/api";
+import { createMessage, fetchChats } from "../../store/actions/message/messageActions";
+import { fetchConversations, fetchOnlineUsers, isUserBlocked, unblockOtherUser } from "../../service/api";
 import NewMessage from "../newMessage/NewMessage";
 import EmojiPicker from "emoji-picker-react";
 import ReactPlayer from "react-player";
@@ -13,6 +13,8 @@ import LoadingButton from "../loading/LoadingButton";
 import toast from "react-hot-toast";
 import socketService from "../../service/socketService";
 import Conversations from "./Conversations";
+import Popup from "../notification/Popup";
+import { BASE_URL } from "../../utils/endPoint";
 const socket = socketService.socket;
 
 const MessageBox: FC = () => {
@@ -42,22 +44,17 @@ const MessageBox: FC = () => {
       }
    };
 
-
-
-   useEffect(() => {}, []);
-
    useEffect(() => {
-      socket.on("image", (data: any) => {
-         console.log(data);
-
+      const handleImageEvent = (data: any) => {
          setArrivalMessage({
             createdAt: Date.now(),
             senderId: data?.senderId,
             image: data?.data,
          });
-      });
+      };
+      socket.on("image", handleImageEvent);
       return () => {
-         socket.off("image");
+         socket.off("image", handleImageEvent);
       };
    }, [socket]);
 
@@ -75,15 +72,16 @@ const MessageBox: FC = () => {
    };
 
    useEffect(() => {
-      socket.on("recieveMessage", (data: any) => {
+      const recieveMessageEvent = (data: any) => {
          setArrivalMessage({
             message: data?.message,
             createdAt: Date.now(),
             senderId: data?.senderId,
          });
-      });
+      };
+      socket.on("recieveMessage", recieveMessageEvent);
       return () => {
-         socket.off("recieveMessage");
+         socket.off("recieveMessage", recieveMessageEvent);
       };
    }, [socket]);
 
@@ -113,12 +111,6 @@ const MessageBox: FC = () => {
          toast.error("Something went wrong");
       }
    };
-
-   // const userId = searchQuery.get("conversa");
-
-   // useEffect(() => {
-   //    handleSelectConversation();
-   // });
 
    const handleSelectConversation = (chat: any) => {
       setCurChat(chat);
@@ -263,23 +255,24 @@ const MessageBox: FC = () => {
    const playerRef = useRef<ReactPlayer>(null);
 
    useEffect(() => {
-      socket.on("video-upload-success", (data: any) => {
-         const url = `http://localhost:7700/posts/${data?.fileName}`;
+      const videoUploadSuccessEvent = (data: any) => {
+         const url = `${BASE_URL}/posts/${data?.fileName}`;
          setVideoUrl(url);
          setArrivalMessage({
             createdAt: Date.now(),
             senderId: data?.senderId,
             video: url,
          });
-      });
+      };
+      socket.on("video-upload-success", videoUploadSuccessEvent);
 
       return () => {
-         socket.off("video-upload-success");
+         socket.off("video-upload-success", videoUploadSuccessEvent);
       };
    }, [socket]);
 
    useEffect(() => {
-      socket.on("upload-comepleted", (data: any) => {
+      const uploadCompleteEvent = (data: any) => {
          fetchConversations(userId || "").then((response: any) => {
             setConversations(response?.data?.conversations);
          });
@@ -287,21 +280,23 @@ const MessageBox: FC = () => {
             setMessages(response?.payload?.data);
             setLoading(false);
          });
-      });
+      };
+      socket.on("upload-comepleted", uploadCompleteEvent);
       setLoading(false);
 
       return () => {
-         socket.off("upload-comepleted");
+         socket.off("upload-comepleted", uploadCompleteEvent);
       };
    }, [socket]);
 
    useEffect(() => {
-      socket.on("failed to upload", () => {
+      const failedEvent = () => {
          toast("Failed to upload video");
-      });
+      };
+      socket.on("failed to upload", failedEvent);
       setLoading(false);
       return () => {
-         socket.off("failed to upload");
+         socket.off("failed to upload", failedEvent);
       };
    }, [socket]);
 
@@ -362,16 +357,12 @@ const MessageBox: FC = () => {
    };
 
    return (
-      <div className="flex flex-col bg-gray-100 min-h-screen items-center overflow-hidden">
-         <div className="mt-5 w-full  h-[90vh] flex flex-col items-center overflow-hidden rounded-lg shadow-lg bg-white md:mx-auto">
+      <div className="flex flex-col bg-gray-100 min-h-screen h-screen items-center overflow-hidden">
+         <div className="mt-8 w-full  h-full flex flex-col items-center overflow-hidden rounded-lg shadow-lg bg-white md:mx-auto">
             {!direct && (
-               <div className="flex w-full h-14 mt-5 justify-between px-4  text-white">
-                  <div className="flex items-center">
-                     <h1 className="px-4 py-2 text-xl font-bold">New Message</h1>
-                  </div>
-
-                  <div className="flex items-center">
-                     <button onClick={openModal} className="bg-indigo-700 px-4 py-2 rounded-md flex items-center">
+               <div className="flex w-full h-14 mt-5 justify-center px-4   text-gray-700 ">
+                  <div className="flex items-center ">
+                     <button onClick={openModal} className="bg-white px-4 py-2 shadow rounded-md flex items-center">
                         <FontAwesomeIcon icon={faComment} className="mr-2" />
                         <span>New Message</span>
                      </button>
@@ -387,9 +378,9 @@ const MessageBox: FC = () => {
                   </div>
                </div>
             )}
-            <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
+            <div className="flex flex-col mt-5 md:flex-row w-full h-full overflow-hidden">
                {!direct ? (
-                  <div className="bg-white w-full  lg:w-full flex flex-col md:rounded-l-lg md:border-r border-gray-300">
+                  <div className="bg-w-full h-full  lg:w-full flex flex-col md:rounded-l-lg md:border-r border-gray-300">
                      <Conversations
                         conversations={conversations}
                         handleSelectConversation={handleSelectConversation}
@@ -399,11 +390,11 @@ const MessageBox: FC = () => {
                      />
                   </div>
                ) : (
-                  <div className="flex mt-4 flex-col items-center flex-grow bg-white md:rounded-r-lg">
+                  <div className="flex  flex-col items-center flex-grow bg-white ">
                      {curChat ? (
                         <div className="flex flex-col md:w-1/2 flex-grow">
-                           <div style={{ height: "550px" }} className="bg-gray-100 p-4 flex flex-col flex-grow">
-                              <div className="flex h-14 mb-5 p-2 items-center px-4 bg-gray-500 text-white rounded-t-lg">
+                           <div style={{ height: "550px" }} className="bg-gray-100  flex flex-col flex-grow">
+                              <div className="flex h-14 mb-5 p-2 items-center px-4 bg-white text-black border  shadow ">
                                  <button
                                     onClick={() => setDirect(false)}
                                     className="mr-4 flex items-center justify-center rounded-full bg-gray-300 p-2 hover:bg-gray-400 transition-colors"
@@ -461,19 +452,19 @@ const MessageBox: FC = () => {
                                     )}
                                  </div>
                               ) : (
-                                 <>
+                                 <div className="relative flex items-center p-2 bg-white border border-gray-300 rounded-md">
                                     <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
-                                    <div className="flex items-center p-4">
-                                       <input
-                                          type="text"
-                                          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                                          placeholder="Type your message here"
-                                          value={message}
-                                          onFocus={handleTyping}
-                                          onChange={(e) => setMessage(e.target.value)}
-                                       />
+                                    <input
+                                       type="text"
+                                       className="w-full p-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                       placeholder="Type your message here"
+                                       value={message}
+                                       onFocus={handleTyping}
+                                       onChange={(e) => setMessage(e.target.value)}
+                                    />
 
-                                       <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md ml-2">
+                                    <div className="flex items-center ml-2">
+                                       <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md">
                                           😊
                                        </button>
                                        <div className="flex items-center bg-gray-200 ml-2 h-10 rounded-md">
@@ -498,7 +489,7 @@ const MessageBox: FC = () => {
                                           </button>
                                        )}
                                     </div>
-                                 </>
+                                 </div>
                               )}
                            </div>
                         </div>

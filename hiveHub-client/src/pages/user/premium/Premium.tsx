@@ -1,4 +1,4 @@
-import  { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Menu from "../../../components/menu/Menu";
 import RightSideBar from "../../../components/rightSideBar/RightSideBar";
 import { createPayment, premiumOrder, validateOrder } from "../../../service/api";
@@ -7,24 +7,35 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import PremiumSuccessModal from "../../../components/modal/PremiumSuccessModal";
 import Header from "../../../components/header/Header";
+import socketService from "../../../service/socketService";
+import Popup from "../../../components/notification/Popup";
 
-// declare global {
-//     interface Window {
-//        Razorpay: any; // or specify the exact type if available
-//     }
-//  }
+const socket = socketService.socket;
 
 const Premium: FC = () => {
    const [isLoading, setIsLoading] = useState(false);
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
    const userData: any = useSelector((state: RootState) => state.user.user.data);
+   const [notified, setNotified] = useState<boolean>(false);
+   const [notificationData, setNotificationData] = useState<any>(null);
+
+   useEffect(() => {
+      const getNotifiationEvent = (data: any) => {
+         if (data?.senderId !== userId) {
+            setNotificationData(data);
+            setNotified(true);
+         }
+      };
+      socket.on("getNotifiation", getNotifiationEvent);
+      return () => {
+         socket.off("getNotifiation", getNotifiationEvent);
+      };
+   }, [socket]);
 
    const closeModal = () => {
       setModalIsOpen(false);
    };
-
-   // const navigate = useNavigate();
 
    const handleOrder = async () => {
       try {
@@ -100,6 +111,7 @@ const Premium: FC = () => {
       <>
          <Menu />
          <Header />
+         <Popup notification={notified} data={notificationData} />
          {userData?.premium ? (
             <div className="mb-8 ml-96 ">
                <h2 className="text-2xl  font-bold mb-4">Welcome, {userData?.fullName}!</h2>

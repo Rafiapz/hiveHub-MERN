@@ -8,12 +8,31 @@ import ViewReport from "../../../components/modal/ViewReport";
 import { rejectReport, resolveReport } from "../../../service/api";
 import toast from "react-hot-toast";
 import Header from "../../../components/header/Header";
+import socketService from "../../../service/socketService";
+import Popup from "../../../components/notification/Popup";
+const socket = socketService.socket;
 
 const Reports: FC = () => {
    const reports: any = useSelector((state: RootState) => state?.admin?.reports?.data);
    const [modalIsOpen, setModalIsOpen] = useState(false);
    const dispatch = useDispatch<AppDispatch>();
    const [curReport, setCurReport] = useState<any>({});
+   const [notificationData, setNotificationData] = useState<any>(null);
+   const [notified, setNotified] = useState<boolean>(false);
+   const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
+
+   useEffect(() => {
+      const getNotifiationEvent = (data: any) => {
+         if (data?.senderId !== userId) {
+            setNotificationData(data);
+            setNotified(true);
+         }
+      };
+      socket.on("getNotifiation", getNotifiationEvent);
+      return () => {
+         socket.off("getNotifiation", getNotifiationEvent);
+      };
+   }, [socket]);
 
    useEffect(() => {
       dispatch(fetchAllReports());
@@ -55,6 +74,7 @@ const Reports: FC = () => {
       <>
          <Menu />
          <Header />
+         <Popup notification={notified} data={notificationData} />
          <div className="container max-w-[800px] mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">Reports</h1>
             <div className="bg-white rounded-lg shadow-md overflow-x-auto">

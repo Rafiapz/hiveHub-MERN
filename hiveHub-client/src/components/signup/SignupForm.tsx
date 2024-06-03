@@ -67,7 +67,7 @@ function SignupForm() {
                <img src="images/front-image.png" className="mt-12 mx-auto md:mt-24 " alt="" />
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start">
-               <h2 className="text-2xl md:text-3xl font-bold text-gray-700 -400 mb-4 mt-8 md:ml-8">Sign Up</h2>
+               <h2 className="text-2xl md:text-3xl  font-bold text-gray-700 -400 mb-4 mt-14 md:ml-8">Sign Up</h2>
                <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
                   {() => (
                      <Form className="p-4 md:p-8 w-full max-w-md">
@@ -126,7 +126,7 @@ function SignupForm() {
                   </Link>
                </p>
                <div className="flex ml-8 items-center w-full">
-                  <button onClick={() => googleAuth()} className="bg-red-600 ml-20 sm:ml-0 text-white py-2 px-4 rounded-lg mb-4">
+                  <button onClick={() => googleAuth()} className="bg-white ml-20 sm:ml-0 text-black border border-blue-950 py-2 px-4 rounded-lg mb-4">
                      <FontAwesomeIcon icon={faGoogle} /> Login with Google
                   </button>
                </div>

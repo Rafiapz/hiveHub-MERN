@@ -4,7 +4,7 @@ class SocketService {
     socket;
 
     constructor() {
-        this.socket = io("https://hivehub.shop", {
+        this.socket = io("http://localhost:7700", {
             path: '/socket.io',
             transports: ['websocket'],
             secure: true,

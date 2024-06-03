@@ -4,6 +4,7 @@ import { passwordHashing } from '../../../_lib/bcrypt'
 import { generateOtp } from '../../../_lib/otp'
 
 
+
 export const signupController = (dependencies: IDependencies) => {
 
 
@@ -19,28 +20,25 @@ export const signupController = (dependencies: IDependencies) => {
             data.isVerified = false
             data.password = await passwordHashing(data.password)
             data.createdAt = Date.now()
-            const otpDetails = generateOtp(data.email)
-            const otp = otpDetails?.OTP
-            data.otp = otp
-            data.profilePhoto = 'https://www.hivehub.shop/api/image/posts/image-1717132759691-948891976'
-            data.coverPhoto = 'https://www.hivehub.shop/api/image/posts/image-1717132749428-39846952'
+            data.otp = generateOtp(data.email)
+            data.profilePhoto = `${process?.env.BACK_END_URL}/api/image/user/no-profile.webp`
+            data.coverPhoto = `${process?.env.BACK_END_URL}/api/image/user/no-coverphoto.jpg`
+
+            console.log(data);
 
             const user = await createUserUseCase(dependencies).execute(data)
 
             if (user) {
-                res.status(200).json({ status: 'ok', userData: user })
+                res.status(200).json({ status: 'ok' })
             } else {
-                throw new Error('failed to verify email')
+                throw new Error('failed to create account')
             }
 
 
-
         } catch (error: any) {
-
-            res.json({ status: 'failed', message: error.message }).status(400)
+            res.status(400).json({ status: 'failed', message: error.message })
             console.log(error);
-
-
         }
     }
 }
+

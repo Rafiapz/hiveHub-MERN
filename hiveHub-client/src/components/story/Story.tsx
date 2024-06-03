@@ -11,6 +11,7 @@ const Story: FC<any> = ({ setView }: any) => {
    const stories: any = useSelector((state: RootState) => state?.posts?.stories?.data);
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
    const myStories: any = useSelector((state: RootState) => state?.posts?.stories?.myStories);
+   const userData: any = useSelector((state: RootState) => state?.user?.user?.data);
 
    //const stories = Array.from({ length: 20 });
 
@@ -63,16 +64,14 @@ const Story: FC<any> = ({ setView }: any) => {
                   <li className="flex flex-col items-center">
                      <div
                         className={`bg-gradient-to-tr h-14 w-14 sm:w-24 sm:h-24 rounded-full  p-1 relative ${
-                           myStories?.[0]?.seenBy?.some((ob: any) => ob === userId) ? "" : "from-yellow-500 to-pink-600"
+                           myStories?.[0]?.seenBy?.some((ob: any) => ob === userId) || myStories?.length <= 0 || myStories?.[0]?.media.length <= 0
+                              ? ""
+                              : "from-yellow-500 to-pink-600"
                         }`}
                      >
                         <div className="block bg-white p-1 rounded-full transform transition hover:-rotate-12 duration-300">
                            {myStories?.length <= 0 || myStories?.[0]?.media.length <= 0 ? (
-                              <img
-                                 className="h-10 w-14 sm:w-24 sm:h-20 rounded-full object-cover "
-                                 src="https://i.ibb.co/yhh0Ljy/profile.jpg"
-                                 alt="image"
-                              />
+                              <img className="h-10 w-14 sm:w-24 sm:h-20 rounded-full object-cover " src={userData?.profilePhoto} alt="image" />
                            ) : (
                               <img
                                  className="h-10 w-14 sm:w-24 sm:h-20 rounded-full object-cover"

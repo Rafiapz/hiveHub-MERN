@@ -15,7 +15,7 @@ export const editPostController = (dependencies: IPostDependencies) => {
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = getTokenPayloads(token)
-                let path = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
+                let path = `${process?.env.BACK_END_URL}/api/image/posts/${req?.file?.filename}`
 
 
                 if (decoded && typeof req?.query?.postId === 'string') {

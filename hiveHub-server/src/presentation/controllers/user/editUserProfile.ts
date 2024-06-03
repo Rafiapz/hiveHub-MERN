@@ -19,9 +19,9 @@ export const editUserProfile = (dependencies: IDependencies) => {
             data = req?.body
 
             if (req?.query.coverPhoto) {
-                data.coverPhoto = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
+                data.coverPhoto = `${process?.env.BACK_END_URL}/api/image/posts/${req?.file?.filename}`
             } else if (req?.query?.profilePhoto) {
-                data.profilePhoto = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
+                data.profilePhoto = `${process?.env.BACK_END_URL}/api/image/posts/${req?.file?.filename}`
             }
             if (data?.password) {
                 data.password = await passwordHashing(data.password)
@@ -31,7 +31,7 @@ export const editUserProfile = (dependencies: IDependencies) => {
                 if (!otpDetails) {
                     throw new Error('Unable to sent verification email')
                 } else {
-                    await updateUserByIdUseCase(dependencies).execute(id, { otp: otpDetails?.OTP })
+                    await updateUserByIdUseCase(dependencies).execute(id, { otp: otpDetails })
                     res.status(200).json({ status: 'ok', message: 'Successfully sent OTP to new email' })
                     return
                 }
@@ -42,8 +42,6 @@ export const editUserProfile = (dependencies: IDependencies) => {
             if (!userData) {
                 throw new Error('Unable to update profile')
             }
-
-            console.log(userData);
 
 
             res.status(200).json({ status: 'ok', data: userData, message: 'Profile updated' })

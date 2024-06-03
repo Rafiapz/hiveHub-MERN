@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { handleEditPostModal } from "../../store/slices/posts/postSlice";
-import { editPostAction,  fetchUsersLikedPosts, fetchUsersPost } from "../../store/actions/post/postActions";
+import { editPostAction, fetchUsersLikedPosts, fetchUsersPost } from "../../store/actions/post/postActions";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const EditPost: FC<any> = ({ setItems }) => {
 
       if (file) {
          setImage(file);
-         if (!["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
+         if (!["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
             setError("Please select a valid image file (JPEG, PNG, GIF)");
             return;
          } else {

@@ -13,7 +13,7 @@ export const createStoryController = (dependencies: IStoryDependencies) => {
         try {
 
 
-            const path = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
+            const path = `${process?.env.BACK_END_URL}/api/image/posts/${req?.file?.filename}`
 
             const data: StoryEntity = {
                 userId: req?.body?.userId,

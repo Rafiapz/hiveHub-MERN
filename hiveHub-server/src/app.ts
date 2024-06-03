@@ -24,8 +24,10 @@ import { notificationsRoutes } from './presentation/routes/notificationsRoutes'
 import { premiumRoutes } from './presentation/routes/premiumRoutes'
 import { config } from './_boot/config'
 import { pollRoutes } from './presentation/routes/pollRoutes'
+import dotenv from "dotenv";
 
 
+dotenv.config();
 
 const PORT = config.http.port
 
@@ -38,7 +40,7 @@ const secret: string = process.env.SESSION_SECRET || 'Q3UBzdH9GEfiRCTKbi5MTPyChp
 app.use(session({ secret: secret, resave: true, saveUninitialized: true }));
 
 const corsOptions = {
-    origin: ['https://hivehub.shop', 'https://www.hivehub.shop', 'http://localhost:5173'],
+    origin: process?.env?.FRONT_END_URL,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }

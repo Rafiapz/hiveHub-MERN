@@ -27,7 +27,7 @@ function EditUserPhotosModal() {
 
       if (file) {
          setImage(file);
-         if (!["image/jpeg", "image/png"].includes(file.type)) {
+         if (!["image/jpeg", "image/png", "image/svg", "image/webp"].includes(file.type)) {
             setError("Please select a valid image file (JPEG, PNG)");
             return;
          } else {

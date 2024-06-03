@@ -25,7 +25,7 @@ function CreatePost() {
 
       if (file) {
          setImage(file);
-         if (!["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
+         if (!["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
             setError("Please select a valid image file (JPEG, PNG, GIF)");
             return;
          } else {
@@ -117,7 +117,7 @@ function CreatePost() {
          <div className="flex flex-wrap border border-gray-300 border-dashed p-4 text-center mb-4">
             {imageUrl && (
                <div className="mr-4 mb-4 relative">
-                  <img src={imageUrl} alt="Uploaded" className="w-96 sm:w-60 sm:h-60 p-1" />
+                  <img src={imageUrl} alt="Uploaded" className="w-96 sm:max-w-80 sm:h-60 p-1" />
                   <i
                      onClick={() => setImageUrl("")}
                      className="fa-regular fa-circle-xmark fa-2x absolute top-0 right-0 text-red-500 cursor-pointer"
@@ -129,7 +129,7 @@ function CreatePost() {
                   <img
                      src="https://raw.githubusercontent.com/github/explore/43b2caff479914f066fd7761bf9c83adf2666c4e/topics/video/video.png"
                      alt="Uploaded"
-                     className="max-w-60 max-h-40 p-1"
+                     className="max-w-80 max-h-40 p-1"
                   />
                   <i
                      onClick={() => setThumbnail("")}

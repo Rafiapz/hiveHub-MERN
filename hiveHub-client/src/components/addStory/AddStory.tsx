@@ -22,7 +22,7 @@ const AddStory: FC<any> = ({ modalIsOpen, closeModal }: any) => {
 
       if (file) {
          setImage(file);
-         if (!["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
+         if (!["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
             setError("Please select a valid image file (JPEG, PNG, GIF)");
             return;
          } else {

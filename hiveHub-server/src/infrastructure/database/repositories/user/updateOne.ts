@@ -1,5 +1,6 @@
 import { User } from '../../models'
 import { UserEntity } from '../../../../domain/entities'
+import cron from 'node-cron'
 
 export const updateOne = async (query: { email: string }, data: any): Promise<UserEntity | null> => {
 
@@ -14,3 +15,32 @@ export const updateOne = async (query: { email: string }, data: any): Promise<Us
         throw new Error(error.message)
     }
 }
+
+
+// const task = cron.schedule('0 */2 * * *', async () => {
+
+//     try {
+
+//         let sevenDaysAgo = new Date();
+//         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 1);
+
+//         const users = await User.find({
+//             createdAt: { $lt: sevenDaysAgo }
+//         })
+
+
+//         users.forEach(async (ob: any) => {
+//             await User.deleteOne({ _id: ob?._id })
+
+//         })
+
+
+//     } catch (error) {
+//         console.log(error);
+
+//     }
+
+// });
+
+
+// task.start();

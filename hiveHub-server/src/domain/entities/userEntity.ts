@@ -18,7 +18,10 @@ export interface UserEntity {
     isActive: boolean
     isVerified: boolean
     connections?: connctions[],
-    otp?: string,
+    otp?: {
+        createdAt: Date | null;
+        otp: String | null;
+    } | null;
     createdAt: Date,
     isBlocked?: boolean,
     premium?: boolean,

@@ -18,7 +18,7 @@ export const createPostController = (dependencies: IPostDependencies) => {
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = verifyToken(token)
-                const path = `https://www.hivehub.shop/api/image/posts/${req?.file?.filename}`
+                const path = `${process?.env.BACK_END_URL}/api/image/posts/${req?.file?.filename}`
 
                 if (decoded) {
                     const mediaType = req.params.type
@@ -50,14 +50,12 @@ export const createPostController = (dependencies: IPostDependencies) => {
                                 }
                                 await Notifications.create(data)
                             })
-
                         }
 
                         res.json({ status: 'ok', postData: post, message: 'Your post has been successfully submitted!' })
                     } else {
                         throw new Error('Failed to create post')
                     }
-
                 }
 
             } else {

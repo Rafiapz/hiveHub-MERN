@@ -22,7 +22,7 @@ export const updateOtpController = (dependencies: IDependencies) => {
 
                 const otpDetails = generateOtp(email)
 
-                updateOneUserUseCase(dependencies).execute({ email: email }, { otp: otpDetails?.OTP, createdAt: otpDetails?.timestamp })
+                updateOneUserUseCase(dependencies).execute({ email: email }, { otp: otpDetails })
             }
 
             res.json({ status: 'ok', message: 'Successfully resent OTP' }).status(200)

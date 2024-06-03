@@ -171,10 +171,6 @@ const Posts: FC<any> = ({ openModal, openSharePostModal }: any) => {
       setLikesModal(false);
    };
 
-   for (let i = 0; i < items.length; i++) {
-      console.log(items[i]?.userId?.profilePhoto);
-   }
-
    return (
       <>
          <div className="flex flex-col items-center overflow-hidden">

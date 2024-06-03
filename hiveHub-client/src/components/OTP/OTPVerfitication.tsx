@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 function OTPVerfitication() {
    const [otp, setOtp] = useState<string>("");
    const initialTime: string | null = localStorage.getItem("timer");
-   const initialTimeValue: number = initialTime ? parseInt(initialTime, 10) : 60 * 1;
+   const initialTimeValue: number = initialTime ? parseInt(initialTime, 10) : 60 * 2;
    const [timer, setTimer] = useState<number>(initialTimeValue);
    const [error, setError] = useState<string>("");
    const dispatch = useDispatch<AppDispatch>();

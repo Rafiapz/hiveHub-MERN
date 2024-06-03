@@ -4,9 +4,9 @@ const Mailgen = require('mailgen')
 
 export const generateOtp = (email: string) => {
   try {
-    let OTP = Math.floor(1000 + Math.random() * 9000).toString();
+    let otp = Math.floor(1000 + Math.random() * 9000).toString();
 
-    let timestamp = Date.now();
+    let createdAt = Date.now();
 
     const transporter = createTransport({
       service: "Gmail",
@@ -42,9 +42,9 @@ export const generateOtp = (email: string) => {
       });
     };
 
-    sendOTPemail(OTP)
+    sendOTPemail(otp)
 
-    return { OTP, timestamp }
+    return { otp, createdAt }
   } catch (error) {
     console.log(error);
   }

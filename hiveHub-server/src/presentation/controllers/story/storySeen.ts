@@ -13,7 +13,7 @@ export const storySeenController = (dependencies: IStoryDependencies) => {
             const storyId = req?.body?.storyId
             const userId = req?.body?.userId
 
-            const story = await updateStoryUseCase(dependencies).execute(storyId, userId)
+            await updateStoryUseCase(dependencies).execute(storyId, userId)
 
             res.status(200).json({ status: 'ok' })
 

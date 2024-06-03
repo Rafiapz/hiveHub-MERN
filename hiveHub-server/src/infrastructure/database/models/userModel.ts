@@ -15,7 +15,10 @@ const userSchema = new Schema({
         UserId: { type: Schema.Types.ObjectId },
     }],
     isActive: { type: Boolean, required: true },
-    otp: { type: String },
+    otp: {
+        createdAt: { type: Date },
+        otp: { type: String },
+    },
     createdAt: { type: Date },
     isBlocked: { type: Boolean },
     premium: { type: Boolean },

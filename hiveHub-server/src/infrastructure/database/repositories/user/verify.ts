@@ -8,13 +8,24 @@ export const verify = async (data: { email: string, otp: string }) => {
 
         const userData = await User.findOne({ email: data.email }, { otp: 1, createdAt: 1 })
 
+        if (userData?.otp?.createdAt) {
 
-        if (userData?.otp !== data.otp) {
+            const currentTime = new Date().getTime()
+            const createdAt = new Date(userData.otp.createdAt).getTime()
+            const difference = currentTime - createdAt;
+            if (difference > 2 * 60 * 1000) {
+                throw new Error('Your otp has expired . Please request a new one')
+            }
+
+        } else {
+            throw new Error('Something went wrong')
+        }
+
+        if (userData?.otp?.otp !== data.otp) {
             throw new Error('Incorrect otp')
         }
 
-
-        const user = await User.findOneAndUpdate({ email: data.email, otp: data.otp }, { isVerified: true, otp: '' })
+        const user = await User.findOneAndUpdate({ email: data.email, 'otp.otp': data.otp }, { isVerified: true, 'otp.otp': '' })
 
 
         if (!user) {

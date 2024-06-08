@@ -40,7 +40,7 @@ function Menu() {
          </button>
 
          <div
-            className={`bg-white h-full w-72 z-20 fixed top-12 sm:top-8 left-0 flex flex-col justify-between shadow-lg transition-transform duration-300 ${
+            className={`bg-white h-full w-72 z-20 fixed top-12 sm:top-8 left-0 flex flex-col  shadow-lg transition-transform duration-300 ${
                isOpen ? "translate-x-0" : "-translate-x-full"
             } sm:translate-x-0`}
          >
@@ -49,18 +49,16 @@ function Menu() {
                   <FontAwesomeIcon icon={faHome} className="mr-2 text-gray-700" />
                   Home
                </Link>
-
+               <Link to="/messages" className="flex items-center text-gray-700 hover:text-gray-700 p-2 rounded-md transition-colors duration-300">
+                  <FontAwesomeIcon icon={faCommentDots} className="mr-2 text-gray-700" />
+                  Messages
+               </Link>
                <Link
                   to="/notifications"
                   className="relative flex items-center text-gray-700 hover:text-gray-700 p-2 rounded-md transition-colors duration-300"
                >
                   <FontAwesomeIcon icon={faBell} className="mr-2 text-gray-700" />
                   Notifications
-               </Link>
-
-               <Link to="/messages" className="flex items-center text-gray-700 hover:text-gray-700 p-2 rounded-md transition-colors duration-300">
-                  <FontAwesomeIcon icon={faCommentDots} className="mr-2 text-gray-700" />
-                  Messages
                </Link>
 
                <Link to="/premium" className="flex items-center text-gray-700 hover:text-gray-700 p-2 rounded-md transition-colors duration-300">
@@ -81,7 +79,7 @@ function Menu() {
                   New Poll
                </Link>
             </div>
-            <div className="p-4">
+            <div className="p-4 ">
                <button
                   onClick={() => dispatch(handleCreatePostModal())}
                   className="bg-gray-700 hover:bg-indigo-600 text-white font-semibold py-2 px-4 w-full rounded flex items-center justify-center transition-colors duration-300"

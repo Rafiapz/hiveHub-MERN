@@ -55,7 +55,6 @@ export const getUser = (userId: any) => {
         }
     }
 
-
 };
 
 
@@ -82,7 +81,6 @@ export const initializeSocketIO = (server: Server) => {
         ioInstance = io
 
         io.on('connection', (socket: Socket) => {
-            console.log('caled con');
 
             socket.on("addUser", (userId) => {
 
@@ -148,16 +146,13 @@ export const initializeSocketIO = (server: Server) => {
 
             socket.on('sendMessage', ({ senderId, receiverId, message }: any) => {
                 const user = getUser(receiverId);
-                console.log('calling', user);
-
-
+                console.log(users)
                 if (user) {
                     io.to(user.socketId).emit("recieveMessage", {
                         senderId,
                         message,
                     });
                 } else {
-                    // console.log('user not found , message', receiverId);
 
                 }
             });
@@ -215,8 +210,8 @@ export const initializeSocketIO = (server: Server) => {
 
                 console.log('disconnected');
 
-                // removeUser(socket.id);
-                // io.emit("getUsers", users);
+                removeUser(socket.id);
+                io.emit("getUsers", users);
             });
 
             socket.on('callUser', ({ userToCall, signalData, from, name }: any) => {

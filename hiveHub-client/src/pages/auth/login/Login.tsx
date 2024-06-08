@@ -3,13 +3,15 @@ import { loginSchema } from "../../../schemas/LoginSchemas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { IUserLogin } from "../../../interfaces/IUserLogin";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store/store";
 import { loginAction, loginWithGoogle } from "../../../store/actions/auth/userActions";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useGoogleLogin } from "@react-oauth/google";
 import Header from "../../../components/header/Header";
+import socketService from "../../../service/socketService";
+const socket = socketService.socket;
 
 function Login() {
    const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +22,10 @@ function Login() {
       dispatch(loginAction(data))
          .then((res: any) => {
             if (res.payload.status == "ok") {
+               const userId = res?.payload?.userData?._id;
+               socket.emit("addUser", userId);
+               console.log("user addded", userId);
+
                if (res?.payload?.userData?.role === "admin") {
                   navigate("/admin");
                } else {

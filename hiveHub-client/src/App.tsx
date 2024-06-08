@@ -47,7 +47,6 @@ function App() {
    return (
       <>
          <Toaster position="top-center" containerClassName="text-red-500" />
-
          {!auth ? (
             <>
                <Routes>

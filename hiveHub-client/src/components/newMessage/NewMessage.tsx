@@ -22,7 +22,6 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
    const handleClick = (receiverId: any) => {
       let flag = "ok";
       let conv;
-      console.log(conversations);
 
       conversations?.forEach((ob: any) => {
          if (ob?.members[0]?._id === receiverId || ob?.members[1]?._id === receiverId) {
@@ -30,13 +29,8 @@ const NewMessage = ({ modalIsOpen, closeModal, handleFetchConversations, handleS
             flag = "return ";
             conv = ob;
             return;
-         } else {
-            flag = "yes";
          }
-         console.log(ob?.members);
       });
-
-      console.log(flag);
 
       if (flag === "return ") {
          handleFetchConversations();

@@ -22,10 +22,8 @@ const Conversations: FC<any> = ({ conversations, handleSelectConversation, setDi
       }
    };
 
-   console.log(conversations);
-
    return (
-      <div className="flex flex-col items-start md:items-center overflow-hidden">
+      <div className="flex flex-col items-start md:items-center overflow-auto">
          <div className="flex flex-col w-full md:w-1/2 mb-4 md:mb-0">
             {conversations?.map((c: any) => (
                <div

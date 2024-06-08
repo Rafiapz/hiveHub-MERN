@@ -7,6 +7,8 @@ import { logoutAction } from "../../store/actions/auth/userActions";
 import { AppDispatch } from "../../store/store";
 import Users from "../users/Users";
 import { FC } from "react";
+import socketService from "../../service/socketService";
+const socket = socketService.socket;
 
 const RightSideBar: FC = () => {
    const dispatch = useDispatch<AppDispatch>();
@@ -14,7 +16,13 @@ const RightSideBar: FC = () => {
    const { pathname } = useLocation();
 
    const handleLogout = () => {
-      dispatch(logoutAction());
+      dispatch(logoutAction()).then((response) => {
+         if (response?.payload?.status === "ok") {
+            console.log("disconnected");
+
+            socket.disconnect();
+         }
+      });
    };
 
    return (

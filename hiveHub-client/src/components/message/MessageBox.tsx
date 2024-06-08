@@ -13,7 +13,6 @@ import LoadingButton from "../loading/LoadingButton";
 import toast from "react-hot-toast";
 import socketService from "../../service/socketService";
 import Conversations from "./Conversations";
-import Popup from "../notification/Popup";
 import { BASE_URL } from "../../utils/endPoint";
 const socket = socketService.socket;
 
@@ -37,6 +36,7 @@ const MessageBox: FC = () => {
    const [typing, setTyping] = useState<boolean>(false);
    const [blocked, setBlocked] = useState<any>({ status: false });
    const [direct, setDirect] = useState(false);
+   const [textWriting, setTextWriting] = useState(false);
 
    const handleVideoChange = (event: any) => {
       if (event.target.files && event.target.files.length > 0) {
@@ -121,7 +121,6 @@ const MessageBox: FC = () => {
          })
          .then(() => {
             const target = chat?.members?.filter((ob: any) => ob?._id != userId);
-            console.log(target, "target");
             isUserBlocked(userId, target[0]?._id).then((result: any) => {
                if (result?.data?.data === "blockedByMe") {
                   setBlocked({ status: true, byHim: false });
@@ -201,8 +200,6 @@ const MessageBox: FC = () => {
       }
 
       if (message) {
-         console.log(receiverId, "reciever id");
-
          socket.emit("sendMessage", {
             senderId: userId,
             receiverId,
@@ -453,7 +450,7 @@ const MessageBox: FC = () => {
                                  </div>
                               ) : (
                                  <div className="relative flex items-center p-2 bg-white border border-gray-300 rounded-md">
-                                    <div className="absolute">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
+                                    <div className="absolute bottom-14">{emojiOn && <EmojiPicker onEmojiClick={onEmojiClick} />}</div>
                                     <input
                                        type="text"
                                        className="w-full p-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -461,24 +458,45 @@ const MessageBox: FC = () => {
                                        value={message}
                                        onFocus={handleTyping}
                                        onChange={(e) => setMessage(e.target.value)}
+                                       onClick={() => setTextWriting(true)}
+                                       onBlur={() => setTextWriting(false)}
                                     />
 
-                                    <div className="flex items-center ml-2">
-                                       <button onClick={() => setEmojiOn(!emojiOn)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md">
-                                          😊
-                                       </button>
-                                       <div className="flex items-center bg-gray-200 ml-2 h-10 rounded-md">
-                                          <label htmlFor="image-upload" className="cursor-pointer flex px-4 items-center">
-                                             <FontAwesomeIcon icon={faFileImage} className="h-6 w-6 text-gray-800" />
-                                          </label>
-                                          <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                                       </div>
-                                       <div className="flex items-center bg-gray-200 ml-2 w-20 h-10 rounded-md">
-                                          <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
-                                             <FontAwesomeIcon icon={faVideo} className="text-gray-800 size-8 mt-4 ml-2 mr-2" />
-                                          </label>
-                                          <input id="video-upload" type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
-                                       </div>
+                                    <div className="flex items-center  ">
+                                       {!textWriting && (
+                                          <>
+                                             <button
+                                                onClick={() => setEmojiOn(!emojiOn)}
+                                                className=" w-8 flex justify-center text-gray-800 px-4 py-2 rounded-md"
+                                             >
+                                                😊
+                                             </button>
+                                             <div className="flex items-center justify-center   h-10 w-10 rounded-md">
+                                                <label htmlFor="image-upload" className="cursor-pointer flex  items-center">
+                                                   <FontAwesomeIcon icon={faFileImage} className="size-4  text-gray-800" />
+                                                </label>
+                                                <input
+                                                   id="image-upload"
+                                                   type="file"
+                                                   accept="image/*"
+                                                   className="hidden"
+                                                   onChange={handleImageChange}
+                                                />
+                                             </div>
+                                             <div className="flex items-center   w-10 sm:w-12 h-10 rounded-md">
+                                                <label htmlFor="video-upload" className="cursor-pointer mb-4 flex items-center">
+                                                   <FontAwesomeIcon icon={faVideo} className="text-gray-800 size-6 sm:size-6 mt-4  " />
+                                                </label>
+                                                <input
+                                                   id="video-upload"
+                                                   type="file"
+                                                   accept="video/*"
+                                                   onChange={handleVideoChange}
+                                                   className="hidden"
+                                                />
+                                             </div>
+                                          </>
+                                       )}
                                        {loading ? (
                                           <div className="pl-3">
                                              <LoadingButton />

@@ -41,7 +41,9 @@ function App() {
    }, []);
 
    useEffect(() => {
-      socket.emit("addUser", userId);
+      if (userId) {
+         socket.emit("addUser", userId);
+      }
    }, [userId]);
 
    return (

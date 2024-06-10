@@ -14,7 +14,7 @@ let ioInstance: any = null
 const uploadsDir = './public/posts'
 
 
-let users: any = []
+let users = new Map()
 
 export const getOnlineUsers = () => {
 
@@ -22,39 +22,15 @@ export const getOnlineUsers = () => {
 }
 
 const addUser = (userId: any, socketId: any) => {
-
-    let already
-
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].userId === userId) {
-            already = true;
-            break
-        }
-    }
-
-    if (!already) {
-        users.push({ userId, socketId });
-    }
-
+    users.set(userId, socketId)
 };
 
 export const removeUser = (userId: any) => {
-
-    users = users.filter((user: any) => user.userId !== userId);
-
-
-
+    users.delete(userId)
 };
 
 export const getUser = (userId: any) => {
-
-    for (let i = 0; i < users.length; i++) {
-
-        if (users[i].userId == userId) {
-            return users[i]
-        }
-    }
-
+    return users.get(userId)
 };
 
 
@@ -82,7 +58,8 @@ export const initializeSocketIO = (server: Server) => {
 
         io.on('connection', (socket: Socket) => {
 
-            socket.on("addUser", (userId) => {
+            socket.on("addUser", (userId: any) => {
+                console.log('user added', userId);
 
                 if (userId) {
                     addUser(userId, socket.id);
@@ -130,13 +107,13 @@ export const initializeSocketIO = (server: Server) => {
                             io.emit('upload-comepleted', { conversationId })
                         } catch (error) {
                             const sender = getUser(senderId)
-                            io.to(sender?.socketId).emit('failed to upload')
+                            io.to(sender).emit('failed to upload')
                             return
                         }
                         const user = getUser(receiverId);
 
                         if (user) {
-                            io.to(user?.socketId).emit('video-upload-success', { fileName, senderId });
+                            io.to(user).emit('video-upload-success', { fileName, senderId });
 
                         }
 
@@ -148,7 +125,7 @@ export const initializeSocketIO = (server: Server) => {
                 const user = getUser(receiverId);
                 console.log(users)
                 if (user) {
-                    io.to(user.socketId).emit("recieveMessage", {
+                    io.to(user).emit("recieveMessage", {
                         senderId,
                         message,
                     });
@@ -160,7 +137,7 @@ export const initializeSocketIO = (server: Server) => {
             socket.on('typing', (data: any) => {
                 const user = getUser(data?.receiverId)
                 if (user) {
-                    io.to(user.socketId).emit('typing', { data: 'Typing...', senderId: data?.senderId });
+                    io.to(user).emit('typing', { data: 'Typing...', senderId: data?.senderId });
                 }
             })
 
@@ -180,7 +157,7 @@ export const initializeSocketIO = (server: Server) => {
                 const user = getUser(data?.receiverId);
 
                 if (user) {
-                    io.to(user.socketId).emit('video', data);
+                    io.to(user).emit('video', data);
                 }
 
             });
@@ -192,7 +169,7 @@ export const initializeSocketIO = (server: Server) => {
 
                 if (user) {
                     console.log('emmited');
-                    io.to(user.socketId).emit('getNotifiation', data);
+                    io.to(user).emit('getNotifiation', data);
                 }
             })
 

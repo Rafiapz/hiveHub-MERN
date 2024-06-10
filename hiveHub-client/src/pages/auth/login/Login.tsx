@@ -22,10 +22,6 @@ function Login() {
       dispatch(loginAction(data))
          .then((res: any) => {
             if (res.payload.status == "ok") {
-               const userId = res?.payload?.userData?._id;
-               socket.emit("addUser", userId);
-               console.log("user addded", userId);
-
                if (res?.payload?.userData?.role === "admin") {
                   navigate("/admin");
                } else {

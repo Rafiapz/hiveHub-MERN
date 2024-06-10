@@ -219,7 +219,7 @@ const UserPosts: FC = () => {
                                     icon={faHeart}
                                     className={`${
                                        setClass(item?._id) ? "text-red-600" : "text-gray-400"
-                                    }  mr-4 size-7 cursor-pointer text-xl hover:text-red-600 transition duration-300`}
+                                    }  mr-4  cursor-pointer text-xl hover:text-red-600 transition duration-300`}
                                  />
                                  <p
                                  // onClick={() => {

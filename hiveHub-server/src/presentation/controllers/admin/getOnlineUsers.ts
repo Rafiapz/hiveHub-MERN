@@ -5,11 +5,11 @@ export const getOnlineUsersController = (req: Request, res: Response) => {
 
     try {
 
-        let onlineUsers = getOnlineUsers()
-
-        onlineUsers = onlineUsers.map((ob: any) => {
-            return ob.userId
-        })
+        const users = getOnlineUsers()
+        let onlineUsers: string[] = []
+        for (let [key] of users) {
+            onlineUsers.push(key)
+        }
 
         res.status(200).json({ status: 'ok', data: onlineUsers })
 

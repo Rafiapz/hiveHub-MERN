@@ -18,8 +18,6 @@ const RightSideBar: FC = () => {
    const handleLogout = () => {
       dispatch(logoutAction()).then((response) => {
          if (response?.payload?.status === "ok") {
-            console.log("disconnected");
-
             socket.disconnect();
          }
       });
@@ -33,7 +31,7 @@ const RightSideBar: FC = () => {
          <Users />
          {pathname === "/edit-profile" && (
             <div className="flex justify-end items-start mb-5 p-4">
-               <button onClick={() => handleLogout()} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+               <button onClick={() => handleLogout()} className="bg-red-500 mb-2 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                   Logout
                </button>

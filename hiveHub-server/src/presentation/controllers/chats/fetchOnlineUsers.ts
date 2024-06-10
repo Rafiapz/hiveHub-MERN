@@ -6,9 +6,11 @@ export const fetchOnlineUsersController = (req: Request, res: Response) => {
 
     try {
 
-        const onlineUsers = getOnlineUsers().map((ob: any) => {
-            return ob.userId
-        })
+        const users = getOnlineUsers()
+        let onlineUsers: string[] = []
+        for (let [key] of users) {
+            onlineUsers.push(key)
+        }
 
         res.status(200).json({ status: 'ok', data: onlineUsers })
 

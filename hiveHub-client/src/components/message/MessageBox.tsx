@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import socketService from "../../service/socketService";
 import Conversations from "./Conversations";
 import { BASE_URL } from "../../utils/endPoint";
+import VideoCall from "../videoCall/VideoCall";
 const socket = socketService.socket;
 
 const MessageBox: FC = () => {
@@ -37,6 +38,14 @@ const MessageBox: FC = () => {
    const [blocked, setBlocked] = useState<any>({ status: false });
    const [direct, setDirect] = useState(false);
    const [textWriting, setTextWriting] = useState(false);
+   const [remoteUser, setRemoteUser] = useState<string>("");
+   const childRef = useRef<any>();
+
+   const handleClickVideoCall = () => {
+      if (childRef.current) {
+         childRef.current.callPeer(remoteUser);
+      }
+   };
 
    const handleVideoChange = (event: any) => {
       if (event.target.files && event.target.files.length > 0) {
@@ -114,6 +123,10 @@ const MessageBox: FC = () => {
 
    const handleSelectConversation = (chat: any) => {
       setCurChat(chat);
+      const id = chat?.members[0]?._id !== userId ? chat?.members[0]?._id : chat?.members[1]?._id;
+      console.log(id, "to connn");
+
+      setRemoteUser(id);
 
       dispatch(fetchChats(chat?._id))
          .then((response) => {
@@ -391,32 +404,43 @@ const MessageBox: FC = () => {
                      {curChat ? (
                         <div className="flex flex-col md:w-1/2 flex-grow">
                            <div style={{ height: "550px" }} className="bg-gray-100  flex flex-col flex-grow">
-                              <div className="flex h-14 mb-5 p-2 items-center px-4 bg-white text-black border  shadow ">
-                                 <button
-                                    onClick={() => setDirect(false)}
-                                    className="mr-4 flex items-center justify-center rounded-full bg-gray-300 p-2 hover:bg-gray-400 transition-colors"
-                                 >
-                                    <FontAwesomeIcon icon={faArrowLeft} className="text-gray-800" />
-                                 </button>
-                                 <div className="w-10 h-10 rounded-full overflow-hidden">
-                                    <img
-                                       src={curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto}
-                                       className="w-full h-full rounded-full object-cover"
-                                       alt=""
-                                    />
+                              <div className="flex h-14 mb-5 justify-between  p-2 items-center px-4 bg-white text-black border  shadow ">
+                                 <div className="flex h-14  items-center ">
+                                    <button
+                                       onClick={() => setDirect(false)}
+                                       className="mr-4 flex items-center justify-center rounded-full bg-gray-300 p-2 hover:bg-gray-400 transition-colors"
+                                    >
+                                       <FontAwesomeIcon icon={faArrowLeft} className="text-gray-800" />
+                                    </button>
+                                    <div className="w-10 h-10 rounded-full overflow-hidden">
+                                       <img
+                                          src={
+                                             curChat?.members[1]?._id !== userId ? curChat?.members[1].profilePhoto : curChat?.members[0].profilePhoto
+                                          }
+                                          className="w-full h-full rounded-full object-cover"
+                                          alt=""
+                                       />
+                                    </div>
+                                    <div className="ml-3">
+                                       <h1 className="text-lg font-semibold">
+                                          {curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}
+                                       </h1>
+                                       {typing && (
+                                          <p className="text-sm">
+                                             <span className="animate-pulse">Typing</span>
+                                             <span className="animate-pulse animation-delay-200">.</span>
+                                             <span className="animate-pulse animation-delay-400">.</span>
+                                             <span className="animate-pulse animation-delay-600">.</span>
+                                          </p>
+                                       )}
+                                    </div>
                                  </div>
-                                 <div className="ml-3">
-                                    <h1 className="text-lg font-semibold">
-                                       {curChat?.members[1]?._id !== userId ? curChat?.members[1].fullName : curChat?.members[0].fullName}
-                                    </h1>
-                                    {typing && (
-                                       <p className="text-sm">
-                                          <span className="animate-pulse">Typing</span>
-                                          <span className="animate-pulse animation-delay-200">.</span>
-                                          <span className="animate-pulse animation-delay-400">.</span>
-                                          <span className="animate-pulse animation-delay-600">.</span>
-                                       </p>
-                                    )}
+                                 <div>
+                                    <FontAwesomeIcon
+                                       onClick={() => handleClickVideoCall()}
+                                       icon={faVideo}
+                                       className="text-gray-800 size-6 sm:size-6 mt-4  "
+                                    />
                                  </div>
                               </div>
 
@@ -519,6 +543,7 @@ const MessageBox: FC = () => {
                   </div>
                )}
             </div>
+            <VideoCall ref={childRef} remoteUser={remoteUser} />
          </div>
       </div>
    );

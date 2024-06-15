@@ -3,6 +3,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io'
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
+import { Request, Response } from 'express';
 
 interface VideoChunkData {
     chunk: Uint8Array;
@@ -15,6 +16,8 @@ const uploadsDir = './public/posts'
 
 
 let users = new Map()
+
+let peers = new Map()
 
 export const getOnlineUsers = () => {
 
@@ -59,7 +62,7 @@ export const initializeSocketIO = (server: Server) => {
         io.on('connection', (socket: Socket) => {
 
             socket.on("addUser", (userId: any) => {
-                console.log('user added', userId);
+                console.log('user added', socket.id);
 
                 if (userId) {
                     addUser(userId, socket.id);
@@ -175,10 +178,7 @@ export const initializeSocketIO = (server: Server) => {
 
 
             socket.on('sendNotificationtoAll', (data) => {
-
-
                 io.emit('getNotifiation', data);
-
             })
 
 
@@ -191,14 +191,12 @@ export const initializeSocketIO = (server: Server) => {
                 io.emit("getUsers", users);
             });
 
-            socket.on('callUser', ({ userToCall, signalData, from, name }: any) => {
-                console.log('clled');
+            socket.on('peer-connection', ({ id, userId }) => {
+                if (userId) {
+                    peers.set(userId, id)
+                    console.log('peer added');
 
-                io.to(userToCall).emit('callUser', { signal: signalData, from, name })
-            })
-
-            socket.on('answerCall', (data: any) => {
-                io.to(data.to).emit('callAccepted', data.signal)
+                }
             })
 
         })
@@ -208,5 +206,23 @@ export const initializeSocketIO = (server: Server) => {
     } catch (error: any) {
         console.log(error);
 
+    }
+}
+
+export const fetchPeerId = (req: Request, res: Response) => {
+
+    try {
+
+        console.log('perr okk');
+
+        const peerId = peers.get(req?.params?.id)
+        console.log(peerId);
+
+        res.status(200).json({ status: 'ok', data: { peerId } })
+
+    } catch (error) {
+        console.log(error);
+
+        res.status(400)
     }
 }

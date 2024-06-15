@@ -12,6 +12,7 @@ import {
     FETCH_IS_USER_BLOCKED_URL,
     FETCH_NOTIFICATIONS_URL,
     FETCH_ONLINE_USERS_URL,
+    FETCH_PEER_ID,
     FETCH_POST_LIKED_USERS_URL,
     FETCH_USERS_POLLS_URL,
     LIKE_COMMENT_URL,
@@ -122,8 +123,6 @@ export const unblockOtherUser = async (form: any) => {
 }
 
 export const isUserBlocked = async (id: any, target: any) => {
-    console.log('calignggg');
-
     return await apiClient.get(`${FETCH_IS_USER_BLOCKED_URL}/${id}?target=${target}`)
 }
 
@@ -156,4 +155,8 @@ export const fetchUsersPolls = async (id: any) => {
     console.log(`${FETCH_USERS_POLLS_URL}/${id}`);
 
     return await apiClient.get(`${FETCH_USERS_POLLS_URL}/${id}`)
+}
+
+export const fetchPeerId = async (id: any) => {
+    return await apiClient.get(FETCH_PEER_ID + '/' + id)
 }

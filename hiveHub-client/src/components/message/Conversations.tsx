@@ -28,7 +28,7 @@ const Conversations: FC<any> = ({ conversations, handleSelectConversation, setDi
             {conversations?.map((c: any) => (
                <div
                   key={c?._id}
-                  className="user-card bg-white hover:bg-gray-100 rounded-lg shadow-md transition-colors duration-200 cursor-pointer border border-gray-200 p-4 mb-2 last:mb-0"
+                  className="user-card bg-white hover:bg-gray-200 rounded-lg shadow-md transition-colors duration-200 cursor-pointer border border-gray-200 p-4 mb-2 last:mb-0"
                   onClick={() => {
                      handleSelectConversation(c);
                      setDirect(true);

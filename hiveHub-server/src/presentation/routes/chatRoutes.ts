@@ -6,6 +6,7 @@ import { INetworkDependencies } from '../../application/interface/network/IDepen
 import { IChatsDependencies } from '../../application/interface/chats/IDependencies'
 import { controllers } from '../controllers/chats'
 import { uploadSingleFile } from '../../_lib/multer'
+import { fetchPeerId } from '../../_boot/socket'
 
 
 
@@ -26,6 +27,8 @@ export const chatRoutes = (dependencies: IChatsDependencies) => {
     router.route('/fetch-online-users').get(currentUser, onlineUsers)
 
     router.route('/send-video/:type').post(createChat)
+
+    router.route('/fetch-peerId/:id').get(fetchPeerId)
 
 
 

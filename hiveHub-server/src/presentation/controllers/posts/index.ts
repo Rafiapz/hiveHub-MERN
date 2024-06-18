@@ -1,6 +1,6 @@
 import { IPostDependencies } from "../../../application/interface/posts/IDependencies"
 import { createPostController } from "./createPostController"
-import { fetchAllposts } from "./fetchAllposts"
+import { fetchAllposts, fetchCompletePosts } from "./fetchAllposts"
 import { deletePostController } from './deletePost'
 import { editPostController } from "./editPost"
 import { findUsersPostController } from "./findUsersPost"
@@ -15,7 +15,8 @@ export const controllers = (dependencies: IPostDependencies) => {
         deletePost: deletePostController(dependencies),
         editPost: editPostController(dependencies),
         findUsersPost: findUsersPostController(dependencies),
-        repost: repostController(dependencies)
+        repost: repostController(dependencies),
+        fetchCompletePosts: fetchCompletePosts(dependencies)
 
     }
 }

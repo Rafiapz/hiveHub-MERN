@@ -16,7 +16,8 @@ export const postRoutes = (dependencies: IPostDependencies) => {
     deletePost,
     editPost,
     findUsersPost,
-    repost
+    repost,
+    fetchCompletePosts
   } = controllers(dependencies);
 
   const router = Router()
@@ -24,6 +25,8 @@ export const postRoutes = (dependencies: IPostDependencies) => {
   router.route('/create-post/:type').post(currentUser, uploadSingleFile, createPost)
 
   router.route('/fetch-all-posts').get(currentUser, fetchAllPosts)
+
+  router.route('/fetch-complete-posts').get(currentUser, fetchCompletePosts)
 
   router.route('/delete-post').delete(currentUser, deletePost)
 

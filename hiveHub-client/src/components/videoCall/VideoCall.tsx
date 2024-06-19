@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, FC, forwardRef, useImperativeHandle } from "react";
+import { useState, useRef, useEffect, FC, forwardRef, useImperativeHandle } from "react";
 import Peer from "peerjs";
 import { FaPhone, FaPhoneSlash } from "react-icons/fa";
 import socketService from "../../service/socketService";
@@ -9,14 +9,13 @@ import toast from "react-hot-toast";
 
 const socket = socketService.socket;
 
-const VideoCall: FC<any> = forwardRef((props, ref) => {
+const VideoCall: FC<any> = forwardRef((__, ref) => {
    const userId: any = useSelector((state: RootState) => state?.user?.user?.userId);
-   const [peerId, setPeerId] = useState("");
-   const [remotePeerId, setRemotePeerId] = useState("");
+   const [_, setPeerId] = useState("");
    const [incomingCall, setIncomingCall] = useState<any>(null);
    const [callAccepted, setCallAccepted] = useState(false);
    const remoteVideoRef = useRef<HTMLVideoElement>(null);
-   const currentUserVideoRef = useRef<HTMLVideoElement>(null);
+   const currentUserVideoRef = useRef<HTMLVideoElement | null>(null);
    const peerInstance = useRef<any>(null);
    const [calling, setCalling] = useState(false);
 
@@ -32,7 +31,7 @@ const VideoCall: FC<any> = forwardRef((props, ref) => {
          setIncomingCall(call);
          setTimeout(() => {
             declineCall();
-         }, 25000);
+         }, 5000);
       });
 
       peerInstance.current = peer;
@@ -64,26 +63,6 @@ const VideoCall: FC<any> = forwardRef((props, ref) => {
          .catch((err) => {
             console.error("Failed to get local stream", err);
          });
-   };
-
-   const declineCall = () => {
-      incomingCall.close();
-      setIncomingCall(null);
-      setCallAccepted(false);
-      socket.emit("endCall");
-      setCalling(false);
-   };
-
-   const endCall = () => {
-      peerInstance.current.destroy();
-      window.location.reload();
-      setCalling(false);
-   };
-
-   const declineOutGoingCall = () => {
-      peerInstance.current.destroy();
-      window.location.reload();
-      setCalling(false);
    };
 
    useImperativeHandle(
@@ -128,6 +107,65 @@ const VideoCall: FC<any> = forwardRef((props, ref) => {
       },
       []
    );
+
+   useEffect(() => {
+      socket.on("call-rejected", () => {
+         if (currentUserVideoRef.current) {
+            const mediaStream = currentUserVideoRef.current.srcObject as MediaStream;
+
+            if (mediaStream && mediaStream.getTracks) {
+               mediaStream.getTracks().forEach((track) => track.stop());
+               setCalling(false);
+               window.location.reload();
+            }
+
+            currentUserVideoRef.current.srcObject = null;
+         }
+
+         currentUserVideoRef.current = null;
+      });
+   }, [socket]);
+
+   useEffect(() => {
+      socket.on("call-ended", () => {
+         console.log("call endeddd");
+
+         if (currentUserVideoRef.current) {
+            const mediaStream = currentUserVideoRef.current.srcObject as MediaStream;
+
+            if (mediaStream && mediaStream.getTracks) {
+               mediaStream.getTracks().forEach((track) => track.stop());
+               setCalling(false);
+               window.location.reload();
+            }
+            currentUserVideoRef.current.srcObject = null;
+         }
+         currentUserVideoRef.current = null;
+      });
+   }, [socket]);
+
+   const declineCall = () => {
+      incomingCall.close();
+      setIncomingCall(null);
+      setCallAccepted(false);
+      setCalling(false);
+      socket.emit("reject-call", incomingCall?.peer);
+   };
+
+   const endCall = () => {
+      peerInstance.current.destroy();
+      window.location.reload();
+      setCalling(false);
+      console.log(peerInstance.current);
+
+      socket.emit("end-call", peerInstance.current._lastServerId);
+   };
+
+   const declineOutGoingCall = () => {
+      peerInstance.current.destroy();
+      window.location.reload();
+      setCalling(false);
+   };
 
    return (
       <div className={`flex flex-col items-center w-[500px] h-[500px] absolute top-32 left-1/3 p-4 `}>

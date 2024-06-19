@@ -41,6 +41,16 @@ export const getSocketServer = () => {
     return ioInstance
 }
 
+export const getKeyByValue = (peers: any, value: any) => {
+    for (let [key, val] of peers.entries()) {
+
+        if (val == value) {
+            return key;
+        }
+    }
+
+    return null
+}
 export const initializeSocketIO = (server: Server) => {
 
     try {
@@ -194,9 +204,34 @@ export const initializeSocketIO = (server: Server) => {
             socket.on('peer-connection', ({ id, userId }) => {
                 if (userId) {
                     peers.set(userId, id)
-                    console.log('peer added');
 
                 }
+            })
+
+            socket.on('reject-call', (peerId) => {
+
+                const userId = getKeyByValue(peers, peerId)
+
+                if (userId) {
+                    const user = getUser(userId)
+                    io.to(user).emit('call-rejected', userId)
+                }
+
+            })
+
+            socket.on('end-call', (peerId) => {
+
+                const userId = getKeyByValue(peers, peerId)
+                console.log('ended....');
+
+
+                if (userId) {
+                    const user = getUser(userId)
+                    console.log('ended call');
+
+                    io.to(user).emit('call-ended', userId)
+                }
+
             })
 
         })

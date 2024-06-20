@@ -222,12 +222,10 @@ export const initializeSocketIO = (server: Server) => {
             socket.on('end-call', (peerId) => {
 
                 const userId = getKeyByValue(peers, peerId)
-                console.log('ended....');
-
 
                 if (userId) {
                     const user = getUser(userId)
-                    console.log('ended call');
+                    console.log('ended call', user);
 
                     io.to(user).emit('call-ended', userId)
                 }

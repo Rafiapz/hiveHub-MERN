@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import LoadingFalBack from "../../../components/loading/LoadingFalBack";
 import Header from "../../../components/header/Header";
+import VideoCall from "../../../components/videoCall/VideoCall";
 
 const socket = socketService.socket;
 
@@ -126,6 +127,7 @@ const Home: FC = () => {
                <Suspense fallback={<LoadingFalBack />}>
                   <RightSideBar />
                </Suspense>
+               <VideoCall />
             </div>
          )}
       </>

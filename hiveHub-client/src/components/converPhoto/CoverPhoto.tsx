@@ -46,12 +46,13 @@ const CoverPhoto: FC = () => {
                <div className="profile-actions flex  items-center space-x-2">
                   <button
                      onClick={handleEditProfile}
-                     className="edit-profile-button h-12 sm:h-10 lg:h-12 text-sm sm:text-base lg:text-lg text-black font-semibold border border-blue-700 py-1 px-2 sm:py-2 sm:px-4 lg:py-3 lg:px-6 rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-pink-100"
+                     className="edit-profile-button   text-sm sm:text-base lg:text-lg text-black font-semibold border border-blue-700 py-1 px-2 sm:py-2 sm:px-4 lg:py-3 lg:px-6 rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-pink-100"
                   >
-                     Edit Profile
+                     Edit
                   </button>
-                  <button className="share-button border h-12 sm:h-12 lg:h-12 text-sm sm:text-base lg:text-lg border-blue-700 rounded-3xl text-black font-semibold py-1 px-2 sm:py-2 sm:px-4 lg:py-3 lg:px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-200">
-                     <FontAwesomeIcon icon={faShare} /> Share
+                  <button className="share-button border  text-sm sm:text-base lg:text-lg border-blue-700 rounded-3xl text-black font-semibold py-1 px-2 sm:py-2 sm:px-4 lg:py-3 lg:px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-200">
+                     {/* <FontAwesomeIcon icon={faShare} />  */}
+                     Share
                   </button>
                </div>
             </div>

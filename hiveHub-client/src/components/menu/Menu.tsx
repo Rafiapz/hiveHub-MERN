@@ -45,44 +45,105 @@ function Menu() {
             } sm:translate-x-0`}
          >
             <div className="p-4 flex flex-col space-y-4">
-               <Link to="/" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
-                  <FontAwesomeIcon icon={faHome} className="mr-2 text-gray-700" />
-                  Home
-               </Link>
-               <Link to="/messages" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
-                  <FontAwesomeIcon icon={faCommentDots} className="mr-2 text-gray-700" />
-                  Messages
-               </Link>
-               <Link
-                  to="/notifications"
-                  className="relative flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
-               >
-                  <FontAwesomeIcon icon={faBell} className="mr-2 text-gray-700" />
-                  Notifications
-               </Link>
+               {role === "admin" ? (
+                  <>
+                     <Link
+                        to="/admin"
+                        className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faChartPie} className="mr-2 text-indigo-500" />
+                        Dashboard
+                     </Link>
+                     <Link
+                        to="/admin/reports"
+                        className="sidebar-link flex items-center text-gray-700 hover:text-indigo-500 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faClipboardList} className="mr-2 text-indigo-500" />
+                        View Reports
+                     </Link>
+                     <Link
+                        to="/admin/posts"
+                        className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faHome} className="mr-2 text-gray-700" />
+                        Home
+                     </Link>
+                     <Link
+                        to="/admin/messages"
+                        className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faCommentDots} className="mr-2 text-gray-700" />
+                        Messages
+                     </Link>
+                     <Link
+                        to="/admin/notifications"
+                        className="relative flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faBell} className="mr-2 text-gray-700" />
+                        Notifications
+                     </Link>
 
-               <Link to="/premium" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
-                  <FontAwesomeIcon icon={faCrown} className="mr-2 text-gray-700" />
-                  Premium
-               </Link>
+                     <Link
+                        to="/admin/profile"
+                        className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faUserCircle} className="mr-2 text-gray-700" />
+                        My Profile
+                     </Link>
 
-               <Link to="/profile" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
-                  <FontAwesomeIcon icon={faUserCircle} className="mr-2 text-gray-700" />
-                  My Profile
-               </Link>
+                     <Link
+                        to="/admin/polls"
+                        className="sidebar-link flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <i className="fas fa-poll text-gray-700 mr-2"></i>
+                        New Poll
+                     </Link>
+                  </>
+               ) : (
+                  <>
+                     <Link to="/" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
+                        <FontAwesomeIcon icon={faHome} className="mr-2 text-gray-700" />
+                        Home
+                     </Link>
+                     <Link
+                        to="/messages"
+                        className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faCommentDots} className="mr-2 text-gray-700" />
+                        Messages
+                     </Link>
+                     <Link
+                        to="/notifications"
+                        className="relative flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <FontAwesomeIcon icon={faBell} className="mr-2 text-gray-700" />
+                        Notifications
+                     </Link>
 
-               <Link
-                  to="/polls"
-                  className="sidebar-link flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
-               >
-                  <i className="fas fa-poll text-gray-700 mr-2"></i>
-                  New Poll
-               </Link>
+                     <Link to="/premium" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
+                        <FontAwesomeIcon icon={faCrown} className="mr-2 text-gray-700" />
+                        Premium
+                     </Link>
+
+                     <Link to="/profile" className="flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300">
+                        <FontAwesomeIcon icon={faUserCircle} className="mr-2 text-gray-700" />
+                        My Profile
+                     </Link>
+
+                     <Link
+                        to="/polls"
+                        className="sidebar-link flex items-center text-gray-700 hover:bg-slate-200 p-2 rounded-md transition-colors duration-300"
+                     >
+                        <i className="fas fa-poll text-gray-700 mr-2"></i>
+                        New Poll
+                     </Link>
+                  </>
+               )}
             </div>
             <div className="p-4 ">
                <button
                   onClick={() => dispatch(handleCreatePostModal())}
-                  className="bg-gray-700 hover:bg-indigo-600 text-white font-semibold py-2 px-4 w-full rounded flex items-center justify-center transition-colors duration-300"
+                  className="bg-gray-700 hover:bg-gray-500 text-white font-semibold py-2 px-4 w-full rounded flex items-center justify-center transition-colors duration-300"
                >
                   <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
                   New Post

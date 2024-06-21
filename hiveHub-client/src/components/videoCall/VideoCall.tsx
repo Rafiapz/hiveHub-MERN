@@ -20,6 +20,7 @@ const VideoCall: FC<any> = forwardRef((__, ref) => {
    const currentUserVideoRef = useRef<HTMLVideoElement | null>(null);
    const peerInstance = useRef<any>(null);
    const [calling, setCalling] = useState(false);
+   const [remotePeer, setRemotePeer] = useState<any>(null);
 
    const modalIsOpen = useSelector((state: RootState) => state.messages.videoCall);
 
@@ -61,6 +62,9 @@ const VideoCall: FC<any> = forwardRef((__, ref) => {
                      remoteVideoRef.current.play().catch((error) => {
                         console.error("Error playing remote stream:", error);
                      });
+                     console.log(incomingCall);
+                     setRemotePeer(incomingCall?.peer);
+
                      setIncomingCall(null);
                      setCallAccepted(true);
                   }
@@ -80,6 +84,7 @@ const VideoCall: FC<any> = forwardRef((__, ref) => {
                fetchPeerId(remoteUser)
                   .then((response) => {
                      const remotePeerId = response.data.data.peerId;
+                     setRemotePeer(remotePeerId);
                      if (remotePeerId === undefined) {
                         throw new Error("Unable to connect");
                      }
@@ -162,9 +167,11 @@ const VideoCall: FC<any> = forwardRef((__, ref) => {
    const endCall = () => {
       peerInstance.current.destroy();
       window.location.reload();
+      console.log(incomingCall);
+
       setCalling(false);
       closeModal();
-      socket.emit("end-call", peerInstance.current._lastServerId);
+      socket.emit("end-call", remotePeer);
    };
 
    const declineOutGoingCall = () => {

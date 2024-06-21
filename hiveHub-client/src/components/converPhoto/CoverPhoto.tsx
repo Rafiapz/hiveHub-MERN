@@ -2,8 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store/store";
 import { FC, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShare } from "@fortawesome/free-solid-svg-icons";
 import { fetchuser } from "../../store/actions/auth/userActions";
 
 const CoverPhoto: FC = () => {
@@ -22,7 +20,7 @@ const CoverPhoto: FC = () => {
    };
 
    return (
-      <div className="flex justify-center w-full h-64 mt-10 -z-30 ">
+      <div className="flex justify-center w-full h-64 mt-12 -z-30 ">
          <div style={{ width: "800px" }} className="user-profile mt-1 bg-white rounded-lg shadow-lg h-4/5 sm:h-full relative">
             <div className="cover-photo mb-4 w-full h-full relative">
                <img src={userData?.coverPhoto} alt="Cover" className="rounded-lg w-full h-full object-cover" />

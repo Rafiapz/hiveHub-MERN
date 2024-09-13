@@ -52,9 +52,9 @@ function Login() {
          <Header />
          <div className="flex flex-col md:flex-row w-full overflow-hidden">
             <div className="size-1/2  mt-12 mx-auto md:mt-24 ">
-               <img src="images/front-image.png" className=" " alt="" />
+               <img src="images/front-image.png" className="ml-5 " alt="" />
             </div>
-            <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start">
+            <div className="w-full md:w-1/2 flex flex-col justify-center mt-14 items-center md:items-start">
                <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={loginSchema}>
                   <Form className="p-4 md:p-8 w-full max-w-md">
                      <div className="flex  items-center mb-4">
@@ -79,19 +79,22 @@ function Login() {
                            Forgot Password?
                         </Link>
                      </div>
-                     <button type="submit" className="bg-gray-700 text-white py-2 px-4 mt-4 rounded-lg mb-4 w-full">
+                     <button type="submit" className="bg-orange-400 text-white py-2 px-4 mt-4 rounded-lg mb-4 w-full">
                         Login
                      </button>
-                     <div className="flex  items-center mb-4">
-                        <button
-                           onClick={() => googleAuth()}
-                           className="bg-white ml-20 sm:ml-0 text-black border border-blue-950 py-2 px-4 rounded-lg mb-4"
-                        >
-                           <FontAwesomeIcon icon={faGoogle} /> Login with Google
-                        </button>
-                     </div>
                   </Form>
                </Formik>
+               <div className="p-4 md:pl-8 md:pr-8 md:pt-0 w-full max-w-md">
+                  <div className="flex  items-center mb-4 w-full ">
+                     <button
+                        onClick={() => googleAuth()}
+                        className="bg-white ml-20 sm:ml-0 text-black border border-blue-950 py-2 px-4 rounded-lg mb-4"
+                     >
+                        <FontAwesomeIcon icon={faGoogle} /> Login with Google
+                     </button>
+                  </div>
+               </div>
+
                <p className="text-black mb-4 ml-10">
                   Don't have an account?{" "}
                   <Link className="text-blue-800" to={"/signup"}>

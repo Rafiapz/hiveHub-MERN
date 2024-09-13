@@ -5,6 +5,7 @@ import { getTokenPayloads, verifyToken } from "../../../_lib/jwt";
 import { User } from "../../../infrastructure/database/models";
 import Notifications from "../../../infrastructure/database/models/notifications";
 import { NotificationsEntity } from "../../../domain/entities/notificationsEntity";
+const cloudinary = require('cloudinary').v2
 
 export const createPostController = (dependencies: IPostDependencies) => {
 
@@ -14,11 +15,24 @@ export const createPostController = (dependencies: IPostDependencies) => {
 
         try {
 
+            const cloudName = process.env.cloudName
+            const apiKey = process.env.cloudApiKey
+            const apiSecret = process.env.cloudApiSecret
+
+            cloudinary.config({
+                cloud_name: cloudName,
+                api_key: apiKey,
+                api_secret: apiSecret
+            });
+
+
 
             const token: string | undefined = req.cookies.userToken
             if (token) {
                 const decoded = verifyToken(token)
-                const path = `${process?.env.BACK_END_URL}/api/image/posts/${req?.file?.filename}`
+                const result = await cloudinary.uploader.upload(req?.file?.path);
+
+                const path = result?.url
 
                 if (decoded) {
                     const mediaType = req.params.type

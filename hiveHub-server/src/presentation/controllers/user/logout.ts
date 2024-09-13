@@ -11,7 +11,7 @@ export const logoutController = () => {
             const user = req?.user
             const userId = (user as any)?.id
             removeUser(userId)
-            res.cookie('userToken', '', { maxAge: 1 })
+            res.cookie('userToken', '', { maxAge: 1, httpOnly: true, sameSite: "none", secure: true })
             res.status(200).json({ status: 'ok', message: 'logout successfull' })
 
         } catch (error: any) {
